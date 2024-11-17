@@ -1,0 +1,43 @@
+{
+  "nutrition-db": {
+    "users": [
+      {
+        "id": "alex-0",
+        "name": "Alex",
+        "email": "a.gorodov.22@gmail.com",
+        "token": "string",
+        "phone": "string",
+        "password": "string",
+        "isAdmin": true,
+        "liked": [],
+        "avatar": "string"
+      }
+    ],
+    "meals": [
+      {
+        "id": "breakfast-0",
+        "name": "Oatmeal with eggs",
+        "ingredients": ["4 spoons of oatmeal", "2 eggs", "chia seeds", "raspberry"],
+        "type": "Breakfast"
+      },
+      {
+        "id": "lunch-0",
+        "name": "Chicken with buckwheat",
+        "ingredients": ["3 spoons of buckwheat", "chicken breast", "vegetables"],
+        "type": "Lunch"
+      },
+      {
+        "id": "dinner-0",
+        "name": "Yogurt with jam",
+        "ingredients": ["yogurt", "1 tea spoon of your favorite jam"],
+        "type": "Dinner"
+      },
+      {
+        "id": "snack-0",
+        "name": "Apple",
+        "ingredients": ["one green apple"],
+        "type": "Snack"
+      }
+    ]
+  }
+}

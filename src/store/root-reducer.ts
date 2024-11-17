@@ -3,9 +3,10 @@
 // import { pageReducer } from "./reducers/page/page";
 // import userReducer from './slices/user-slice'
 import { combineReducers } from "redux";
+import { DataReducer } from "./reducers/data/data";
 
 export const rootReducer = combineReducers({
-  // data: dataReducer,
+  data: DataReducer,
   // auth: authReducer,
   // page: pageReducer,
   // user: userReducer
