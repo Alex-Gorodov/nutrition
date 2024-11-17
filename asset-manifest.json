@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/nutrition/static/css/main.b4dd4838.css",
-    "main.js": "/nutrition/static/js/main.71ec9095.js",
+    "main.js": "/nutrition/static/js/main.fc7b53e9.js",
     "index.html": "/nutrition/index.html",
     "main.b4dd4838.css.map": "/nutrition/static/css/main.b4dd4838.css.map",
-    "main.71ec9095.js.map": "/nutrition/static/js/main.71ec9095.js.map"
+    "main.fc7b53e9.js.map": "/nutrition/static/js/main.fc7b53e9.js.map"
   },
   "entrypoints": [
     "static/css/main.b4dd4838.css",
-    "static/js/main.71ec9095.js"
+    "static/js/main.fc7b53e9.js"
   ]
 }
