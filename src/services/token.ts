@@ -1,6 +1,6 @@
 import { UserAuthData } from "../types/user-auth-data";
 
-const AUTH_TOKEN_KEY_NAME = 'braga-user';
+const AUTH_TOKEN_KEY_NAME = 'nutrition-user';
 
 export type Token = string;
 

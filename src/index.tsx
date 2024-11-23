@@ -12,7 +12,6 @@ const root = ReactDOM.createRoot(
 store.dispatch(fetchUsersAction());
 store.dispatch(fetchMealsAction());
 
-
 root.render(
   <React.StrictMode>
     <App />

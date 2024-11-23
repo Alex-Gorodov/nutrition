@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { DataState } from "../../../types/state";
-import { loadMeals, loadUsers, setMealsDataLoadingStatus, setUsersDataLoading, setActiveMeal } from "../../action";
+import { loadMeals, loadUsers, setMealsDataLoadingStatus, setUsersDataLoading, setActiveMeal, addNewMeal, setUploadedPath, setActiveUser } from "../../action";
+import { getUserFromLocalStorage } from "../../../services/token";
 
 const initialState: DataState = {
   isMealsDataLoading: false,
@@ -8,6 +9,8 @@ const initialState: DataState = {
   meals: [],
   users: [],
   activeMeal: null,
+  activeUser: null,
+  uploadedPath: null,
 }
 
 export const DataReducer = createReducer(initialState, (builder) => {
@@ -27,4 +30,17 @@ export const DataReducer = createReducer(initialState, (builder) => {
     .addCase(setActiveMeal, (state, action) => {
       state.activeMeal = action.payload.meal;
     })
+    .addCase(addNewMeal, (state, action) => {
+      const newMeal = action.payload.meal;
+      state.meals.push(newMeal);
+    })
+    .addCase(setUploadedPath, (state, action) => {
+      const { path } = action.payload;
+      state.uploadedPath = path;
+    })
+    .addCase(setActiveUser, (state, action) => {
+      const userFromState = state.users.find((user) => user.id === action.payload.activeUser.id);
+      const userFromLocalStorage = getUserFromLocalStorage();
+      state.activeUser = userFromState || userFromLocalStorage;
+    });
 })

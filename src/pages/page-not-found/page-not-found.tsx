@@ -7,7 +7,7 @@ export function PageNotFound(): JSX.Element {
   return (
     <Layout>
       <Helmet>
-        <title>Braga | 404</title>
+        <title>Nutrition | 404</title>
       </Helmet>
       <div className="not-found">
         <h1 className="title title--1">

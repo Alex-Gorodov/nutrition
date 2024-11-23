@@ -1,15 +1,12 @@
-// import { dataReducer } from "./reducers/data/data";
-// import { authReducer } from "./reducers/auth/auth";
-// import { pageReducer } from "./reducers/page/page";
-// import userReducer from './slices/user-slice'
 import { combineReducers } from "redux";
 import { DataReducer } from "./reducers/data/data";
+import { AuthReducer } from "./reducers/auth/auth";
+import userReducer from './slices/user-slice'
 
 export const rootReducer = combineReducers({
   data: DataReducer,
-  // auth: authReducer,
-  // page: pageReducer,
-  // user: userReducer
+  auth: AuthReducer,
+  user: userReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>;

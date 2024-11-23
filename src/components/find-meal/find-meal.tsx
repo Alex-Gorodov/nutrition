@@ -13,11 +13,14 @@ export function FindMeal(): JSX.Element {
   const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
 
   const handleSetActiveMeal = (mealType: MealType) => {
-    const meal = meals.find((meal) => meal.type === mealType);
-    if (meal) {
-      dispatch(setActiveMeal({ meal }));
+    const mealsOfType = meals.filter((meal) => meal.type === mealType);
+
+    if (mealsOfType.length > 0) {
+      const randomIndex = Math.floor(Math.random() * mealsOfType.length);
+      const randomMeal = mealsOfType[randomIndex];
+      dispatch(setActiveMeal({ meal: randomMeal }));
     } else {
-      dispatch(setActiveMeal({ meal: null }))
+      dispatch(setActiveMeal({ meal: null }));
     }
   };
 
@@ -26,7 +29,7 @@ export function FindMeal(): JSX.Element {
       <div>
         {
           Object.values(MealType).map((type) => (
-            <button key={type} onClick={() => handleSetActiveMeal(type)}>
+            <button className="button" type={"button"} key={type} onClick={() => handleSetActiveMeal(type)}>
               <span>{type}</span>
             </button>
           ))
@@ -34,9 +37,8 @@ export function FindMeal(): JSX.Element {
       </div>
 
       <div>
-        Active meal:
         {
-          activeMeal ? <MealItem meal={activeMeal}/> : 'choose meal type'
+          activeMeal ? <MealItem meal={activeMeal}/> : 'Choose meal type'
         }
       </div>
     </div>

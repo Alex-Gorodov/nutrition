@@ -4,18 +4,22 @@ import { useEffect, useState } from "react";
 import { User } from "../../types/user";
 
 export function UserItem(): JSX.Element {
-  const [user, setUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  const users = useSelector((state: RootState) => state.data.users);
-  const meals = useSelector((state: RootState) => state.data.meals);
+  const authUser = useSelector((state: RootState) => state.auth.userInfo);
+  // Find the user in the data.users array based on authUser's ID
+  const activeUser = useSelector((state: RootState) =>
+    state.data.users.find((user) => user.id === authUser?.id)
+  );
 
   useEffect(() => {
-    users ? setUser(users[0]) : setUser(null);
-  }, [users, meals])
+    activeUser && setSelectedUser(activeUser);
+  }, [activeUser]);
 
   return (
     <div>
-      user: {user ? user.name : 'load user'}
+      {selectedUser ? `Hi, ${selectedUser.name}` : 'loading user...'}
+      {selectedUser && <img src={selectedUser.avatar} width={40} height={40} alt="" />}
     </div>
-  )
+  );
 }

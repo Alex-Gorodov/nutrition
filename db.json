@@ -18,25 +18,41 @@
         "id": "breakfast-0",
         "name": "Oatmeal with eggs",
         "ingredients": ["4 spoons of oatmeal", "2 eggs", "chia seeds", "raspberry"],
-        "type": "Breakfast"
+        "type": "Breakfast",
+        "calories": 350,
+        "proteins": 17,
+        "fats": 14,
+        "carbs": 45
       },
       {
         "id": "lunch-0",
         "name": "Chicken with buckwheat",
-        "ingredients": ["3 spoons of buckwheat", "chicken breast", "vegetables"],
-        "type": "Lunch"
+        "ingredients": ["3 spoons of buckwheat", "chicken breast", "favorite vegetables"],
+        "type": "Lunch",
+        "calories": 400,
+        "proteins": 35,
+        "fats": 8,
+        "carbs": 45
       },
       {
         "id": "dinner-0",
         "name": "Yogurt with jam",
-        "ingredients": ["yogurt", "1 tea spoon of your favorite jam"],
-        "type": "Dinner"
+        "ingredients": ["yogurt", "1 teaspoon of your favorite jam", "1 teaspoon of coconut flakes"],
+        "type": "Dinner",
+        "calories": 150,
+        "proteins": 6,
+        "fats": 5,
+        "carbs": 20
       },
       {
         "id": "snack-0",
         "name": "Apple",
         "ingredients": ["one green apple"],
-        "type": "Snack"
+        "type": "Snack",
+        "calories": 80,
+        "proteins": 0,
+        "fats": 0,
+        "carbs": 22
       }
     ]
   }

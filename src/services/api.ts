@@ -11,7 +11,7 @@ const StatusCodeMapping: Record<number, boolean> = {
 
 const shouldDisplayError = (response: AxiosResponse) => !!StatusCodeMapping[response.status];
 
-const BACKEND_URL = 'https://braga-67e6d-default-rtdb.firebaseio.com/';
+const BACKEND_URL = 'https://nutrition-2cda7-default-rtdb.firebaseio.com/';
 const REQUEST_TIMEOUT = 5000;
 
 export const createAPI = (): AxiosInstance => {
