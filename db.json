@@ -1,18 +1,6 @@
 {
   "nutrition-db": {
-    "users": [
-      {
-        "id": "alex-0",
-        "name": "Alex",
-        "email": "a.gorodov.22@gmail.com",
-        "token": "string",
-        "phone": "string",
-        "password": "string",
-        "isAdmin": true,
-        "liked": [],
-        "avatar": "string"
-      }
-    ],
+    "users": [],
     "meals": [
       {
         "id": "breakfast-0",

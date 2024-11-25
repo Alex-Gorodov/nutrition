@@ -63,9 +63,12 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
           <img src={fileUrl} alt="Uploaded file" width={100} height={100} className="upload__preview" />
           :
           <div>
-            <button className="button button--no-shadow upload__button" onClick={handleButtonClick} type="button">
-              <UploadIcon />
-            </button>
+            {
+              isMobile &&
+              <button className="button button--no-shadow upload__button" onClick={handleButtonClick} type="button">
+                <UploadIcon />
+              </button>
+            }
             <p className="upload__description">PNG, GIF, WEBP, MP4 or MP3. Max 1Gb.</p>
             <input {...getInputProps()} className="visually-hidden" name={name} onChange={handleChange} id={inputId} ref={fileInputRef}/>
             <ul>
@@ -75,6 +78,18 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
                 </li>
               ))}
             </ul>
+            {
+              !isMobile &&
+              <div className="upload__drop">
+                <p className="upload__description">Drop image here or click above to upload.</p>
+              </div>
+            }
+            <input {...getInputProps} className="visually-hidden" name={name} onChange={handleChange}/>
+            {uploadedFiles.map((file) => (
+              <div className="upload__image-wrapper" key={file.name}>
+                <img src={fileUrl ? fileUrl : ''} alt="Uploaded file" width={60} height={60} className="upload__preview" />
+              </div>
+            ))}
           </div>
         }
       </div>

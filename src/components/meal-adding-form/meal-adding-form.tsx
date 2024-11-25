@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../store/root-reducer"
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/root-reducer";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { addMealToDatabase } from "../../store/api-actions";
 import { MealType } from "../../const";
@@ -23,7 +23,7 @@ export function MealAddingForm(): JSX.Element {
     proteins: 0,
     fats: 0,
     carbs: 0,
-  }
+  };
 
   const getNextId = (meals: Meal[], type: MealType): string => {
     const filteredMeals = meals.filter((meal) => meal.type === type);
@@ -55,7 +55,6 @@ export function MealAddingForm(): JSX.Element {
     carbs: 0,
   });
 
-
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     const newType = value as MealType;
@@ -67,36 +66,38 @@ export function MealAddingForm(): JSX.Element {
     }));
   };
 
-
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
 
     setData((prevdata) => ({
       ...prevdata,
-      recipe: value
-    }))
-  }
+      recipe: value,
+    }));
+  };
 
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = event.target;
 
-    if (name === 'picture' && files) {
+    if (name === "picture" && files) {
       setData((prevdata) => ({
         ...prevdata,
-        avatar: URL.createObjectURL(files[0]),
+        picture: URL.createObjectURL(files[0]),
       }));
-    } else if (name === 'ingredients') {
-      const ingredientsArray = value.split(',').map((ingredient) => ingredient);
+    } else if (name === "ingredients") {
+      const ingredientsArray = value
+        ? value.split(",").map((ingredient) => ingredient.trim())
+        : [];
 
       setData((prevdata) => ({
         ...prevdata,
         ingredients: ingredientsArray,
       }));
     } else {
-      const numericFields = ['calories', 'proteins', 'fats', 'carbs'];
+      const numericFields = ["calories", "proteins", "fats", "carbs"];
       setData((prevdata) => ({
         ...prevdata,
-        [name]: numericFields.includes(name) ? parseFloat(value) || 0 : value,
+        [name]:
+          numericFields.includes(name) ? parseFloat(value) || 0 : value,
       }));
     }
   };
@@ -104,12 +105,17 @@ export function MealAddingForm(): JSX.Element {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(addNewMeal({ meal: data }));
-    addMealToDatabase(data);
 
-    setData({
-      ...defaultData,
-      id: getNextId(meals, MealType.Breakfast),
-    });
+    try {
+      await addMealToDatabase(data);
+
+      setData({
+        ...defaultData,
+        id: getNextId(meals, MealType.Breakfast),
+      });
+    } catch (error) {
+      console.error("Error adding meal:", error);
+    }
   };
 
   const handleFileUpload = (fileUrl: string) => {
@@ -120,51 +126,106 @@ export function MealAddingForm(): JSX.Element {
   };
 
   return (
-    <form method="post" action="#" onSubmit={handleFormSubmit}>
+    <form className="form" method="post" action="#" onSubmit={handleFormSubmit}>
       <h1 className="title title--2">Add new meal</h1>
-      <fieldset>
-        <label htmlFor="meal-type">
+      <fieldset className="form__fieldset">
+        <label className="form__item" htmlFor="meal-type">
           <span>Choose meal type: </span>
-          <select name="type" id="meal-type" value={data.type} onChange={handleSelectChange}>
+          <select
+            name="type"
+            id="meal-type"
+            value={data.type}
+            onChange={handleSelectChange}
+          >
             <option value="Breakfast">Breakfast</option>
             <option value="Lunch">Lunch</option>
             <option value="Dinner">Dinner</option>
             <option value="Snack">Snack</option>
           </select>
         </label>
-        <label htmlFor="meal-name">
+        <label className="form__item" htmlFor="meal-name">
           <span>Enter meal name: </span>
-          <input type="text" id="meal-name" name="name" value={data.name} onChange={handleFieldChange} placeholder="Chicken breast"/>
+          <input
+            type="text"
+            id="meal-name"
+            name="name"
+            value={data.name}
+            onChange={handleFieldChange}
+            placeholder="Chicken breast"
+          />
         </label>
-        <label htmlFor="meal-ingredients">
+        <label className="form__item" htmlFor="meal-ingredients">
           <span>Enter meal ingredients: </span>
-          <input type="text" id="meal-ingredients" name="ingredients" value={data.ingredients} onChange={handleFieldChange} placeholder="Chicken breast, onion, garlic, spices"/>
+          <input
+            type="text"
+            id="meal-ingredients"
+            name="ingredients"
+            value={data.ingredients.join(", ")} // Преобразуем массив в строку для отображения
+            onChange={handleFieldChange}
+            placeholder="Chicken breast, onion, garlic, spices"
+          />
         </label>
-        <label htmlFor="meal-recipe">
+        <label className="form__item" htmlFor="meal-recipe">
           <span>Enter recipe steps (description): </span>
-          <textarea id="meal-recipe" name="recipe" value={data.recipe} onChange={handleTextAreaChange} placeholder="Recipe..."/>
+          <textarea
+            id="meal-recipe"
+            name="recipe"
+            value={data.recipe}
+            onChange={handleTextAreaChange}
+            placeholder="Recipe..."
+          />
         </label>
-        <label htmlFor="meal-calories">
+        <label className="form__item" htmlFor="meal-calories">
           <span>Calories: </span>
-          <input type="number" id="meal-calories" name="calories" value={data.calories} onChange={handleFieldChange} min={0}/>
+          <input
+            type="number"
+            id="meal-calories"
+            name="calories"
+            value={data.calories}
+            onChange={handleFieldChange}
+            min={0}
+          />
         </label>
-        <label htmlFor="meal-proteins">
+        <label className="form__item" htmlFor="meal-proteins">
           <span>Proteins: </span>
-          <input type="number" id="meal-proteins" name="proteins" value={data.proteins} onChange={handleFieldChange} min={0}/>
+          <input
+            type="number"
+            id="meal-proteins"
+            name="proteins"
+            value={data.proteins}
+            onChange={handleFieldChange}
+            min={0}
+          />
         </label>
-        <label htmlFor="meal-fats">
+        <label className="form__item" htmlFor="meal-fats">
           <span>Fats: </span>
-          <input type="number" id="meal-fats" name="fats" value={data.fats} onChange={handleFieldChange} min={0}/>
+          <input
+            type="number"
+            id="meal-fats"
+            name="fats"
+            value={data.fats}
+            onChange={handleFieldChange}
+            min={0}
+          />
         </label>
-        <label htmlFor="meal-carbs">
+        <label className="form__item" htmlFor="meal-carbs">
           <span>Carbs: </span>
-          <input type="number" id="meal-carbs" name="carbs" value={data.carbs} onChange={handleFieldChange} min={0}/>
+          <input
+            type="number"
+            id="meal-carbs"
+            name="carbs"
+            value={data.carbs}
+            onChange={handleFieldChange}
+            min={0}
+          />
         </label>
-        <label htmlFor="meal-picture">
-          <Upload onFileUpload={handleFileUpload} inputId="meal-picture" name="picture"/>
+        <label className="form__item" htmlFor="meal-picture">
+          <Upload onFileUpload={handleFileUpload} inputId="meal-picture" name="picture" />
         </label>
       </fieldset>
-      <button className="button" type="submit">Add recipe!</button>
+      <button className="button" type="submit">
+        Add recipe!
+      </button>
     </form>
-  )
+  );
 }

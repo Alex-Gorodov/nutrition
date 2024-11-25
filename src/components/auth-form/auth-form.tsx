@@ -109,42 +109,38 @@ export function AuthForm({className}: AuthFormProps): JSX.Element {
 
   return (
     <div className="form__wrapper ">
-      <form className={`login__form form ${className}`} action="#" method="post" onSubmit={handleLogin}>
+      <form className={`form login__form ${className}`} action="#" method="post" onSubmit={handleLogin}>
         <h3 className="title title--3 form__title">Sign in</h3>
         {
           <>
-            <div className="form__input-wrapper">
-              <label className="form__item" htmlFor="login-name">
-                <input
-                  className="form__input"
-                  type="email"
-                  name="email"
-                  placeholder=""
-                  id="login-name"
-                  ref={loginRef}
-                  required
-                  value={data.email.value}
-                  onChange={handleFieldChange}
-                />
-                <span className="form__label form__label--sign-in">E-mail:</span>
-              </label>
-            </div>
-            <div className="form__input-wrapper">
-              <label className="form__item" htmlFor="login-password">
-                <input
-                  className="form__input"
-                  type="password"
-                  name="password"
-                  placeholder=""
-                  id="login-password"
-                  ref={passwordRef}
-                  required
-                  value={data.password.value}
-                  onChange={handleFieldChange}
-                />
-                <span className="form__label form__label--sign-in">Password:</span>
-              </label>
-            </div>
+            <label className="form__item" htmlFor="login-name">
+              <input
+                className="form__input"
+                type="email"
+                name="email"
+                placeholder=""
+                id="login-name"
+                ref={loginRef}
+                required
+                value={data.email.value}
+                onChange={handleFieldChange}
+              />
+              <span className="form__label form__label--sign-in">E-mail:</span>
+            </label>
+            <label className="form__item" htmlFor="login-password">
+              <input
+                className="form__input"
+                type="password"
+                name="password"
+                placeholder=""
+                id="login-password"
+                ref={passwordRef}
+                required
+                value={data.password.value}
+                onChange={handleFieldChange}
+              />
+              <span className="form__label form__label--sign-in">Password:</span>
+            </label>
             <div className="form__buttons">
               <button className="login__submit form__submit button" type="submit" disabled={isAuthing}>
                 {isAuthing

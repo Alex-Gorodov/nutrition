@@ -41,6 +41,9 @@ export function FindMeal(): JSX.Element {
           activeMeal ? <MealItem meal={activeMeal}/> : 'Choose meal type'
         }
       </div>
+      {
+        activeMeal && <button onClick={() => dispatch(setActiveMeal({meal: null}))}>clear</button>
+      }
     </div>
   )
 }

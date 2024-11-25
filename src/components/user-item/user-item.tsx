@@ -7,7 +7,7 @@ export function UserItem(): JSX.Element {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const authUser = useSelector((state: RootState) => state.auth.userInfo);
-  // Find the user in the data.users array based on authUser's ID
+
   const activeUser = useSelector((state: RootState) =>
     state.data.users.find((user) => user.id === authUser?.id)
   );

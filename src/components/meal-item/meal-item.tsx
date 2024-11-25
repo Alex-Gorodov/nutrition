@@ -41,7 +41,7 @@ export function MealItem({meal}: MealItemProps): JSX.Element {
           {
             meal.ingredients.map((i) => {
               return (
-                <li>{i}</li>
+                <li key={`${meal.name}-ingredient-${i}`}>{i}</li>
               )
             })
           }

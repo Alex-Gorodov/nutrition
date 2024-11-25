@@ -21,7 +21,7 @@ export function RegisterForm(): JSX.Element {
     id: usersAmount,
     name: "",
     email: "",
-    phone: "",
+    // phone: "",
     isAdmin: false,
     liked: [],
     avatar: "",
@@ -74,8 +74,8 @@ export function RegisterForm(): JSX.Element {
         id: user.uid,
         name: data.name,
         email: data.email,
-        phone: data.phone,
-        password: data.password,
+        // phone: data.phone,
+        // password: data.password,
         isAdmin: false,
         liked: [],
         avatar: data.avatar,
@@ -123,31 +123,31 @@ export function RegisterForm(): JSX.Element {
   };
 
   return (
-    <form action="" method="post" onSubmit={handleRegister}>
+    <form className="form" action="" method="post" onSubmit={handleRegister}>
       <h1 className="title title--2">Registration</h1>
       <p>* - required fields</p>
       <fieldset>
-        <label htmlFor="register-name">
+        <label className="form__item" htmlFor="register-name">
           <span>Your name or nickname*: </span>
           <input type="text" name="name" id="register-name" value={data.name} onChange={handleFieldChange} placeholder="Peter" required/>
         </label>
-        <label htmlFor="register-email">
+        <label className="form__item" htmlFor="register-email">
           <span>Your email*: </span>
           <input type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" autoComplete="username" required/>
         </label>
-        <label htmlFor="register-name">
+        {/* <label className="form__item" htmlFor="register-name">
           <span>Your phone: </span>
           <input type="phone" name="phone" id="register-phone" value={data.phone} onChange={handleFieldChange} placeholder="0541234567"/>
-        </label>
-        <label htmlFor="register-avatar">
+        </label> */}
+        <label className="form__item" htmlFor="register-avatar">
           <span>Choose avatar: </span>
           <Upload onFileUpload={handleFileUpload} inputId="register-avatar" name="avatar"/>
         </label>
-        <label htmlFor="register-password">
+        <label className="form__item" htmlFor="register-password">
           <span>Enter password*: </span>
           <input type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} placeholder="password" autoComplete="new-password" required/>
         </label>
-        <label htmlFor="register-confirm-password">
+        <label className="form__item" htmlFor="register-confirm-password">
           <span>Confirm password*: </span>
           <input type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} placeholder="confirm password" autoComplete="new-password" required/>
         </label>

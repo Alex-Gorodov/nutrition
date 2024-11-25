@@ -72,13 +72,14 @@ export const addMealToDatabase = async (meal: Meal) => {
       carbs: meal.carbs,
     };
 
-    mealData.push(newMeal);
+    mealData.meals.push(newMeal);
 
     await mealRef.set(mealData);
   } catch (error) {
     console.error("Error adding meal: ", error);
   }
 };
+
 
 export const addNewUserToDatabase = async (user: User, dispatch: AppDispatch) => {
   try {
