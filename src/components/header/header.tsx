@@ -9,6 +9,8 @@ import { useState } from "react"
 import cn from 'classnames';
 import { Link } from "react-router-dom";
 import { HeaderUserItem } from "../header-user-item/header-user-item";
+import { ReactComponent as Login } from '../../img/icons/login-icon.svg';
+import { ReactComponent as Logout } from '../../img/icons/logout-icon.svg';
 
 export function Header(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -84,9 +86,9 @@ export function Header(): JSX.Element {
         {
           authorizationStatus === AuthorizationStatus.Auth
           ?
-          <button className="button" type="button" onClick={handleLogout}>Выход</button>
+          <button className="button" type="button" onClick={handleLogout}><Logout/></button>
           :
-          <button className="button" type="button" onClick={handleOpenLoginForm}>Войти</button>
+          <button className="button" type="button" onClick={handleOpenLoginForm}><Login/></button>
         }
       </div>
     </header>

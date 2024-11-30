@@ -10,17 +10,15 @@ import { AppDispatch } from "../../types/state";
 import { setUser } from "../../store/slices/user-slice";
 import {
   requireAuthorization,
-  setActiveUser,
   setLoginFormOpened,
   setRegisterFormOpened,
   setStatusMessage,
-  setUploadedPath,
-  setUsersDataLoading,
 } from "../../store/action";
 import { RootState } from "../../store/root-reducer";
 import { AuthorizationStatus, ErrorMessages } from "../../const";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
-import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
+import { addNewUserToDatabase } from "../../store/api-actions";
+import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
 
 type FormField = {
   value: string;
@@ -40,11 +38,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
   const [isAuthing, setIsAuthing] = useState(false);
 
   const users = useSelector((state: RootState) => state.data.users);
-
-  const checkIfUserExists = async (email: string): Promise<boolean> => {
-    return users.find((u) => u.email === email)?.email === email;
-  };
-
   const isLoginFormOpened = useSelector(
     (state: RootState) => state.page.isLoginFormOpened
   );
@@ -63,7 +56,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
       value: "",
       error: false,
       errorValue: ErrorMessages.PasswordError,
-      regexp: /(?=.*[0-9])(?=.*[A-Za-z])[A-Za-z0-9]{2,}/,
+      regexp: /(?=.*[0-9])(?=.*[A-Za-z])[A-Za-z0-9]{6,}/,
     },
   };
 
@@ -81,6 +74,15 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         error: !field.regexp.test(value),
       },
     });
+  };
+
+  const checkIfUserExists = (email: string) => {
+    return users.some((u) => u.email === email);
+  };
+
+  const closeForms = () => {
+    dispatch(setLoginFormOpened({ isOpened: false }));
+    dispatch(setRegisterFormOpened({ isOpened: false }));
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -105,43 +107,31 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
       const token = await user.getIdToken();
       const userInfo = { email: user.email!, id: user.uid, token };
-      localStorage.setItem("nutrition-user", JSON.stringify(userInfo));
 
-      if (await checkIfUserExists(userInfo.email)) {
+      if (checkIfUserExists(userInfo.email)) {
+        localStorage.setItem("nutrition-user", JSON.stringify(userInfo));
         dispatch(setUser(userInfo));
         dispatch(
           requireAuthorization({ authorizationStatus: AuthorizationStatus.Auth })
         );
-        setIsAuthing(false);
         closeForms();
       } else {
-        dispatch(setStatusMessage({message: ErrorMessages.HasAccountError}));
-        setIsAuthing(false);
+        dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
       }
     } catch (error) {
-      dispatch(setStatusMessage({message: ErrorMessages.AuthError}));
+      dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
       console.error("Login error:", error);
     } finally {
       setIsAuthing(false);
     }
   };
 
-  const handleOpenRegister = () => {
-    dispatch(setLoginFormOpened({ isOpened: !isLoginFormOpened }));
-    dispatch(setRegisterFormOpened({ isOpened: !isRegistrationFormOpened }));
-  };
-
-  const closeForms = () => {
-    dispatch(setLoginFormOpened({ isOpened: false }));
-    dispatch(setRegisterFormOpened({ isOpened: false }));
-  }
-
   const handleGoogleSignIn = async () => {
     setIsAuthing(true);
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
 
     try {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
@@ -149,40 +139,25 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         throw new Error("Google account email not found");
       }
 
-      const existingUser = await checkIfUserExists(user.email);
+      const token = await user.getIdToken();
+      const userInfo = {
+        email: user.email!,
+        id: user.uid,
+        token,
+      };
 
-      if (existingUser) {
-        try {
-          const { user: existingFirebaseUser } = await signInWithEmailAndPassword(
-            auth,
-            user.email,
-            "user-password" // Здесь нужно получить пароль, например, запросом к пользователю
-          );
-
-          const token = await existingFirebaseUser.getIdToken();
-          const userInfo = {
-            email: existingFirebaseUser.email!,
-            id: existingFirebaseUser.uid,
-            token,
-          };
-
-          localStorage.setItem("nutrition-user", JSON.stringify(userInfo));
-          dispatch(setUser(userInfo));
-          dispatch(setActiveUser({ activeUser: userInfo }));
-        } catch (authError) {
-          dispatch(setStatusMessage({message: ErrorMessages.HasAccountError}))
-          console.error("Error signing in with existing user:", authError);
-        }
+      if (checkIfUserExists(user.email)) {
+        localStorage.setItem("nutrition-user", JSON.stringify(userInfo));
+        dispatch(setUser(userInfo));
       } else {
         const name = user.displayName || "Unknown";
         const avatar = user.photoURL || "";
-        const token = await user.getIdToken();
 
         await addNewUserToDatabase(
           {
             id: user.uid,
-            name: name,
-            email: user.email,
+            name,
+            email: user.email!,
             isAdmin: false,
             liked: [],
             avatar: avatar,
@@ -192,14 +167,21 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         );
       }
 
-      dispatch(setUploadedPath({ path: null }));
+      dispatch(
+        requireAuthorization({ authorizationStatus: AuthorizationStatus.Auth })
+      );
+      closeForms();
     } catch (error) {
-      console.error("Error during Google sign-in:", error);
-      alert("Ошибка при авторизации через Google: " + error);
+      console.error("Google Sign-In Error:", error);
+      dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
     } finally {
       setIsAuthing(false);
-      closeForms();
     }
+  };
+
+  const handleOpenRegister = () => {
+    dispatch(setLoginFormOpened({ isOpened: false }));
+    dispatch(setRegisterFormOpened({ isOpened: true }));
   };
 
   return (
@@ -214,7 +196,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
               className="form__item"
               htmlFor={`login-${fieldName}`}
             >
-              <span className="form__label form__label--sign-in">
+              <span className="form__label">
                 {fieldName === "email" ? "E-mail:" : "Пароль:"}
               </span>
               <input
@@ -234,11 +216,11 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         })}
         <div className="form__buttons">
           <button
-            className="login__submit form__submit button"
+            className="button"
             type="submit"
             disabled={isAuthing}
           >
-            {isAuthing ? <LoadingSpinner size="16" /> : "Sign in"}
+            {isAuthing ? <LoadingSpinner size="16" /> : "Войти"}
           </button>
           <button
             className="button button--google"
@@ -246,7 +228,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
             onClick={handleGoogleSignIn}
             disabled={isAuthing}
           >
-            Sign in with Google
+            <span>Войти с</span> <Google />
           </button>
         </div>
         <div className="form__buttons form__buttons--column">

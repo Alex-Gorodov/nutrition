@@ -3,12 +3,16 @@ import { RootState } from "../../store/root-reducer";
 import { MealType, MealTypeTranslations } from "../../const";
 import { MealItem } from "../meal-item/meal-item";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
+import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
 export function FindMeal(): JSX.Element {
   const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
+  const isMealsLoading = useSelector((state: RootState) => state.data.isMealsDataLoading);
+
   const handleSetActiveMeal = useSetActiveMeal();
 
   return (
+    isMealsLoading ? <LoadingSpinner size={"80"}/> :
     <section className="meals">
       <div className="meal">
         {activeMeal ? (

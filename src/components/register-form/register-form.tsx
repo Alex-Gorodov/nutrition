@@ -139,14 +139,14 @@ export function RegisterForm(): JSX.Element {
     <form className="form" action="" method="post" onSubmit={handleRegister}>
       <h1 className="title title--2">Регистрация</h1>
       <p>* - обязательные поля</p>
-      <fieldset>
+      <fieldset className="form__fieldset">
         <label className="form__item" htmlFor="register-name">
           <span>Имя или ник*: </span>
-          <input type="text" name="name" id="register-name" value={data.name} onChange={handleFieldChange} placeholder="Peter" required/>
+          <input className="form__input" type="text" name="name" id="register-name" value={data.name} onChange={handleFieldChange} placeholder="Peter" required/>
         </label>
         <label className="form__item" htmlFor="register-email">
           <span>Твой e-mail*: </span>
-          <input type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" autoComplete="username" required/>
+          <input className="form__input" type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" autoComplete="username" required/>
         </label>
         <label className="form__item" htmlFor="register-avatar">
           <span>Загрузи аватар: </span>
@@ -154,11 +154,11 @@ export function RegisterForm(): JSX.Element {
         </label>
         <label className="form__item" htmlFor="register-password">
           <span>Выбери пароль*: </span>
-          <input type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} placeholder="password" autoComplete="new-password" required/>
+          <input className="form__input" type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} placeholder="Password" autoComplete="new-password" required/>
         </label>
         <label className="form__item" htmlFor="register-confirm-password">
           <span>Подтверди пароль*: </span>
-          <input type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} placeholder="confirm password" autoComplete="new-password" required/>
+          <input className="form__input" type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} placeholder="Confirm password" autoComplete="new-password" required/>
         </label>
       </fieldset>
       <button className="button" type="submit">

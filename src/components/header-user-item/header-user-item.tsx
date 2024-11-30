@@ -5,6 +5,7 @@ import { User } from "../../types/user";
 import { generatePath, Link } from "react-router-dom";
 import { AppRoute } from "../../const";
 import { useGetUser } from "../../hooks/useGetUser";
+import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
 export function HeaderUserItem(): JSX.Element {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -24,13 +25,14 @@ export function HeaderUserItem(): JSX.Element {
   const link = generatePath(AppRoute.UserPage, {
     id: `${user?.id}`,
   });
+
   return (
     selectedUser ?
     <div className="header-user">
       <Link className="header-user__link" to={link}>
         {selectedUser.name}
-        <img src={selectedUser.avatar} width={40} height={40} alt="" />
+        <img src={selectedUser.avatar} width={40} height={40} alt={selectedUser.name} />
       </Link>
-    </div> : <></>
+    </div> : <LoadingSpinner size={"20"}/>
   );
 }

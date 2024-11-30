@@ -15,6 +15,7 @@ export function HomePage(): JSX.Element {
 
   const auth = authorizationStatus === AuthorizationStatus.Auth;
 
+
   return (
     <Layout>
       <Helmet>

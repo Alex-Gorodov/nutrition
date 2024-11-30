@@ -69,7 +69,6 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
                 <UploadIcon />
               </button>
             }
-            <p className="upload__description">PNG, GIF, WEBP, MP4 or MP3. Max 1Gb.</p>
             <input {...getInputProps()} className="visually-hidden" name={name} onChange={handleChange} id={inputId} ref={fileInputRef}/>
             <ul>
               {uploadedFiles.map((file) => (
@@ -80,7 +79,7 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
             </ul>
             {
               !isMobile &&
-              <div className="upload__drop">
+              <div className="upload__drop form__input">
                 <p className="upload__description">Перетащи сюда изображение или кликни для загрузки.</p>
               </div>
             }
@@ -90,6 +89,7 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
                 <img src={fileUrl ? fileUrl : ''} alt="Uploaded file" width={60} height={60} className="upload__preview" />
               </div>
             ))}
+            <p className="upload__description">PNG, GIF, WEBP, JPG, JPEG. Max 1Gb.</p>
           </div>
         }
       </div>
