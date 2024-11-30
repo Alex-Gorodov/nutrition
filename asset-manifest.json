@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/nutrition/static/css/main.bf82258c.css",
-    "main.js": "/nutrition/static/js/main.e183d4c0.js",
+    "main.css": "/nutrition/static/css/main.17daa362.css",
+    "main.js": "/nutrition/static/js/main.95a1e385.js",
     "static/media/upload-icon.svg": "/nutrition/static/media/upload-icon.ebe207d3351196557cc989def0b4c71a.svg",
     "index.html": "/nutrition/index.html",
-    "main.bf82258c.css.map": "/nutrition/static/css/main.bf82258c.css.map",
-    "main.e183d4c0.js.map": "/nutrition/static/js/main.e183d4c0.js.map"
+    "main.17daa362.css.map": "/nutrition/static/css/main.17daa362.css.map",
+    "main.95a1e385.js.map": "/nutrition/static/js/main.95a1e385.js.map"
   },
   "entrypoints": [
-    "static/css/main.bf82258c.css",
-    "static/js/main.e183d4c0.js"
+    "static/css/main.17daa362.css",
+    "static/js/main.95a1e385.js"
   ]
 }
