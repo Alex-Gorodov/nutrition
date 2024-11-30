@@ -1,6 +1,18 @@
 .form
   @include flex-column
+  padding: 20px
+  gap: 20px
   &__fieldset
     @include flex-column
   &__item
     @include flex-column
+  &__buttons
+    display: grid
+    width: 100%
+    grid-template-columns: 1fr 1.5fr
+    gap: 20px
+    &--column
+      grid-template-columns: 1fr
+      gap: 0px
+      & p
+        text-align: center

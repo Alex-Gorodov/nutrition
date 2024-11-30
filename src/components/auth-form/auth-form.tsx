@@ -149,11 +149,9 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         throw new Error("Google account email not found");
       }
 
-      // Проверяем, есть ли пользователь с таким email в базе данных
       const existingUser = await checkIfUserExists(user.email);
 
       if (existingUser) {
-        // Выполняем вход с паролем, если пользователь найден
         try {
           const { user: existingFirebaseUser } = await signInWithEmailAndPassword(
             auth,
@@ -176,7 +174,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
           console.error("Error signing in with existing user:", authError);
         }
       } else {
-        // Создаем нового пользователя через Google
         const name = user.displayName || "Unknown";
         const avatar = user.photoURL || "";
         const token = await user.getIdToken();
@@ -205,9 +202,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
     }
   };
 
-
-
-
   return (
     <div className="form__wrapper">
       <form className={`form login__form ${className}`} onSubmit={handleLogin}>
@@ -220,6 +214,9 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
               className="form__item"
               htmlFor={`login-${fieldName}`}
             >
+              <span className="form__label form__label--sign-in">
+                {fieldName === "email" ? "E-mail:" : "Пароль:"}
+              </span>
               <input
                 className={`form__input ${field.error ? "input--error" : ""}`}
                 type={fieldName === "email" ? "email" : "password"}
@@ -229,9 +226,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
                 value={field.value}
                 onChange={handleFieldChange}
               />
-              <span className="form__label form__label--sign-in">
-                {fieldName === "email" ? "E-mail:" : "Пароль:"}
-              </span>
               {field.error && (
                 <span className="form__error">{field.errorValue}</span>
               )}
@@ -254,6 +248,8 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
           >
             Sign in with Google
           </button>
+        </div>
+        <div className="form__buttons form__buttons--column">
           <p>Еще нет аккаунта?</p>
           <button
             className="button"
