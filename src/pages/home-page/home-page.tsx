@@ -1,15 +1,17 @@
 import { Helmet } from "react-helmet-async";
 import { Layout } from "../../components/layout/layout";
-import { UserItem } from "../../components/user-item/user-item";
 import { FindMeal } from "../../components/find-meal/find-meal";
-import { MealAddingForm } from "../../components/meal-adding-form/meal-adding-form";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { AuthorizationStatus } from "../../const";
+import { AuthForm } from "../../components/auth-form/auth-form";
+import { RegisterForm } from "../../components/register-form/register-form";
 
 export function HomePage(): JSX.Element {
 
   const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const isLoginFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened)
+  const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
 
   const auth = authorizationStatus === AuthorizationStatus.Auth;
 
@@ -22,10 +24,14 @@ export function HomePage(): JSX.Element {
         auth
         &&
         <div>
-          <UserItem/>
           <FindMeal/>
-          <MealAddingForm/>
         </div>
+      }
+      {
+        isLoginFormOpened && <AuthForm/>
+      }
+      {
+        isRegistrationFormOpened && <RegisterForm/>
       }
     </Layout>
   );

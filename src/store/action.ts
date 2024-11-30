@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 import { Meal } from "../types/meal";
 import { User } from "../types/user";
-import { AuthorizationStatus, ErrorMessages, SuccessMessages } from "../const";
+import { AppRoute, AuthorizationStatus, ErrorMessages, SuccessMessages } from "../const";
 import { UserAuthData } from "../types/user-auth-data";
 
 // Data fetching
@@ -23,5 +23,8 @@ export const requireAuthorization = createAction<{authorizationStatus: Authoriza
 export const setUserInformation = createAction<{userInformation: UserAuthData}>('user/setUserInformation');
 export const setActiveUser = createAction<{activeUser: UserAuthData}>('data/setActiveUser');
 
-
+// Page
 export const setStatusMessage = createAction<{message: ErrorMessages | SuccessMessages | null}>('page/setStatusMessage');
+export const redirectToRoute = createAction<AppRoute>('page/redirectToRoute');
+export const setLoginFormOpened = createAction<{isOpened: boolean}>('page/setLoginFormOpened');
+export const setRegisterFormOpened = createAction<{isOpened: boolean}>('page/setRegisterFormOpened');

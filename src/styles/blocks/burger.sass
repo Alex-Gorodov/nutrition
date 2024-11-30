@@ -1,0 +1,28 @@
+.burger
+  @include flex-column
+  padding: 20px 0
+  border: none
+  background-color: transparent
+  &__line
+    @include burger-line
+    position: relative
+    transition: $hover-transition
+    &::before
+      @include burger-line
+      position: absolute
+      top: -8px
+      transition: $hover-transition
+      content: ''
+    &::after
+      @include burger-line
+      position: absolute
+      top: 8px
+      transition: $hover-transition
+      content: ''
+  &--opened
+    .burger__line
+      transform: translateX(-120px)
+      &::before
+        transform: translate(120px, 8px) rotate(45deg)
+      &::after
+        transform: translate(120px, -8px) rotate(-45deg)

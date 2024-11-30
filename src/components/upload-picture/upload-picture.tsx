@@ -81,7 +81,7 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
             {
               !isMobile &&
               <div className="upload__drop">
-                <p className="upload__description">Drop image here or click above to upload.</p>
+                <p className="upload__description">Перетащи сюда изображение или кликни для загрузки.</p>
               </div>
             }
             <input {...getInputProps} className="visually-hidden" name={name} onChange={handleChange}/>

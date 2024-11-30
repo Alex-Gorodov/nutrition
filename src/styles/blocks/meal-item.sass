@@ -1,0 +1,38 @@
+.meal-item
+  display: grid
+  grid-template-columns: 400px auto
+  gap: 40px
+  @media (max-width: $tablet)
+    grid-template-columns: 1fr
+  @media (min-width: $desktop)
+    grid-template-columns: 400px auto 400px
+  &__title
+    grid-column: 1 / -1
+  &__type
+    font-size: 24px
+    @media (max-width: $tablet)
+      display: block
+  &__picture
+    border-radius: 24px
+  &__alt-picture
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100%
+    height: 100%
+    max-height: 400px
+    margin: 0
+    border: 2px solid $black
+    border-radius: 24px
+    font-size: 24px
+    text-align: center
+    @media (max-width: $tablet)
+      padding: 40px 10px
+  &__recipe
+    display: flex
+    max-width: 1020px
+    flex-direction: column
+    gap: 20px
+    @media (min-width: $tablet)
+      grid-column: 1 / 3
+      grid-row: 3

@@ -8,6 +8,8 @@ import { store } from '../../store';
 import { AppRoute } from '../../const';
 import { HomePage } from '../../pages/home-page/home-page';
 import { PageNotFound } from '../../pages/page-not-found/page-not-found';
+import PrivateRoute from '../private-route/private-route';
+import { UserPage } from '../../pages/user-page/user-page';
 
 function App() {
   return (
@@ -16,7 +18,7 @@ function App() {
         <Provider store={store}>
           <Routes>
             <Route path={AppRoute.Root} element={<HomePage/>}/>
-            {/* <Route path={AppRoute.UserPage} element={<PrivateRoute element={<UserPage />} />}/> */}
+            <Route path={AppRoute.UserPage} element={<PrivateRoute element={<UserPage />} />}/>
             <Route path="*" element={<PageNotFound/>}/>
           </Routes>
         </Provider>

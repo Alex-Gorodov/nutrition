@@ -9,6 +9,10 @@ $light-blue: #85c1e9   // Light blue - for the background
 $white: #ffffff        // White - for primary text on colored buttons or backgrounds
 $gray: #a1a1a1         // Gray - for secondary text or hints
 
+$breakfast: #f4a261         // Breakfast - Soft orange, representing warmth and morning energy
+$lunch: #2a9d8f            // Lunch - Teal, symbolizing freshness and balance
+$dinner: #264653           // Dinner - Deep blue-green, reflecting calm and relaxation
+$snack: #e76f51            // Snack - Reddish-orange, for energy and quick bites
 
 $regular: 400
 $medium: 500
@@ -24,6 +28,9 @@ $desktop: 1280px
 $shop-grid: 875px
 $tablet: 768px
 $mobile: 490px
+
+$hover-transition: 0.3s
+$popup-transition: 0.6s
 
 @mixin inter-regular
   font-family: "Inter", $main-fonts
@@ -63,11 +70,17 @@ $mobile: 490px
   padding: 0
   cursor: pointer
 
+@mixin burger-line
+  display: block
+  width: 40px
+  height: 4px
+  background-color: $white
+  border-radius: 4px
+
 *,
 *::after,
 *::before
   box-sizing: border-box
-  user-select: none
 
 body
   margin: 0
@@ -108,7 +121,6 @@ body
   border: 2px solid $black
   border-radius: 4px
 
-
 .main
   position: relative
   display: flex
@@ -117,6 +129,7 @@ body
   transition: 0.3s
 
 .page-container
+  position: relative
   display: flex
   flex-direction: column
   min-height: 100vh

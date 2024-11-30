@@ -1,25 +1,17 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/root-reducer";
-import { useEffect, useState } from "react";
 import { User } from "../../types/user";
+import { userGreetings } from "../../utils/user-greetings";
 
-export function UserItem(): JSX.Element {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+type UserItemProps = {
+  user: User;
+}
 
-  const authUser = useSelector((state: RootState) => state.auth.userInfo);
-
-  const activeUser = useSelector((state: RootState) =>
-    state.data.users.find((user) => user.id === authUser?.id)
-  );
-
-  useEffect(() => {
-    activeUser && setSelectedUser(activeUser);
-  }, [activeUser]);
-
+export function UserItem({user}: UserItemProps): JSX.Element {
   return (
-    <div>
-      {selectedUser ? `Hi, ${selectedUser.name}` : 'loading user...'}
-      {selectedUser && <img src={selectedUser.avatar} width={40} height={40} alt="" />}
+    <div className="user">
+      <div className="user__avatar-wrapper">
+        <img className="user__avatar" src={user.avatar} alt={user.name} width={120} height={120}/>
+      </div>
+      <p className="user__name">{userGreetings(user.name)}</p>
     </div>
-  );
+  )
 }

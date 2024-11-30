@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { addMealToDatabase } from "../../store/api-actions";
-import { MealType } from "../../const";
+import { MealType, MealTypeTranslations } from "../../const";
 import { addNewMeal } from "../../store/action";
 import { Meal } from "../../types/meal";
 import { Upload } from "../upload-picture/upload-picture";
@@ -137,14 +137,15 @@ export function MealAddingForm(): JSX.Element {
             value={data.type}
             onChange={handleSelectChange}
           >
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
+            {Object.values(MealType).map((type) => (
+              <option key={type} value={type}>
+                {MealTypeTranslations[type]}
+              </option>
+            ))}
           </select>
         </label>
         <label className="form__item" htmlFor="meal-name">
-          <span>Enter meal name: </span>
+          <span>Название блюда: </span>
           <input
             type="text"
             id="meal-name"
@@ -155,7 +156,7 @@ export function MealAddingForm(): JSX.Element {
           />
         </label>
         <label className="form__item" htmlFor="meal-ingredients">
-          <span>Enter meal ingredients: </span>
+          <span>Ингредиенты: </span>
           <input
             type="text"
             id="meal-ingredients"
@@ -166,7 +167,7 @@ export function MealAddingForm(): JSX.Element {
           />
         </label>
         <label className="form__item" htmlFor="meal-recipe">
-          <span>Enter recipe steps (description): </span>
+          <span>Опиши рецепт (пошагово): </span>
           <textarea
             id="meal-recipe"
             name="recipe"
@@ -176,7 +177,7 @@ export function MealAddingForm(): JSX.Element {
           />
         </label>
         <label className="form__item" htmlFor="meal-calories">
-          <span>Calories: </span>
+          <span>Калории: </span>
           <input
             type="number"
             id="meal-calories"
@@ -187,7 +188,7 @@ export function MealAddingForm(): JSX.Element {
           />
         </label>
         <label className="form__item" htmlFor="meal-proteins">
-          <span>Proteins: </span>
+          <span>Белки: </span>
           <input
             type="number"
             id="meal-proteins"
@@ -198,7 +199,7 @@ export function MealAddingForm(): JSX.Element {
           />
         </label>
         <label className="form__item" htmlFor="meal-fats">
-          <span>Fats: </span>
+          <span>Жиры: </span>
           <input
             type="number"
             id="meal-fats"
@@ -209,7 +210,7 @@ export function MealAddingForm(): JSX.Element {
           />
         </label>
         <label className="form__item" htmlFor="meal-carbs">
-          <span>Carbs: </span>
+          <span>Углеводы: </span>
           <input
             type="number"
             id="meal-carbs"
@@ -224,7 +225,7 @@ export function MealAddingForm(): JSX.Element {
         </label>
       </fieldset>
       <button className="button" type="submit">
-        Add recipe!
+        Добавить рецепт!
       </button>
     </form>
   );

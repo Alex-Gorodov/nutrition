@@ -1,6 +1,6 @@
 export enum AppRoute {
   Root = "/nutrition",
-  UserPage = "nutrition/user/:id"
+  UserPage = "/nutrition/user/:id"
 }
 
 export enum APIRoute {
@@ -16,8 +16,16 @@ export enum MealType {
   Snack = "Snack"
 }
 
+export const MealTypeTranslations: Record<MealType, string> = {
+  [MealType.Breakfast]: "Завтрак",
+  [MealType.Lunch]: "Обед",
+  [MealType.Dinner]: "Ужин",
+  [MealType.Snack]: "Перекус"
+};
+
+
 export enum ScreenSizes {
-  Mobile = 430,
+  Mobile = 490,
   MobileOnly = 768,
   Tablet = 1024,
   Desktop = 1440,
@@ -33,7 +41,7 @@ export enum ErrorMessages {
   RegisterEmptyFields = 'Fill the required fields, please.',
   RegisterPasswordNotMatch = 'Passwords do not match.',
   EmailError = 'Please enter correct e-mail.',
-  LikeError = "Please sign in or register to like this post."
+  HasAccountError = "This email is already registered. Please login with your mail + password pair or check your e-mail correctness.",
 };
 
 export enum SuccessMessages {

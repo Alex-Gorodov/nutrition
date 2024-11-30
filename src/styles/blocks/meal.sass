@@ -1,0 +1,45 @@
+.meal
+  padding: 20px 0
+  &__button
+    border-radius: 8px
+    border: none
+    box-shadow: 8px 8px 4px 4px black
+    text-transform: uppercase
+    color: $white
+    font-size: 2rem
+    cursor: pointer
+    transition: $hover-transition
+    &--breakfast
+      background-color: $breakfast
+    &--lunch
+      background-color: $lunch
+    &--dinner
+      background-color: $dinner
+    &--snack
+      background-color: $snack
+    &--accept
+      padding: 20px 80px
+      background-color: $green
+      font-size: 1.4rem
+    &--update
+      padding: 20px 40px
+      background-color: darken($yellow, 10%)
+      font-size: 1.4rem
+    &--clear
+      padding: 20px 40px
+      background-color: $light-red
+      font-size: 1.4rem
+    &:hover
+      box-shadow: 4px 4px 2px 2px black
+    &:active
+      box-shadow: none
+  &__buttons
+    display: grid
+    grid-template-columns: 2fr 1fr 1fr
+    grid-column: 1 / -1
+    gap: 60px
+    @media (max-width: $tablet)
+      grid-template-columns: 1fr
+    @media (min-width: $desktop)
+      grid-column: 3 / 4
+      grid-template-columns: 1fr

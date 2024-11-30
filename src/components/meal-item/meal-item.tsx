@@ -1,53 +1,91 @@
+import { useDispatch, useSelector } from "react-redux";
+import { MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
+import { formatRecipe } from "../../utils/format-recipe";
+import { RootState } from "../../store/root-reducer";
+import { setActiveMeal } from "../../store/action";
+import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 
 type MealItemProps = {
   meal: Meal;
-}
+};
 
-export function MealItem({meal}: MealItemProps): JSX.Element {
+export function MealItem({ meal }: MealItemProps): JSX.Element {
+  const dispatch = useDispatch();
+  const formattedRecipe = meal.recipe ? formatRecipe(meal.recipe) : '';
+  const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
+
+  const handleSetActiveMeal = useSetActiveMeal();
+
 
   return (
-    <div>
-      <h2 className="title title--2">
-        {meal.name}
+    <div className="meal__item meal-item">
+      <h2 className="title title--2 meal-item__title">
+        {meal.name} <span className="meal-item__type">(на {MealTypeTranslations[meal.type].toLowerCase()})</span>
       </h2>
-      {
-        meal.picture
-        ?
-        <img src={meal.picture} alt={meal.name} width={400} height={400}/>
-        : ''
-      }
-      <div>
-        <p>
-          per 100 g:
-        </p>
-        <p>
-          <span>cal: </span>
-          <span>{meal.calories}g</span>
-        </p>
-        <p>
-          <span>proteins: </span>
-          <span>{meal.proteins}g</span>
-        </p>
-        <p>
-          <span>fats: </span>
-          <span>{meal.fats}g</span>
-        </p>
-        <p>
-          <span>carbs: </span>
-          <span>{meal.carbs}g</span>
-        </p>
-        <ul>
-          {
-            meal.ingredients.map((i) => {
-              return (
-                <li key={`${meal.name}-ingredient-${i}`}>{i}</li>
-              )
-            })
-          }
-        </ul>
-        <p>{meal.recipe ?? ''}</p>
+      <div className="meal-item__wrapper">
+        {meal.picture ? (
+          <img
+            className="meal-item__picture"
+            src={meal.picture}
+            alt={meal.name}
+            width={400}
+            height={400}
+          />
+        ) : (
+          <p className="meal-item__alt-picture">
+            Тут могла бы быть фотография блюда :)
+          </p>
+        )}
       </div>
+      <div className="meal-item__info">
+        <h3 className="title title--3">Пищевая ценность на 100 г:</h3>
+        <ul>
+          <li>
+            <i>Ккал: </i>
+            <b>{meal.calories}г</b>
+          </li>
+          <li>
+            <i>Белки: </i>
+            <b>{meal.proteins}г</b>
+          </li>
+          <li>
+            <i>Жиры: </i>
+            <b>{meal.fats}г</b>
+          </li>
+          <li>
+            <i>Углеводы: </i>
+            <b>{meal.carbs}г</b>
+          </li>
+        </ul>
+        <h3 className="title title--3">Ингредиенты:</h3>
+        <ol>
+          {meal.ingredients.map((i) => (
+            <li key={`${meal.name}-ingredient-${i}`}>{i}</li>
+          ))}
+        </ol>
+      </div>
+      {
+        meal.recipe &&
+        <p className="meal-item__recipe">
+          <h3 className="title title--3">Рецепт:</h3>
+          <p>
+            {formattedRecipe.split("\n").map((line, index) => (
+              <span key={`${meal.name}-recipe-line-${index}`}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </p>
+        </p>
+      }
+      {activeMeal && (
+        <div className="meal__buttons">
+          <button className="meal__button meal__button--accept">Буду кушать!</button>
+          <button className="meal__button meal__button--update" onClick={() => handleSetActiveMeal(activeMeal.type)}>Хочу другое!</button>
+          <button className="meal__button meal__button--clear" onClick={() => dispatch(setActiveMeal({ meal: null }))}>Очистить</button>
+        </div>
+      )}
     </div>
-  )
+  );
 }

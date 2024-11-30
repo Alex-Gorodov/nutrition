@@ -2,11 +2,14 @@ import { ChangeEvent, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/root-reducer"
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { ErrorMessages } from "../../const";
-import { setStatusMessage, setUserInformation, setUploadedPath, setActiveUser } from "../../store/action";
+import { AppRoute, ErrorMessages } from "../../const";
+import { setStatusMessage, setUserInformation, setUploadedPath, setActiveUser, redirectToRoute, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
 import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { setUser } from "../../store/slices/user-slice";
 import { Upload } from "../upload-picture/upload-picture";
+import { generatePath } from "react-router-dom";
+import { useGetUser } from "../../hooks/useGetUser";
+import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
 export function RegisterForm(): JSX.Element {
   const usersAmount = useSelector((state: RootState) => state.data.users.length);
@@ -21,7 +24,6 @@ export function RegisterForm(): JSX.Element {
     id: usersAmount,
     name: "",
     email: "",
-    // phone: "",
     isAdmin: false,
     liked: [],
     avatar: "",
@@ -46,6 +48,17 @@ export function RegisterForm(): JSX.Element {
       }));
     }
   };
+
+  const closeForms = () => {
+    dispatch(setLoginFormOpened({ isOpened: false }));
+    dispatch(setRegisterFormOpened({ isOpened: false }));
+  }
+
+  const user = useGetUser();
+
+  const link = generatePath(AppRoute.UserPage, {
+    id: `${user?.id}`,
+  });
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,8 +87,6 @@ export function RegisterForm(): JSX.Element {
         id: user.uid,
         name: data.name,
         email: data.email,
-        // phone: data.phone,
-        // password: data.password,
         isAdmin: false,
         liked: [],
         avatar: data.avatar,
@@ -106,13 +117,15 @@ export function RegisterForm(): JSX.Element {
       dispatch(setActiveUser({activeUser: userInfo}));
       loginAction(authData);
       setData(defaultData);
-
+      dispatch(redirectToRoute(link as AppRoute))
     } catch (error) {
       console.error('Error registering user:', error);
-      alert('Error registering user: ' + error);
+      dispatch(setStatusMessage({message: ErrorMessages.HasAccountError}))
     } finally {
+      closeForms();
       setIsAuthing(false);
     }
+
   };
 
   const handleFileUpload = (fileUrl: string) => {
@@ -124,35 +137,33 @@ export function RegisterForm(): JSX.Element {
 
   return (
     <form className="form" action="" method="post" onSubmit={handleRegister}>
-      <h1 className="title title--2">Registration</h1>
-      <p>* - required fields</p>
+      <h1 className="title title--2">Регистрация</h1>
+      <p>* - обязательные поля</p>
       <fieldset>
         <label className="form__item" htmlFor="register-name">
-          <span>Your name or nickname*: </span>
+          <span>Имя или ник*: </span>
           <input type="text" name="name" id="register-name" value={data.name} onChange={handleFieldChange} placeholder="Peter" required/>
         </label>
         <label className="form__item" htmlFor="register-email">
-          <span>Your email*: </span>
+          <span>Твой e-mail*: </span>
           <input type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" autoComplete="username" required/>
         </label>
-        {/* <label className="form__item" htmlFor="register-name">
-          <span>Your phone: </span>
-          <input type="phone" name="phone" id="register-phone" value={data.phone} onChange={handleFieldChange} placeholder="0541234567"/>
-        </label> */}
         <label className="form__item" htmlFor="register-avatar">
-          <span>Choose avatar: </span>
+          <span>Загрузи аватар: </span>
           <Upload onFileUpload={handleFileUpload} inputId="register-avatar" name="avatar"/>
         </label>
         <label className="form__item" htmlFor="register-password">
-          <span>Enter password*: </span>
+          <span>Выбери пароль*: </span>
           <input type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} placeholder="password" autoComplete="new-password" required/>
         </label>
         <label className="form__item" htmlFor="register-confirm-password">
-          <span>Confirm password*: </span>
+          <span>Подтверди пароль*: </span>
           <input type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} placeholder="confirm password" autoComplete="new-password" required/>
         </label>
       </fieldset>
-      <button className="button" type="submit">Register!</button>
+      <button className="button" type="submit">
+        { isAuthing ? <LoadingSpinner size={"20"}/> : 'Регистрация!'}
+      </button>
     </form>
   )
 }

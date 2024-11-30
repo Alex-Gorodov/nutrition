@@ -1,4 +1,4 @@
-import { AuthorizationStatus } from "../const";
+import { AuthorizationStatus, ErrorMessages, SuccessMessages } from "../const";
 import { store } from "../store";
 import { Meal } from "./meal";
 import { User } from "./user";
@@ -22,3 +22,9 @@ export type AuthState = {
   authorizationStatus: AuthorizationStatus;
   userInfo: UserAuthData | null;
 };
+
+export type PageState = {
+  isLoginFormOpened: boolean;
+  isRegisterFormOpened: boolean;
+  statusMessage: SuccessMessages | ErrorMessages | null;
+}

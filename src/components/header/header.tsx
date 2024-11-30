@@ -1,42 +1,94 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useIsMobile } from "../../hooks/useIsMobile";
+import { useIsMobileOnly } from "../../hooks/useIsMobile";
 import { RootState } from "../../store/root-reducer";
-import { AuthorizationStatus } from "../../const";
+import { AppRoute, AuthorizationStatus } from "../../const";
 import { logoutAction } from "../../store/api-actions";
 import { AppDispatch } from "../../types/state";
-import { useState } from "react";
-import { AuthForm } from "../auth-form/auth-form";
+import { setActiveMeal, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
+import { useState } from "react"
+import cn from 'classnames';
+import { Link } from "react-router-dom";
+import { HeaderUserItem } from "../header-user-item/header-user-item";
 
 export function Header(): JSX.Element {
-  const isMobile = useIsMobile();
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
   const dispatch = useDispatch<AppDispatch>();
 
-  const [isLoginFormOpened, setLoginForm] = useState(false);
+  const isMobile = useIsMobileOnly();
+  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const isLoginFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened)
+  const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
+
+  const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
 
   const handleLogout = () => {
     dispatch(logoutAction());
   };
 
   const handleOpenLoginForm = () => {
-    setLoginForm(!isLoginFormOpened)
+    dispatch(setLoginFormOpened({isOpened: !isLoginFormOpened}));
+    isRegistrationFormOpened && dispatch(setRegisterFormOpened({isOpened: false}));
+  }
+
+  const [isMenuOpened, setMenuOpened] = useState(false);
+
+  const burgerClassName = cn("burger", {
+    "burger--opened": isMenuOpened,
+  });
+
+  const listClassName = cn("header-nav__list", {
+    "header-nav__list-mobile": isMobile,
+    "header-nav__list-mobile--opened": isMobile && isMenuOpened,
+  })
+
+  const clearScreen = () => {
+    activeMeal && dispatch(setActiveMeal({meal: null}));
   }
 
   return (
     <header className="header">
       {
-        isMobile ? <button>menu</button> : <button>desk</button>
+        isMobile
+        &&
+        <ul className={listClassName}>
+          <li className="header-nav__item">
+            <Link className="header-nav__link" to={AppRoute.Root} onClick={() => clearScreen()}>Домой</Link>
+          </li>
+        </ul>
       }
-      {
-        authorizationStatus === AuthorizationStatus.Auth
-        ?
-        <button onClick={handleLogout}>Logout</button>
-        :
-        <button onClick={handleOpenLoginForm}>Login</button>
-      }
-      {
-        isLoginFormOpened && <AuthForm/>
-      }
+      <div className="header__container">
+        {
+          isMobile
+          &&
+          <button className={`header-nav__toggler ${burgerClassName}`} type="button" onClick={() => setMenuOpened(!isMenuOpened)}>
+            <span className="visually-hidden">
+              {
+                isMenuOpened ? 'close menu' : 'open menu'
+              }
+            </span>
+            <span className="burger__line"></span>
+          </button>
+        }
+
+        {
+          !isMobile
+          &&
+          <ul className={listClassName}>
+            <li className="header-nav__item">
+              <Link className="header-nav__link" to={AppRoute.Root} onClick={() => clearScreen()}>Домой</Link>
+            </li>
+          </ul>
+        }
+        {
+          authorizationStatus === AuthorizationStatus.Auth && <HeaderUserItem/>
+        }
+        {
+          authorizationStatus === AuthorizationStatus.Auth
+          ?
+          <button className="button" type="button" onClick={handleLogout}>Выход</button>
+          :
+          <button className="button" type="button" onClick={handleOpenLoginForm}>Войти</button>
+        }
+      </div>
     </header>
   );
 }
