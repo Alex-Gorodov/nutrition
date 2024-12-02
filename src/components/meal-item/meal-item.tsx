@@ -5,6 +5,8 @@ import { formatRecipe } from "../../utils/format-recipe";
 import { RootState } from "../../store/root-reducer";
 import { setActiveMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
+import { addMealToUserSchedule } from "../../store/api-actions";
+import { useState } from "react";
 
 type MealItemProps = {
   meal: Meal;
@@ -14,9 +16,16 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
   const dispatch = useDispatch();
   const formattedRecipe = meal.recipe ? formatRecipe(meal.recipe) : '';
   const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
+  const activeUser = useSelector((state: RootState) => state.user);
+
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleSetActiveMeal = useSetActiveMeal();
 
+  const handleAddToSchedule = () => {
+    activeMeal && addMealToUserSchedule(activeUser, activeMeal, dispatch);
+    activeMeal && setIsAdded(true);
+  }
 
   return (
     <div className="meal__item meal-item">
@@ -58,7 +67,7 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
             <b>{meal.carbs}г</b>
           </li>
         </ul>
-        <h3 className="title title--3">Ингредиенты:</h3>
+        <span className="title title--3">Ингредиенты:</span>
         <ol>
           {meal.ingredients.map((i) => (
             <li key={`${meal.name}-ingredient-${i}`}>{i}</li>
@@ -67,8 +76,8 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
       </div>
       {
         meal.recipe &&
-        <p className="meal-item__recipe">
-          <h3 className="title title--3">Рецепт:</h3>
+        <div className="meal-item__recipe">
+          <span className="title title--3">Рецепт:</span>
           <p>
             {formattedRecipe.split("\n").map((line, index) => (
               <span key={`${meal.name}-recipe-line-${index}`}>
@@ -77,11 +86,11 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
               </span>
             ))}
           </p>
-        </p>
+        </div>
       }
       {activeMeal && (
         <div className="meal__buttons">
-          <button className="meal__button meal__button--accept">Буду кушать!</button>
+          <button className="meal__button meal__button--accept" onClick={() => handleAddToSchedule()}>{isAdded ? 'Буду кушать!' : 'Приятного аппетита!'}</button>
           <button className="meal__button meal__button--update" onClick={() => handleSetActiveMeal(activeMeal.type)}>Хочу другое!</button>
           <button className="meal__button meal__button--clear" onClick={() => dispatch(setActiveMeal({ meal: null }))}>Очистить</button>
         </div>

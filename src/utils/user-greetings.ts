@@ -6,7 +6,7 @@ export function userGreetings(name: string): string {
     greeting = `Доброе утро, ${name}!`;
   } else if (localTime >= 11 && localTime < 17) {
     greeting = `Добрый день, ${name}!`;
-  } else if (localTime >= 17 && localTime < 21) {
+  } else if (localTime >= 17 && localTime < 22) {
     greeting = `Добрый вечер, ${name}!`;
   } else {
     greeting = `Ночной жор, ${name}?`;

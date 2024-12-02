@@ -12,13 +12,15 @@ import {
   requireAuthorization,
   setLoginFormOpened,
   setRegisterFormOpened,
+  setRegistrationStep,
   setStatusMessage,
 } from "../../store/action";
 import { RootState } from "../../store/root-reducer";
-import { AuthorizationStatus, ErrorMessages } from "../../const";
+import { ActivityLevel, AuthorizationStatus, ErrorMessages, Genders, NutritionTarget, RegistrationSteps } from "../../const";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { addNewUserToDatabase } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
+import { checkAuthMethod } from "../../utils/check-auth-method";
 
 type FormField = {
   value: string;
@@ -37,14 +39,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const [isAuthing, setIsAuthing] = useState(false);
 
-  const users = useSelector((state: RootState) => state.data.users);
-  const isLoginFormOpened = useSelector(
-    (state: RootState) => state.page.isLoginFormOpened
-  );
-  const isRegistrationFormOpened = useSelector(
-    (state: RootState) => state.page.isRegisterFormOpened
-  );
-
   const initialData: FormData = {
     email: {
       value: "",
@@ -61,6 +55,8 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
   };
 
   const [data, setData] = useState<FormData>(initialData);
+
+  const users = useSelector((state: RootState) => state.data.users);
 
   const handleFieldChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = target;
@@ -91,6 +87,8 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
     const auth = getAuth();
     const { email, password } = data;
+
+    checkAuthMethod();
 
     if (email.error || password.error) {
       dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
@@ -159,9 +157,16 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
             name,
             email: user.email!,
             isAdmin: false,
-            liked: [],
+            mealSchedule: [],
+            trainingSessions: [],
             avatar: avatar,
             token,
+            gender: Genders.Male,
+            age: 0,
+            weight: 0,
+            target: NutritionTarget.WeightMaintenance,
+            height: 0,
+            activityLevel: ActivityLevel.Sedentary
           },
           dispatch
         );
@@ -182,6 +187,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
   const handleOpenRegister = () => {
     dispatch(setLoginFormOpened({ isOpened: false }));
     dispatch(setRegisterFormOpened({ isOpened: true }));
+    dispatch(setRegistrationStep({step: RegistrationSteps.AccountSetup}))
   };
 
   return (

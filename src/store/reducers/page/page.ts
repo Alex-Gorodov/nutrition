@@ -1,11 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { PageState } from "../../../types/state";
-import { setLoginFormOpened, setRegisterFormOpened, setStatusMessage } from "../../action";
+import { setActiveTraining, setLoginFormOpened, setRegisterFormOpened, setStatusMessage } from "../../action";
 
 const initialState: PageState = {
   isLoginFormOpened: false,
   isRegisterFormOpened: false,
   statusMessage: null,
+  activeTraining: null,
 }
 
 export const PageReducer = createReducer(initialState, (builder) => {
@@ -18,5 +19,8 @@ export const PageReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setStatusMessage, (state, action) => {
       state.statusMessage = action.payload.message;
+    })
+    .addCase(setActiveTraining, (state, action) => {
+      state.activeTraining = action.payload.training;
     })
 })

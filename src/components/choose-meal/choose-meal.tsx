@@ -5,18 +5,24 @@ import { MealItem } from "../meal-item/meal-item";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
-export function FindMeal(): JSX.Element {
+export function ChooseMeal(): JSX.Element {
   const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
   const isMealsLoading = useSelector((state: RootState) => state.data.isMealsDataLoading);
 
   const handleSetActiveMeal = useSetActiveMeal();
 
   return (
-    isMealsLoading ? <LoadingSpinner size={"80"}/> :
+    isMealsLoading
+    ?
+    <div className="loading-wrapper">
+      <LoadingSpinner size={"80"}/>
+      <p>Загружаем блюда</p>
+    </div>
+    :
     <section className="meals">
       <div className="meal">
         {activeMeal ? (
-          <MealItem meal={activeMeal} />
+          <MealItem meal={activeMeal}/>
         ) : (
           <h1 className="title title--secondary">Выберите тип приема пищи</h1>
         )}

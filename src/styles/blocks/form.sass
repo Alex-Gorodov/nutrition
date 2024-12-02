@@ -14,6 +14,14 @@
     border-radius: 8px
     border: 2px solid $black
     background-color: $white
+    &[type='number']
+      &::-webkit-inner-spin-button
+        display: none
+    &--select
+      max-height: unset
+      padding: 12px
+      -webkit-appearance: none
+      -moz-appearance: none
   &__buttons
     display: grid
     width: 100%

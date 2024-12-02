@@ -1,3 +1,4 @@
+import { ActivityLevel, Genders, NutritionTarget, TrainingSession } from "../const";
 import { Meal } from "./meal";
 
 export type User = {
@@ -5,13 +6,14 @@ export type User = {
   name: string,
   email: string,
   token: string,
-  // phone?: string,
-  // password: string,
   isAdmin: boolean,
-  liked: Meal[],
+  mealSchedule: [Meal, Date][],
+  trainingSessions: TrainingSession[],
+  activityLevel: ActivityLevel,
   avatar: string,
+  gender: Genders,
+  age: number,
+  weight: number,
+  height: number,
+  target: NutritionTarget,
 };
-
-// export type RegisterUser = User & {
-//   confirmPassword: string;
-// }

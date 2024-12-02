@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { Layout } from "../../components/layout/layout";
-import { FindMeal } from "../../components/find-meal/find-meal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { AuthorizationStatus } from "../../const";
 import { AuthForm } from "../../components/auth-form/auth-form";
 import { RegisterForm } from "../../components/register-form/register-form";
+import { ChooseMeal } from "../../components/choose-meal/choose-meal";
+import { ChooseTraining } from "../../components/choose-training/choose-training";
 
 export function HomePage(): JSX.Element {
 
@@ -24,9 +25,10 @@ export function HomePage(): JSX.Element {
       {
         auth
         &&
-        <div>
-          <FindMeal/>
-        </div>
+        <>
+          <ChooseMeal/>
+          <ChooseTraining/>
+        </>
       }
       {
         isLoginFormOpened && <AuthForm/>

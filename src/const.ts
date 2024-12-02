@@ -23,6 +23,90 @@ export const MealTypeTranslations: Record<MealType, string> = {
   [MealType.Snack]: "Перекус"
 };
 
+export enum TrainingType {
+  Walking = "Walking",
+  Running = "Running",
+  Cardio = "Cardio",
+  Gym = "Gym",
+  Swimming = "Swimming",
+}
+
+export type TrainingSession = {
+  activity: string;
+  date: Date;
+  duration: number;
+  caloriesBurned: number;
+};
+
+export enum BasicTrainingCaloriesPerHour {
+  Walking = 250,
+  Running = 600,
+  Cardio = 500,
+  Gym = 400,
+  Swimming = 700
+}
+
+export const MET_VALUES = {
+  Walking: {
+    slow: { speed: 3.2, met: 2.0 },
+    moderate: { speed: 5.0, met: 3.5 },
+    fast: { speed: 6.4, met: 5.0 },
+  },
+  Running: {
+    slow: { speed: 8.0, met: 8.3 },
+    moderate: { speed: 10.0, met: 9.8 },
+    fast: { speed: 12.0, met: 11.5 },
+  },
+  Swimming: {
+    low: { intensity: "low", met: 6.0 },
+    moderate: { intensity: "moderate", met: 8.0 },
+    high: { intensity: "high", met: 10.0 },
+  },
+} as const;
+
+export type METActivity = keyof typeof MET_VALUES;
+export type METIntensity = "slow" | "moderate" | "fast" | "low" | "high";
+
+export const TrainingTypeTranslations: Record<TrainingType, string> = {
+  [TrainingType.Walking]: "Ходьба",
+  [TrainingType.Running]: "Бег",
+  [TrainingType.Cardio]: "Кардио",
+  [TrainingType.Gym]: "Спортзал",
+  [TrainingType.Swimming]: "Плавание"
+}
+
+export enum ActivityLevel {
+  Sedentary = 1.2,
+  LightlyActive = 1.375,
+  ModeratelyActive = 1.55,
+  VeryActive = 1.725,
+  ExtraActive = 1.9,
+}
+
+export const ActivityLevelTranslations: Record<ActivityLevel, string> = {
+  [ActivityLevel.Sedentary]: 'Малая подвижность',
+  [ActivityLevel.LightlyActive]: 'Низкая активность',
+  [ActivityLevel.ModeratelyActive]: 'Умеренная активность',
+  [ActivityLevel.VeryActive]: 'Высокая активность',
+  [ActivityLevel.ExtraActive]: 'Очень высокая активность',
+}
+
+export enum Genders {
+  Male = 'мужской',
+  Female = 'женский',
+}
+
+export enum NutritionTarget {
+  WeightMaintenance = 'Поддержание веса',
+  WeightLoss = 'Похудение',
+  MuscleGain = 'Набор массы',
+}
+
+export enum RegistrationSteps {
+  None = 'None',
+  AccountSetup = "Настройка аккаунта",
+  HealthGoals = "Данные о здоровье",
+}
 
 export enum ScreenSizes {
   Mobile = 490,

@@ -1,4 +1,4 @@
-import { AuthorizationStatus, ErrorMessages, SuccessMessages } from "../const";
+import { AuthorizationStatus, ErrorMessages, RegistrationSteps, SuccessMessages, TrainingType } from "../const";
 import { store } from "../store";
 import { Meal } from "./meal";
 import { User } from "./user";
@@ -16,6 +16,7 @@ export type DataState = {
   users: User[];
   activeUser: User | null;
   uploadedPath: string | null;
+  registrationStep: RegistrationSteps;
 }
 
 export type AuthState = {
@@ -27,4 +28,5 @@ export type PageState = {
   isLoginFormOpened: boolean;
   isRegisterFormOpened: boolean;
   statusMessage: SuccessMessages | ErrorMessages | null;
+  activeTraining: TrainingType | null;
 }
