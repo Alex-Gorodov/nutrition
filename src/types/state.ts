@@ -27,6 +27,8 @@ export type AuthState = {
 export type PageState = {
   isLoginFormOpened: boolean;
   isRegisterFormOpened: boolean;
+  isNewMealFormOpened: boolean;
+  isTrainingFormOpened: boolean;
   statusMessage: SuccessMessages | ErrorMessages | null;
   activeTraining: TrainingType | null;
 }

@@ -3,14 +3,20 @@ import { RootState } from "../../store/root-reducer";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { addMealToDatabase } from "../../store/api-actions";
 import { MealType, MealTypeTranslations } from "../../const";
-import { addNewMeal } from "../../store/action";
+import { addNewMeal, setNewMealFormOpened } from "../../store/action";
 import { Meal } from "../../types/meal";
 import { Upload } from "../upload-picture/upload-picture";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 export function MealAddingForm(): JSX.Element {
   const dispatch = useDispatch();
   const meals = useSelector((state: RootState) => state.data.meals);
+  const isFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const mealsAmount = meals.length.toString();
+
+  const formRef = useOutsideClick(() => {
+    dispatch(setNewMealFormOpened({ isOpened: false }));
+  }) as React.RefObject<HTMLFormElement>;
 
   const defaultData: Meal = {
     id: 'breakfast' + mealsAmount,
@@ -126,12 +132,14 @@ export function MealAddingForm(): JSX.Element {
   };
 
   return (
-    <form className="form" method="post" action="#" onSubmit={handleFormSubmit}>
-      <h1 className="title title--2">Add new meal</h1>
+    <form className="form" method="post" action="#" onSubmit={handleFormSubmit} ref={formRef}>
+      <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}>x</button>
+      <h1 className="title title--2 form__title">Добавление нового блюда</h1>
       <fieldset className="form__fieldset">
         <label className="form__item" htmlFor="meal-type">
-          <span>Choose meal type: </span>
+          <span>Выберите прием пищи: </span>
           <select
+            className="form__input form__input--select"
             name="type"
             id="meal-type"
             value={data.type}
@@ -147,38 +155,43 @@ export function MealAddingForm(): JSX.Element {
         <label className="form__item" htmlFor="meal-name">
           <span>Название блюда: </span>
           <input
+            className="form__input"
             type="text"
             id="meal-name"
             name="name"
             value={data.name}
             onChange={handleFieldChange}
-            placeholder="Chicken breast"
+            placeholder="Запеченая куриная грудка"
           />
         </label>
-        <label className="form__item" htmlFor="meal-ingredients">
+        <label className="form__item form__item--wild-grid" htmlFor="meal-ingredients">
           <span>Ингредиенты: </span>
           <input
+            className="form__input"
             type="text"
             id="meal-ingredients"
             name="ingredients"
             value={data.ingredients.join(", ")} // Преобразуем массив в строку для отображения
             onChange={handleFieldChange}
-            placeholder="Chicken breast, onion, garlic, spices"
+            placeholder="Куриная грудка, лук, чеснок, специи..."
           />
         </label>
-        <label className="form__item" htmlFor="meal-recipe">
+        <label className="form__item form__item--wild-grid" htmlFor="meal-recipe">
           <span>Опиши рецепт (пошагово): </span>
           <textarea
+            className="form__input"
             id="meal-recipe"
             name="recipe"
             value={data.recipe}
             onChange={handleTextAreaChange}
-            placeholder="Recipe..."
+            rows={3}
+            placeholder="Рецепт..."
           />
         </label>
         <label className="form__item" htmlFor="meal-calories">
           <span>Калории: </span>
           <input
+            className="form__input"
             type="number"
             id="meal-calories"
             name="calories"
@@ -190,6 +203,7 @@ export function MealAddingForm(): JSX.Element {
         <label className="form__item" htmlFor="meal-proteins">
           <span>Белки: </span>
           <input
+            className="form__input"
             type="number"
             id="meal-proteins"
             name="proteins"
@@ -201,6 +215,7 @@ export function MealAddingForm(): JSX.Element {
         <label className="form__item" htmlFor="meal-fats">
           <span>Жиры: </span>
           <input
+            className="form__input"
             type="number"
             id="meal-fats"
             name="fats"
@@ -212,6 +227,7 @@ export function MealAddingForm(): JSX.Element {
         <label className="form__item" htmlFor="meal-carbs">
           <span>Углеводы: </span>
           <input
+            className="form__input"
             type="number"
             id="meal-carbs"
             name="carbs"
@@ -220,11 +236,11 @@ export function MealAddingForm(): JSX.Element {
             min={0}
           />
         </label>
-        <label className="form__item" htmlFor="meal-picture">
+        <label className="form__item form__item--wild-grid" htmlFor="meal-picture">
           <Upload onFileUpload={handleFileUpload} inputId="meal-picture" name="picture" />
         </label>
       </fieldset>
-      <button className="button" type="submit">
+      <button className="button button--submit" type="submit">
         Добавить рецепт!
       </button>
     </form>

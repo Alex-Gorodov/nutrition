@@ -8,6 +8,8 @@ $light-red: #e27d60    // Light red (salmon) - for action buttons
 $light-blue: #85c1e9   // Light blue - for the background
 $white: #ffffff        // White - for primary text on colored buttons or backgrounds
 $gray: #a1a1a1         // Gray - for secondary text or hints
+$dark-gray: #585858
+$light-gray: #bdbdbd
 
 $breakfast: #f4a261         // Breakfast - Soft orange, representing warmth and morning energy
 $lunch: #2a9d8f            // Lunch - Teal, symbolizing freshness and balance
@@ -133,9 +135,13 @@ body
   &--google
     gap: 8px
     width: 100%
+  &--submit
+    background-color: darken($light-blue, 25%)
 
 .main
   position: relative
+  max-width: $container-max-width
+  margin: auto
   padding-inline: 40px
   flex-grow: 1
   transition: 0.3s

@@ -67,6 +67,22 @@ export const MET_VALUES = {
 export type METActivity = keyof typeof MET_VALUES;
 export type METIntensity = "slow" | "moderate" | "fast" | "low" | "high";
 
+export enum TrainingIntensity {
+  Slow = "Slow",
+  Low = "Low",
+  Moderate = "Moderate",
+  High = "High",
+  Fast = "Fast"
+}
+
+export const TrainingIntensityTranslation: Record<TrainingIntensity, string> = {
+  [TrainingIntensity.Slow]: "Медленно",
+  [TrainingIntensity.Low]: "Низко",
+  [TrainingIntensity.Moderate]: "Средне",
+  [TrainingIntensity.High]: "Высоко",
+  [TrainingIntensity.Fast]: "Быстро",
+}
+
 export const TrainingTypeTranslations: Record<TrainingType, string> = {
   [TrainingType.Walking]: "Ходьба",
   [TrainingType.Running]: "Бег",
@@ -126,6 +142,7 @@ export enum ErrorMessages {
   RegisterPasswordNotMatch = 'Passwords do not match.',
   EmailError = 'Please enter correct e-mail.',
   HasAccountError = "This email is already registered. Please login with your mail + password pair or check your e-mail correctness.",
+  ConnectionError = "Connection error. Check your internet connection and try again."
 };
 
 export enum SuccessMessages {

@@ -10,6 +10,7 @@ import { Upload } from "../upload-picture/upload-picture";
 import { generatePath } from "react-router-dom";
 import { useGetUser } from "../../hooks/useGetUser";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 export function RegisterForm(): JSX.Element {
   const usersAmount = useSelector((state: RootState) => state.data.users.length);
@@ -18,6 +19,12 @@ export function RegisterForm(): JSX.Element {
   const dispatch = useDispatch();
 
   const [isAuthing, setIsAuthing] = useState(false);
+
+  const isFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
+
+  const formRef = useOutsideClick(() => {
+    dispatch(setRegisterFormOpened({ isOpened: false }));
+  }) as React.RefObject<HTMLFormElement>;
 
   const defaultData = {
     id: usersAmount,
@@ -150,9 +157,10 @@ export function RegisterForm(): JSX.Element {
   };
 
   return (
-    <form className="form" action="" method="post" onSubmit={handleRegister}>
-      <h1 className="title title--2">{registrationStep}</h1>
-      <p>* - обязательные поля</p>
+    <form className="form" action="" method="post" onSubmit={handleRegister} ref={formRef}>
+      <h1 className="title title--2">Регистрация</h1>
+      <p className="form__register-step-title">{registrationStep}</p>
+      <button className="button form__button--close" onClick={() => dispatch(setRegisterFormOpened({isOpened: !isFormOpened}))}>x</button>
       {
         registrationStep === RegistrationSteps.AccountSetup &&
         <fieldset className="form__fieldset">
@@ -162,19 +170,19 @@ export function RegisterForm(): JSX.Element {
           </label>
           <label className="form__item" htmlFor="register-email">
             <span>Твой e-mail*: </span>
-            <input className="form__input" type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" autoComplete="username" required/>
+            <input className="form__input" type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" required/>
           </label>
-          <label className="form__item" htmlFor="register-avatar">
+          <label className="form__item form__item--wild-grid" htmlFor="register-avatar">
             <span>Загрузи аватар: </span>
             <Upload onFileUpload={handleFileUpload} inputId="register-avatar" name="avatar"/>
           </label>
-          <label className="form__item" htmlFor="register-password">
+          <label className="form__item form__item--wild-grid" htmlFor="register-password">
             <span>Выбери пароль*: </span>
-            <input className="form__input" type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} placeholder="Password" autoComplete="new-password" required/>
+            <input className="form__input" type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} autoComplete="off" placeholder="Password" required/>
           </label>
-          <label className="form__item" htmlFor="register-confirm-password">
+          <label className="form__item form__item--wild-grid" htmlFor="register-confirm-password">
             <span>Подтверди пароль*: </span>
-            <input className="form__input" type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} placeholder="Confirm password" autoComplete="new-password" required/>
+            <input className="form__input" type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} autoComplete="off" placeholder="Confirm password" required/>
           </label>
         </fieldset>
       }
@@ -225,7 +233,12 @@ export function RegisterForm(): JSX.Element {
           </label>
         </fieldset>
       }
-      <button className="button" type="button" onClick={handleRegister}>
+      {
+        registrationStep === RegistrationSteps.HealthGoals
+        &&
+        <button className="button" type="button" onClick={() => dispatch(setRegistrationStep({ step: RegistrationSteps.AccountSetup }))}>Назад</button>
+      }
+      <button className={`button ${registrationStep === RegistrationSteps.HealthGoals ? 'button--submit' : ''}`} type="button" onClick={handleRegister}>
         {
           registrationStep === RegistrationSteps.AccountSetup
           ?
@@ -237,11 +250,7 @@ export function RegisterForm(): JSX.Element {
               :
               'Регистрация!'}
       </button>
-      {
-        registrationStep === RegistrationSteps.HealthGoals
-        &&
-        <button className="button" type="button" onClick={() => dispatch(setRegistrationStep({ step: RegistrationSteps.AccountSetup }))}>Назад</button>
-      }
+      <p>* - обязательные поля</p>
     </form>
   )
 }

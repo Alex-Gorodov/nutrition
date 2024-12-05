@@ -21,6 +21,7 @@ import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { addNewUserToDatabase } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
 import { checkAuthMethod } from "../../utils/check-auth-method";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 type FormField = {
   value: string;
@@ -38,6 +39,12 @@ type AuthFormProps = {
 export function AuthForm({ className }: AuthFormProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const [isAuthing, setIsAuthing] = useState(false);
+
+  const isFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened);
+
+  const formRef = useOutsideClick(() => {
+    dispatch(setLoginFormOpened({ isOpened: false }));
+  }) as React.RefObject<HTMLFormElement>;
 
   const initialData: FormData = {
     email: {
@@ -113,11 +120,11 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
           requireAuthorization({ authorizationStatus: AuthorizationStatus.Auth })
         );
         closeForms();
-      } else {
+      } else if (await checkAuthMethod() === "Google") {
         dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
       }
     } catch (error) {
-      dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
+      dispatch(setStatusMessage({ message: ErrorMessages.ConnectionError }));
       console.error("Login error:", error);
     } finally {
       setIsAuthing(false);
@@ -192,8 +199,9 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
   return (
     <div className="form__wrapper">
-      <form className={`form login__form ${className}`} onSubmit={handleLogin}>
+      <form className={`form login__form ${className}`} onSubmit={handleLogin} autoComplete="off" ref={formRef}>
         <h3 className="title title--3 form__title">Войти</h3>
+        <button className="button form__button--close" onClick={() => dispatch(setLoginFormOpened({isOpened: !isFormOpened}))}>x</button>
         {Object.keys(data).map((fieldName) => {
           const field = data[fieldName];
           return (
@@ -213,6 +221,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
                 required
                 value={field.value}
                 onChange={handleFieldChange}
+                autoComplete={fieldName === "password" ? "off" : "on"}
               />
               {field.error && (
                 <span className="form__error">{field.errorValue}</span>
@@ -222,7 +231,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         })}
         <div className="form__buttons">
           <button
-            className="button"
+            className="button button--submit"
             type="submit"
             disabled={isAuthing}
           >

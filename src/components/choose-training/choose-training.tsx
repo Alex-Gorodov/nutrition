@@ -1,12 +1,13 @@
 import { useDispatch } from "react-redux";
 import { TrainingType, TrainingTypeTranslations } from "../../const";
-import { setActiveTraining } from "../../store/action";
+import { setActiveTraining, setTrainingFormOpened } from "../../store/action";
 
 export function ChooseTraining(): JSX.Element {
   const dispatch = useDispatch();
 
   const handleChooseTraining = (training: TrainingType) => {
-    dispatch(setActiveTraining({training}))
+    training !== null && dispatch(setTrainingFormOpened({isOpened: true}));
+    dispatch(setActiveTraining({training}));
   }
 
   return (
