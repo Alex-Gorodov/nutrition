@@ -238,7 +238,11 @@ export function RegisterForm(): JSX.Element {
         &&
         <button className="button" type="button" onClick={() => dispatch(setRegistrationStep({ step: RegistrationSteps.AccountSetup }))}>Назад</button>
       }
-      <button className={`button ${registrationStep === RegistrationSteps.HealthGoals ? 'button--submit' : ''}`} type="button" onClick={handleRegister}>
+      <button
+        className={`button ${registrationStep === RegistrationSteps.HealthGoals ? 'button--submit' : ''}`}
+        type={registrationStep === RegistrationSteps.HealthGoals ? 'submit' : 'button'}
+        onClick={handleRegister}
+      >
         {
           registrationStep === RegistrationSteps.AccountSetup
           ?

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { METActivity, METIntensity, MET_VALUES, TrainingType } from "../../const";
 import { setActiveTraining, setTrainingFormOpened } from "../../store/action";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { addTrainingSessionToUser } from "../../store/api-actions";
 
 function calculateCalories(met: number, weight: number, time: number): number {
   return met * weight * (time / 60); // Время переводится в часы
@@ -70,6 +71,27 @@ export function AddTraining(): JSX.Element {
   const handleChangeTrainingType = (key: string) => {
     dispatch(setActiveTraining({training: key as TrainingType}))
     handleCalculate();
+  }
+
+  const handleAddTraining = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      addTrainingSessionToUser(
+        user,
+        {
+          activity: activeTraining as string,
+          date: new Date(),
+          duration: time,
+          caloriesBurned: calories
+        },
+        dispatch
+      );
+      console.log('training added!');
+    } catch(e) {
+      console.error('error!', e);
+
+    }
+
   }
 
   return (
@@ -146,6 +168,7 @@ export function AddTraining(): JSX.Element {
             calories!
           </p>
         )}
+        <button className="button button--submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
       </form>
 
     </div>
