@@ -18,7 +18,7 @@ import {
 import { RootState } from "../../store/root-reducer";
 import { ActivityLevel, AuthorizationStatus, ErrorMessages, Genders, NutritionTarget, RegistrationSteps } from "../../const";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
-import { addNewUserToDatabase } from "../../store/api-actions";
+import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
 import { checkAuthMethod } from "../../utils/check-auth-method";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
@@ -112,6 +112,10 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
       const token = await user.getIdToken();
       const userInfo = { email: user.email!, id: user.uid, token };
+      loginAction({
+        login: email.value,
+        password: password.value
+      })
 
       if (checkIfUserExists(userInfo.email)) {
         localStorage.setItem("nutrition-user", JSON.stringify(userInfo));
