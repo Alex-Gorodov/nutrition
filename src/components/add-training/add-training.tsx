@@ -80,19 +80,21 @@ export function AddTraining(): JSX.Element {
         <fieldset className="form__fieldset">
           <label className="form__item form__item--row">
             Activity:
-            <select
-              className="form__input form__input--select"
-              value={activeTraining || ''}
-              disabled={isChoosingLocked}
-              onChange={(e) => handleChangeTrainingType(e.target.value)}
-            >
-              {Object.keys(MET_VALUES).map((key) => (
-                <option key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
-            <button className="button" type="button" onClick={() => setIsChoosingLocked(!isChoosingLocked)}>{isChoosingLocked ? 'unlock' : 'lock'}</button>
+            <div>
+              <select
+                className="form__input form__input--select"
+                value={activeTraining || ''}
+                disabled={isChoosingLocked}
+                onChange={(e) => handleChangeTrainingType(e.target.value)}
+              >
+                {Object.keys(MET_VALUES).map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+              <button className="button" type="button" onClick={() => setIsChoosingLocked(!isChoosingLocked)}>{isChoosingLocked ? 'unlock' : 'lock'}</button>
+            </div>
           </label>
 
           {/* Интенсивность */}

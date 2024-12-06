@@ -13,22 +13,31 @@
   z-index: 10
   @media (min-width: $tablet)
     min-width: 640px
+  @media (max-width: $tablet)
+    max-width: 96vw
+    min-width: 350px
   &__register-step-title
     margin: -20px 0 20px 0
     font-size: 1.5rem
   &__title
     font-size: 2.5rem
+    @media (max-width: $tablet)
+      font-size: 1.75rem
   &__fieldset
     display: grid
+    padding: 0
+    margin: 0
+    border: none
     grid-template-columns: repeat(2, 1fr)
     gap: 8px
+    @media (max-width: $tablet)
+      grid-template-columns: 1fr
   &__item
     @include flex-column
-    &--row
-      align-items: center
-      width: 100%
-      gap: 20px
-      flex-direction: row
+    &--row div
+      display: grid
+      grid-template-columns: 1.5fr 1fr
+      gap: 12px
     &--wild-grid
       grid-column: 1 / -1
   &__input
@@ -61,3 +70,10 @@
     position: absolute
     top: 20px
     right: 20px
+    width: 30px
+    height: 30px
+    padding: 0
+    margin: 0
+    line-height: initial
+    border-radius: 50%
+    background-color: transparent

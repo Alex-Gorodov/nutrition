@@ -44,6 +44,7 @@ export function Header(): JSX.Element {
 
   const clearScreen = () => {
     activeMeal && dispatch(setActiveMeal({meal: null}));
+    setMenuOpened(false);
   }
 
   return (
