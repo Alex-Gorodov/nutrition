@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { useState, useEffect } from "react";
-import { METActivity, METIntensity, MET_VALUES, TrainingType } from "../../const";
-import { setActiveTraining, setTrainingFormOpened } from "../../store/action";
+import { ErrorMessages, METActivity, METIntensity, MET_VALUES, SuccessMessages, TrainingType } from "../../const";
+import { setActiveTraining, setStatusMessage, setTrainingFormOpened } from "../../store/action";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { addTrainingSessionToUser } from "../../store/api-actions";
 
@@ -86,10 +86,11 @@ export function AddTraining(): JSX.Element {
         },
         dispatch
       );
+      dispatch(setStatusMessage({message: SuccessMessages.TrainingAdded}))
       console.log('training added!');
     } catch(e) {
+      dispatch(setStatusMessage({message: ErrorMessages.ConnectionError}))
       console.error('error!', e);
-
     }
 
   }

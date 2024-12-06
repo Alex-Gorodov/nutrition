@@ -147,7 +147,7 @@ export enum ErrorMessages {
 
 export enum SuccessMessages {
   AddToPreOrder = "Item successfully added to your pre-order list!",
-  AddToCart = "Item successfully added to your cart!",
+  TrainingAdded = "Item successfully added to your list!",
   Subscription = "Thank You for Subscribing!",
   CopiedToClipboard = "Copied to clipboard!",
 };
