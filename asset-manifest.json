@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/nutrition/static/css/main.7a5a0d6f.css",
-    "main.js": "/nutrition/static/js/main.5e69b8f0.js",
+    "main.css": "/nutrition/static/css/main.a0c6f7c7.css",
+    "main.js": "/nutrition/static/js/main.1afa5d50.js",
     "static/media/login-icon.svg": "/nutrition/static/media/login-icon.cb011887cf7f7c3268fe4f6d8370d224.svg",
     "static/media/logout-icon.svg": "/nutrition/static/media/logout-icon.4c5f27dca3fca8ed1bbc39d1d9213759.svg",
     "static/media/google-icon.svg": "/nutrition/static/media/google-icon.ce9a8677aa16fb43aaea5134d4e4c385.svg",
     "static/media/upload-icon.svg": "/nutrition/static/media/upload-icon.ebe207d3351196557cc989def0b4c71a.svg",
     "index.html": "/nutrition/index.html",
-    "main.7a5a0d6f.css.map": "/nutrition/static/css/main.7a5a0d6f.css.map",
-    "main.5e69b8f0.js.map": "/nutrition/static/js/main.5e69b8f0.js.map"
+    "main.a0c6f7c7.css.map": "/nutrition/static/css/main.a0c6f7c7.css.map",
+    "main.1afa5d50.js.map": "/nutrition/static/js/main.1afa5d50.js.map"
   },
   "entrypoints": [
-    "static/css/main.7a5a0d6f.css",
-    "static/js/main.5e69b8f0.js"
+    "static/css/main.a0c6f7c7.css",
+    "static/js/main.1afa5d50.js"
   ]
 }
