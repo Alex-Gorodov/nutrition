@@ -12,11 +12,7 @@ export type DataState = {
   isMealsDataLoading: boolean;
   isUsersDataLoading: boolean;
   meals: Meal[];
-  activeMeal: Meal | null;
   users: User[];
-  activeUser: User | null;
-  uploadedPath: string | null;
-  registrationStep: RegistrationSteps;
 }
 
 export type AuthState = {
@@ -30,5 +26,9 @@ export type PageState = {
   isNewMealFormOpened: boolean;
   isTrainingFormOpened: boolean;
   statusMessage: SuccessMessages | ErrorMessages | null;
+  registrationStep: RegistrationSteps;
   activeTraining: TrainingType | null;
+  activeMeal: Meal | null;
+  activeUser: User | null;
+  uploadedPath: string | null;
 }

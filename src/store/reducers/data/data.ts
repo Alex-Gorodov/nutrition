@@ -5,14 +5,10 @@ import { getUserFromLocalStorage } from "../../../services/token";
 import { RegistrationSteps } from "../../../const";
 
 const initialState: DataState = {
-  registrationStep: RegistrationSteps.None,
   isMealsDataLoading: false,
   isUsersDataLoading: false,
   meals: [],
   users: [],
-  activeMeal: null,
-  activeUser: null,
-  uploadedPath: null,
 }
 
 export const DataReducer = createReducer(initialState, (builder) => {
@@ -29,24 +25,9 @@ export const DataReducer = createReducer(initialState, (builder) => {
     .addCase(setUsersDataLoading, (state, action) => {
       state.isUsersDataLoading = action.payload.isUsersDataLoading;
     })
-    .addCase(setActiveMeal, (state, action) => {
-      state.activeMeal = action.payload.meal;
-    })
     .addCase(addNewMeal, (state, action) => {
       const newMeal = action.payload.meal;
       state.meals.push(newMeal);
-    })
-    .addCase(setUploadedPath, (state, action) => {
-      const { path } = action.payload;
-      state.uploadedPath = path;
-    })
-    .addCase(setActiveUser, (state, action) => {
-      const userFromState = state.users.find((user) => user.id === action.payload.activeUser.id);
-      const userFromLocalStorage = getUserFromLocalStorage();
-      state.activeUser = userFromState || userFromLocalStorage;
-    })
-    .addCase(setRegistrationStep, (state, action) => {
-      state.registrationStep = action.payload.step;
     })
     .addCase(trackUserMeal, (state, action) => {
       const { user, meal } = action.payload;

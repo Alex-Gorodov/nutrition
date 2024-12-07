@@ -14,6 +14,7 @@ import {
   setRegisterFormOpened,
   setRegistrationStep,
   setStatusMessage,
+  setUserInformation,
 } from "../../store/action";
 import { RootState } from "../../store/root-reducer";
 import { ActivityLevel, AuthorizationStatus, ErrorMessages, Genders, NutritionTarget, RegistrationSteps } from "../../const";
@@ -112,10 +113,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
       const token = await user.getIdToken();
       const userInfo = { email: user.email!, id: user.uid, token };
-      loginAction({
-        login: email.value,
-        password: password.value
-      })
 
       if (checkIfUserExists(userInfo.email)) {
         localStorage.setItem("nutrition-user", JSON.stringify(userInfo));
@@ -123,6 +120,11 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         dispatch(
           requireAuthorization({ authorizationStatus: AuthorizationStatus.Auth })
         );
+        dispatch(setUserInformation({userInformation: userInfo}))
+        loginAction({
+          login: email.value,
+          password: password.value
+        })
         closeForms();
       } else if (await checkAuthMethod() === "Google") {
         dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));

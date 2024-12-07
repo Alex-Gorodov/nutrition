@@ -136,7 +136,8 @@ export const PasswordValidationRegex = /^(?=.*\d).{8,}$/;
 
 export enum ErrorMessages {
   PasswordError = 'Password must have at least one letter, one number, and be 8+ characters long.',
-  NotificationError = 'Please sign in or register to add items to get notification.',
+  TrainingNoAuthError = 'Please sign in or register to add training.',
+  MealNoAuthError = 'Please sign in or register to add meal.',
   AuthError = 'Invalid username or password. Please try again.',
   RegisterEmptyFields = 'Fill the required fields, please.',
   RegisterPasswordNotMatch = 'Passwords do not match.',
@@ -147,7 +148,7 @@ export enum ErrorMessages {
 
 export enum SuccessMessages {
   AddToPreOrder = "Item successfully added to your pre-order list!",
-  TrainingAdded = "Item successfully added to your list!",
+  TrainingAdded = "Training successfully added to your list!",
   Subscription = "Thank You for Subscribing!",
   CopiedToClipboard = "Copied to clipboard!",
 };

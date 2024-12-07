@@ -14,7 +14,7 @@ import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 export function RegisterForm(): JSX.Element {
   const usersAmount = useSelector((state: RootState) => state.data.users.length);
-  const registrationStep = useSelector((state: RootState) => state.data.registrationStep);
+  const registrationStep = useSelector((state: RootState) => state.page.registrationStep);
 
   const dispatch = useDispatch();
 
@@ -131,6 +131,11 @@ export function RegisterForm(): JSX.Element {
         };
         dispatch(setUser(userInfo));
         dispatch(setActiveUser({ activeUser: userInfo }));
+        loginAction({
+          login: data.email,
+          password: data.password
+        })
+        dispatch(setUserInformation({userInformation: userInfo}))
         dispatch(setUploadedPath({ path: null }));
         localStorage.setItem('nutrition-user', JSON.stringify(userInfo));
 

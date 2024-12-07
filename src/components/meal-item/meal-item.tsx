@@ -15,7 +15,7 @@ type MealItemProps = {
 export function MealItem({ meal }: MealItemProps): JSX.Element {
   const dispatch = useDispatch();
   const formattedRecipe = meal.recipe ? formatRecipe(meal.recipe) : '';
-  const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
+  const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
   const activeUser = useSelector((state: RootState) => state.user);
 
   const [isAdded, setIsAdded] = useState(false);

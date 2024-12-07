@@ -20,7 +20,7 @@ export function Header(): JSX.Element {
   const isLoginFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened)
   const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
 
-  const activeMeal = useSelector((state: RootState) => state.data.activeMeal);
+  const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
 
   const handleLogout = () => {
     dispatch(logoutAction());

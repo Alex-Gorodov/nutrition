@@ -12,8 +12,8 @@ function calculateCalories(met: number, weight: number, time: number): number {
 
 export function AddTraining(): JSX.Element {
   const dispatch = useDispatch();
-  const activeTraining = useSelector((state: RootState) => state.page.activeTraining); // Текущая активность
-  const user = useSelector((state: RootState) => state.user); // Пользователь
+  const activeTraining = useSelector((state: RootState) => state.page.activeTraining);
+  const user = useSelector((state: RootState) => state.user);
   const isFormOpened = useSelector((state: RootState) => state.page.isTrainingFormOpened);
 
   const formRef = useOutsideClick(() => {
@@ -86,8 +86,12 @@ export function AddTraining(): JSX.Element {
         },
         dispatch
       );
-      dispatch(setStatusMessage({message: SuccessMessages.TrainingAdded}))
-      console.log('training added!');
+      user > 0
+        ?
+        dispatch(setStatusMessage({message: SuccessMessages.TrainingAdded}))
+        :
+        dispatch(setStatusMessage({message: ErrorMessages.TrainingNoAuthError}))
+      setTrainingFormOpened({isOpened: false})
     } catch(e) {
       dispatch(setStatusMessage({message: ErrorMessages.ConnectionError}))
       console.error('error!', e);
