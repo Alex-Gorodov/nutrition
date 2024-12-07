@@ -19,7 +19,7 @@ export function UserItem({user}: UserItemProps): JSX.Element {
             user.trainingSessions.length > 0 && user.trainingSessions.map((t) => {
               return (
                 <li className="user-actions__item user-actions__item--trainings" key={`${user.name}-training-${t.activity}-${t.duration}`}>
-                  <span>{t.date.getTime()}</span>
+                  {/* <span>{t.date.getTime()}</span> */}
                   <span>{t.activity}</span>
                   <span>{t.caloriesBurned}</span>
                 </li>
@@ -35,7 +35,7 @@ export function UserItem({user}: UserItemProps): JSX.Element {
               user.mealSchedule.length > 0 && user.mealSchedule.map((m) => {
                 return (
                   <li className="user-actions__item user-actions__item--meal">
-                    <span>{m[1].getTime()}</span>
+                    {/* <span>{m[1].getTime()}</span> */}
                     <span>{m[0].type}</span>
                     <span>{m[0].name}</span>
                     <span>{m[0].calories}</span>
