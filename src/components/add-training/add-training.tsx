@@ -79,7 +79,7 @@ export function AddTraining(): JSX.Element {
       addTrainingSessionToUser(
         user,
         {
-          activity: activeTraining as string,
+          activity: activeTraining || TrainingType.Walking,
           date: new Date(),
           duration: time,
           caloriesBurned: calories
@@ -105,13 +105,14 @@ export function AddTraining(): JSX.Element {
         <h1 className="title title--2 form__title">Add Training</h1>
         <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: !isFormOpened}))}>x</button>
         <fieldset className="form__fieldset">
-          <label className="form__item form__item--row">
+          <label className="form__item form__item--row" htmlFor="training-type">
             Activity:
             <div>
               <select
                 className="form__input form__input--select"
                 value={activeTraining || ''}
                 disabled={isChoosingLocked}
+                id="training-type"
                 onChange={(e) => handleChangeTrainingType(e.target.value)}
               >
                 {Object.keys(MET_VALUES).map((key) => (
@@ -125,11 +126,12 @@ export function AddTraining(): JSX.Element {
           </label>
 
           {/* Интенсивность */}
-          <label className="form__item">
+          <label className="form__item" htmlFor="training-intensity">
             Intensity:
             <select
               className="form__input form__input--select"
               value={intensity}
+              id="training-intensity"
               onChange={(e) => setIntensity(e.target.value as METIntensity)}
             >
               {Object.keys(MET_VALUES[activeTraining as METActivity] || {}).map((key) => (
@@ -141,22 +143,24 @@ export function AddTraining(): JSX.Element {
           </label>
 
           {/* Вес */}
-          <label className="form__item">
+          <label className="form__item" htmlFor="training-weight">
             Weight (kg):
             <input
               className="form__input"
               type="number"
+              id="training-weight"
               value={weight}
               onChange={(e) => setWeight(Number(e.target.value))}
             />
           </label>
 
           {/* Время */}
-          <label className="form__item">
+          <label className="form__item" htmlFor="training-time">
             Time (minutes):
             <input
               className="form__input"
               type="number"
+              id="training-time"
               value={time}
               onChange={(e) => setTime(Number(e.target.value))}
             />

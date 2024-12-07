@@ -1,8 +1,16 @@
 .user
   display: grid
-  padding-top: 80px
-  grid-template-columns: 120px auto
+  padding-top: 40px
   gap: 40px
+  @media (max-width: $mobile)
+    padding-top: 20px
+  &__wrapper
+    display: grid
+    grid-template-columns: 120px auto
+    gap: 40px
+    padding-inline: 40px
+    @media (max-width: $mobile)
+      padding-inline: 20px
   &__avatar-wrapper
     width: 120px
     height: 120px

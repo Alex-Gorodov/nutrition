@@ -31,8 +31,16 @@ export enum TrainingType {
   Swimming = "Swimming",
 }
 
+export const TrainingTypeTranslations: Record<TrainingType, string> = {
+  [TrainingType.Walking]: "Ходьба",
+  [TrainingType.Running]: "Бег",
+  [TrainingType.Cardio]: "Кардио",
+  [TrainingType.Gym]: "Спортзал",
+  [TrainingType.Swimming]: "Плавание"
+}
+
 export type TrainingSession = {
-  activity: string;
+  activity: TrainingType;
   date: Date;
   duration: number;
   caloriesBurned: number;
@@ -81,14 +89,6 @@ export const TrainingIntensityTranslation: Record<TrainingIntensity, string> = {
   [TrainingIntensity.Moderate]: "Средне",
   [TrainingIntensity.High]: "Высоко",
   [TrainingIntensity.Fast]: "Быстро",
-}
-
-export const TrainingTypeTranslations: Record<TrainingType, string> = {
-  [TrainingType.Walking]: "Ходьба",
-  [TrainingType.Running]: "Бег",
-  [TrainingType.Cardio]: "Кардио",
-  [TrainingType.Gym]: "Спортзал",
-  [TrainingType.Swimming]: "Плавание"
 }
 
 export enum ActivityLevel {
@@ -157,4 +157,19 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
   NoAuth = 'NO_AUTH',
   Auth = 'AUTH',
+}
+
+export enum Months {
+  Январь = 1,
+  Февраль,
+  Март,
+  Апрель,
+  Май,
+  Июнь,
+  Июль,
+  Август,
+  Сентябрь,
+  Октябрь,
+  Ноябрь,
+  Декабрь
 }

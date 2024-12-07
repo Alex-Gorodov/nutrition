@@ -2,13 +2,35 @@
   display: flex
   flex-direction: column
   grid-column: 1 / -1
-  gap: 40px
+  width: 100vw
   &__title
-    
+    padding: 20px
+    background-color: darken($light-blue, 50%)
+    text-align: center
+    color: $light-blue
+  &__head
+    display: grid
+    padding: 10px 40px
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
+    background-color: darken($light-blue, 30%)
+    color: lighten($light-blue, 20%)
+    @media (max-width: $mobile)
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr))
+      padding: 10px
+    & span:last-child
+      margin-left: auto
   &__list
     @include list-reset
     display: flex
     flex-direction: column
   &__item
-    display: flex
-    justify-content: space-between
+    display: grid
+    padding: 10px 40px
+    border-bottom: 2px solid black
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
+    @media (max-width: $mobile)
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr))
+      padding: 10px
+    & span:last-child
+      margin-left: auto
+
