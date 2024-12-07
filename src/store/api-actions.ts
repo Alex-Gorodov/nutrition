@@ -144,11 +144,11 @@ export const addTrainingSessionToUser = async (
       const key = Object.keys(snapshot.val())[0];
       const existingUser = snapshot.val()[key];
 
-      const updatedTrainingSessions: TrainingSession[] = existingUser.trainingSchedule || [];
+      const updatedTrainingSessions: TrainingSession[] = existingUser.trainingSessions || [];
 
       updatedTrainingSessions.push(training);
 
-      await userRef.child(key).update({ trainingSchedule: updatedTrainingSessions });
+      await userRef.child(key).update({ trainingSessions: updatedTrainingSessions });
       dispatch(trackUserTrainingSession({user: user, session: training}));
       console.log("Training session successfully added to user schedule.");
     } else {

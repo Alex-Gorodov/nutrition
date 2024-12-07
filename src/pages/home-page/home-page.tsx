@@ -17,6 +17,7 @@ export function HomePage(): JSX.Element {
   const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
   const isAddMealFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const isTrainingFormOpened = useSelector((state: RootState) => state.page.isTrainingFormOpened);
+  const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
 
   const auth = authorizationStatus === AuthorizationStatus.Auth;
 
@@ -32,7 +33,7 @@ export function HomePage(): JSX.Element {
         // &&
         <>
           <ChooseMeal/>
-          <ChooseTraining/>
+          {!activeMeal && <ChooseTraining/>}
         </>
       }
       { isAddMealFormOpened && <MealAddingForm/> }

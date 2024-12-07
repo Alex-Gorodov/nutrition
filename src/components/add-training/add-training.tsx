@@ -86,7 +86,7 @@ export function AddTraining(): JSX.Element {
         },
         dispatch
       );
-      user > 0
+      user
         ?
         dispatch(setStatusMessage({message: SuccessMessages.TrainingAdded}))
         :
