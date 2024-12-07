@@ -13,13 +13,13 @@ export function UserItem({user}: UserItemProps): JSX.Element {
       </div>
       <p className="user__name">{userGreetings(user.name)}</p>
       <div className="user__trainings user-actions">
-        <h3 className="user-actions__title title title--3">Приемы пищи:</h3>
+        <h3 className="user-actions__title title title--3">Тренировки:</h3>
         <ul className="user-actions__list">
           {
-            user.trainingSessions && user.trainingSessions.map((t) => {
+            user.trainingSessions.length > 0 && user.trainingSessions.map((t) => {
               return (
                 <li className="user-actions__item user-actions__item--trainings" key={`${user.name}-training-${t.activity}-${t.duration}`}>
-                  {/* <span>{t.date.getTime()}</span> */}
+                  <span>{t.date.getTime()}</span>
                   <span>{t.activity}</span>
                   <span>{t.caloriesBurned}</span>
                 </li>
@@ -29,13 +29,13 @@ export function UserItem({user}: UserItemProps): JSX.Element {
         </ul>
       </div>
       <div className="user__meals user-actions">
-          <h3 className="user-actions__title title title--3">Тренировки:</h3>
+          <h3 className="user-actions__title title title--3">Приемы пищи:</h3>
           <ul className="user-actions__list">
             {
-              user.mealSchedule && user.mealSchedule.map((m) => {
+              user.mealSchedule.length > 0 && user.mealSchedule.map((m) => {
                 return (
                   <li className="user-actions__item user-actions__item--meal">
-                    {/* <span>{m[1].getTime()}</span> */}
+                    <span>{m[1].getTime()}</span>
                     <span>{m[0].type}</span>
                     <span>{m[0].name}</span>
                     <span>{m[0].calories}</span>

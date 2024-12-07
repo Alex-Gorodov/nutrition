@@ -3,13 +3,11 @@ import { RootState } from "../../store/root-reducer";
 import { MealType, MealTypeTranslations } from "../../const";
 import { MealItem } from "../meal-item/meal-item";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
-import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { setNewMealFormOpened } from "../../store/action";
 
 export function ChooseMeal(): JSX.Element {
   const dispatch = useDispatch();
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
-  const isMealsLoading = useSelector((state: RootState) => state.data.isMealsDataLoading);
   const isAddMealFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
 
   const handleSetActiveMeal = useSetActiveMeal();
@@ -18,13 +16,6 @@ export function ChooseMeal(): JSX.Element {
   }
 
   return (
-    isMealsLoading
-    ?
-    <div className="loading-wrapper">
-      <LoadingSpinner size={"80"}/>
-      <p>Загружаем блюда</p>
-    </div>
-    :
     <section className="meals">
       <div className="meal">
         {activeMeal ? (

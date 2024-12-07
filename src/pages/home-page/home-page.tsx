@@ -9,6 +9,7 @@ import { ChooseMeal } from "../../components/choose-meal/choose-meal";
 import { ChooseTraining } from "../../components/choose-training/choose-training";
 import { AddTraining } from "../../components/add-training/add-training";
 import { MealAddingForm } from "../../components/meal-adding-form/meal-adding-form";
+import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
 
 export function HomePage(): JSX.Element {
 
@@ -18,6 +19,7 @@ export function HomePage(): JSX.Element {
   const isAddMealFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const isTrainingFormOpened = useSelector((state: RootState) => state.page.isTrainingFormOpened);
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
+  const isMealsLoading = useSelector((state: RootState) => state.data.isMealsDataLoading);
 
   const auth = authorizationStatus === AuthorizationStatus.Auth;
 
@@ -27,15 +29,22 @@ export function HomePage(): JSX.Element {
       <Helmet>
         <title>Nutrition</title>
       </Helmet>
-      { isTrainingFormOpened && <AddTraining/> }
       {
-        // auth
-        // &&
+        !auth
+        &&
+        isMealsLoading
+        ?
+          <div className="loading-wrapper">
+            <LoadingSpinner size={"80"}/>
+            <p>Загрузка данных...</p>
+          </div>
+        :
         <>
           <ChooseMeal/>
           {!activeMeal && <ChooseTraining/>}
         </>
       }
+      { isTrainingFormOpened && <AddTraining/> }
       { isAddMealFormOpened && <MealAddingForm/> }
       { isLoginFormOpened && <AuthForm/> }
       { isRegistrationFormOpened && <RegisterForm/> }

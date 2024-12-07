@@ -90,7 +90,7 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
       }
       {activeMeal && (
         <div className="meal__buttons">
-          <button className="meal__button meal__button--accept" onClick={() => handleAddToSchedule()}>{isAdded ? 'Буду кушать!' : 'Приятного аппетита!'}</button>
+          <button className="meal__button meal__button--accept" onClick={() => handleAddToSchedule()}>{isAdded ? 'Приятного аппетита!' : 'Буду кушать!'}</button>
           <button className="meal__button meal__button--update" onClick={() => handleSetActiveMeal(activeMeal.type)}>Хочу другое!</button>
           <button className="meal__button meal__button--clear" onClick={() => dispatch(setActiveMeal({ meal: null }))}>Очистить</button>
         </div>
