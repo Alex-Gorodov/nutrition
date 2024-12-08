@@ -7,21 +7,38 @@
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
     gap: 40px
   &__button
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 20px
     border-radius: 4px
     border: none
     box-shadow: 6px 6px 2px 2px black
     text-transform: uppercase
     padding: 40px
-    &--walking
-      background-color: $walking
-    &--running
-      background-color: $running
-    &--cardio
-      background-color: $cardio
-    &--gym
-      background-color: $gym
-    &--swimming
-      background-color: $swimming
+    color: $light-blue
+    font-size: 2rem
     &:hover
-      color: $dark-gray
+      color: darken($light-blue, 50%)
       box-shadow: 2px 2px 1px 1px black
+    &--walking
+      background-color: darken($walking, 15%)
+      &:hover
+        background-color: $walking
+    &--running
+      background-color: darken($running, 15%)
+      &:hover
+        background-color: $running
+    &--cardio
+      background-color: darken($cardio, 15%)
+      &:hover
+        background-color: $cardio
+    &--gym
+      background-color: darken($gym, 15%)
+      &:hover
+        color: lighten($light-blue, 50%)
+        background-color: $gym
+    &--swimming
+      background-color: darken($swimming, 15%)
+      &:hover
+        background-color: $swimming

@@ -8,6 +8,7 @@ import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
 import { formatDate } from "../../utils/format-date";
 import { setUserTarget, setUserWeight } from "../../store/action";
+import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 
 type UserItemProps = {
   user: User;
@@ -55,6 +56,7 @@ export function UserItem({user}: UserItemProps): JSX.Element {
       <div className="user__wrapper">
         <div className="user__info">
           <p className="user__name">{userGreetings(user.name)}</p>
+          <p>Ваш базовый обмен веществ требует <b>{getBasalMetabolicRate(user).valueOf()}</b> ккал в день</p>
           <p className="user__editable-wrapper">
             <span className="user__editable-title">Ваш вес:</span>
             {

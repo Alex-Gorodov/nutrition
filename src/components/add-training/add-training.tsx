@@ -23,14 +23,13 @@ export function AddTraining(): JSX.Element {
 
 
   const [intensity, setIntensity] = useState<METIntensity>("moderate");
-  const [weight, setWeight] = useState(userWeight || 70); // Значение веса по умолчанию
-  const [time, setTime] = useState(30); // Продолжительность тренировки
+  const [weight, setWeight] = useState(userWeight || 70);
+  const [time, setTime] = useState(30);
   const [calories, setCalories] = useState(0);
   const [isChoosingLocked, setIsChoosingLocked] = useState(true);
 
   console.log('w', userWeight);
 
-  // Обновление интенсивности и пересчёт калорий при смене активности
   useEffect(() => {
     if (!activeTraining || !(activeTraining in MET_VALUES)) {
       console.error(`Invalid active training type: ${activeTraining}`);
@@ -41,7 +40,6 @@ export function AddTraining(): JSX.Element {
         if (!intensityData) {
           console.error(`Invalid intensity: ${intensity} for activity ${activeTraining}`);
         } else {
-          // Используйте данные интенсивности (например, скорость и MET)
           const { met } = intensityData;
           const result = calculateCalories(met, weight, time);
           setCalories(result);

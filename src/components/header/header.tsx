@@ -88,9 +88,9 @@ export function Header(): JSX.Element {
         {
           authorizationStatus === AuthorizationStatus.Auth
           ?
-          <button className="button" type="button" onClick={handleLogout}><Logout/></button>
+          <button className="button header-nav__button" type="button" onClick={handleLogout}><Logout/></button>
           :
-          <button className="button" type="button" onClick={handleOpenLoginForm}><Login/></button>
+          <button className="button header-nav__button" type="button" onClick={handleOpenLoginForm}><Login/></button>
         }
       </div>
     </header>

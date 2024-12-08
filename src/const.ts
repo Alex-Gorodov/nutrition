@@ -59,6 +59,7 @@ export const MET_VALUES = {
     slow: { speed: 3.2, met: 2.0 },
     moderate: { speed: 5.0, met: 3.5 },
     fast: { speed: 6.4, met: 5.0 },
+    veryFast: { speed: 7.3, met: 6.3 },
   },
   Running: {
     slow: { speed: 8.0, met: 8.3 },
