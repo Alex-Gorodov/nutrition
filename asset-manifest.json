@@ -1,17 +1,20 @@
 {
   "files": {
-    "main.css": "/nutrition/static/css/main.8a33f118.css",
-    "main.js": "/nutrition/static/js/main.f6d4a5ff.js",
-    "static/media/login-icon.svg": "/nutrition/static/media/login-icon.cb011887cf7f7c3268fe4f6d8370d224.svg",
-    "static/media/logout-icon.svg": "/nutrition/static/media/logout-icon.4c5f27dca3fca8ed1bbc39d1d9213759.svg",
+    "main.css": "/nutrition/static/css/main.47f64bbf.css",
+    "main.js": "/nutrition/static/js/main.ec2ccd43.js",
+    "static/media/login-icon.svg": "/nutrition/static/media/login-icon.e0933600e9986cc287dbb3dd9db9403b.svg",
+    "static/media/logout-icon.svg": "/nutrition/static/media/logout-icon.bc0e3bc074a20186f2158847f569c519.svg",
     "static/media/google-icon.svg": "/nutrition/static/media/google-icon.ce9a8677aa16fb43aaea5134d4e4c385.svg",
     "static/media/upload-icon.svg": "/nutrition/static/media/upload-icon.ebe207d3351196557cc989def0b4c71a.svg",
+    "static/media/apply-icon.svg": "/nutrition/static/media/apply-icon.236fb9d9f3da1fafb8c6914fc3492457.svg",
     "index.html": "/nutrition/index.html",
-    "main.8a33f118.css.map": "/nutrition/static/css/main.8a33f118.css.map",
-    "main.f6d4a5ff.js.map": "/nutrition/static/js/main.f6d4a5ff.js.map"
+    "static/media/home-icon.svg": "/nutrition/static/media/home-icon.ca08bcdc4cfc9061daa7c0ff26e010e4.svg",
+    "static/media/edit-icon.svg": "/nutrition/static/media/edit-icon.5a8887859ef64349e6f63fe9ed4da67d.svg",
+    "main.47f64bbf.css.map": "/nutrition/static/css/main.47f64bbf.css.map",
+    "main.ec2ccd43.js.map": "/nutrition/static/js/main.ec2ccd43.js.map"
   },
   "entrypoints": [
-    "static/css/main.8a33f118.css",
-    "static/js/main.f6d4a5ff.js"
+    "static/css/main.47f64bbf.css",
+    "static/js/main.ec2ccd43.js"
   ]
 }
