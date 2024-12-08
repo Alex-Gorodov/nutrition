@@ -191,9 +191,8 @@ export const updateUserTarget = async (
 
     if (snapshot.exists()) {
       const key = Object.keys(snapshot.val())[0];
-      const currentData = snapshot.val()[key];
 
-      const targetToUpdate = currentData.target || newTarget || NutritionTarget.WeightMaintenance;
+      const targetToUpdate = newTarget || NutritionTarget.WeightMaintenance;
 
       await userRef.child(key).update({ target: targetToUpdate });
       dispatch(setUserTarget({ user, newTarget: targetToUpdate }));

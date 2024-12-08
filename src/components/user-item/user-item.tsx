@@ -33,13 +33,14 @@ export function UserItem({user}: UserItemProps): JSX.Element {
     setWeight(user.weight);
   }, [user.weight]);
 
-  const handleEditTarget = async() => {
+  const handleEditTarget = async () => {
+    console.log('Target before saving:', target);
     try {
       await updateUserTarget(user, target, dispatch);
       setTargetEditable(false);
-      console.log("Target updated successfully");
+      console.log('Target updated successfully');
     } catch (error) {
-      console.error("Failed to update target", error);
+      console.error('Failed to update target:', error);
     }
   };
 
@@ -66,13 +67,14 @@ export function UserItem({user}: UserItemProps): JSX.Element {
             <button
               className="button button--icon"
               type="button"
-              onClick={
-                isWeightEditable
-                ?
-                handleEditWeight
-                :
-                () => setWeightEditable(!isWeightEditable)
-            }>
+              onClick={() => {
+                if (isWeightEditable) {
+                  handleEditWeight();
+                } else {
+                  setWeightEditable(true);
+                }
+              }}
+              >
               {
                 isWeightEditable
                 ?
@@ -94,10 +96,16 @@ export function UserItem({user}: UserItemProps): JSX.Element {
             {
               isTargetEditable
               ?
-              <select className="user__editable-info user__editable-info--on" name="user-change-target" id="user-change-target" value={target} onChange={(e) => setTarget(e.target.value as NutritionTarget)}>
+              <select className="user__editable-info user__editable-info--on" name="user-change-target" id="user-change-target" value={target}
+                onChange={(e) => {
+                  const newTarget = e.target.value as NutritionTarget;
+                  console.log('Selected target:', newTarget);
+                  setTarget(newTarget);
+                }}
+              >
                 {
                   Object.values(NutritionTarget).map((i) => (
-                    <option value={i}>{i}</option>
+                    <option value={i} key={`${user.name}-target-${i}`}>{i}</option>
                   ))
                 }
               </select>
@@ -107,12 +115,14 @@ export function UserItem({user}: UserItemProps): JSX.Element {
             <button
               className="button button--icon"
               type="button"
-              onClick={
-                isTargetEditable
-                ?
-                handleEditTarget
-                :
-                () => setTargetEditable(!isTargetEditable)}>
+              onClick={() => {
+                if (isTargetEditable) {
+                  handleEditTarget();
+                } else {
+                  setTargetEditable(true);
+                }
+              }}
+              >
               {
                 isTargetEditable
                 ?
@@ -176,7 +186,7 @@ export function UserItem({user}: UserItemProps): JSX.Element {
                 user.mealSchedule.map((m) => {
                   const date = formatDate(m[1]);
                   return (
-                    <li className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()}`}>
+                    <li className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()}`} key={m[0].name}>
                       <span>{MealTypeTranslations[m[0].type]}</span>
                       <span>{m[0].name}</span>
                       <span>{Math.floor(m[0].calories)}</span>
