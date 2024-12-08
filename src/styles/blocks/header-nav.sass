@@ -27,10 +27,13 @@
     text-decoration: none
     text-transform: uppercase
     font-size: 1.4rem
-    transition: $hover-transition
     // @media (max-width: $mobile)
     //   padding: 25px 100%
+  &__item
+    transition: $hover-transition
     &:hover
-      background-color: darken($light-blue, 15%)
+      opacity: 0.6
+    &:active
+      opacity: 0.3
   &__button
     @include button-reset

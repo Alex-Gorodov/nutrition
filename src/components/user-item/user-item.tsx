@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MealTypeTranslations, NutritionTarget, TrainingTypeTranslations } from "../../const";
+import { ActivityLevelTranslations, MealTypeTranslations, NutritionTarget, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { userGreetings } from "../../utils/user-greetings";
 import { useDispatch } from "react-redux";
@@ -51,12 +51,16 @@ export function UserItem({user}: UserItemProps): JSX.Element {
     setTarget(user.target);
   }, [user.target]);
 
+  const bmr = getBasalMetabolicRate(user).valueOf();
+  const activeBmr = Math.floor(bmr * user.activityLevel);
+
   return (
     <div className="user">
       <div className="user__wrapper">
         <div className="user__info">
           <p className="user__name">{userGreetings(user.name)}</p>
-          <p>Ваш базовый обмен веществ требует <b>{getBasalMetabolicRate(user).valueOf()}</b> ккал в день</p>
+          <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
+          <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}), вам необходимо получать из пищи <b>{activeBmr}</b> ккал.</p>
           <p className="user__editable-wrapper">
             <span className="user__editable-title">Ваш вес:</span>
             {
@@ -202,6 +206,9 @@ export function UserItem({user}: UserItemProps): JSX.Element {
           </div>
       </div>
       }
+      <div className="user__incription">
+        <i>*<br/>Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
+      </div>
     </div>
   )
 }

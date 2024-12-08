@@ -29,7 +29,7 @@ export function HeaderUserItem(): JSX.Element {
   return (
     selectedUser ?
     <div className="header-user">
-      <Link className="header-user__link" to={link}>
+      <Link className="header-user__link header-nav__item" to={link}>
         {selectedUser.name}
         <img className="header-user__image" src={selectedUser.avatar} width={40} height={40} alt={selectedUser.name} />
       </Link>

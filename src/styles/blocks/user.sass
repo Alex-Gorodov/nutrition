@@ -22,11 +22,11 @@
     font-size: 24px
   &__editable-wrapper
     display: grid
-    grid-template-columns: minmax(0px, 100px) minmax(50px, 250px) minmax(40px, 100px)
+    grid-template-columns: minmax(0px, 100px) minmax(50px, 250px) 60px
     align-items: center
     gap: 20px
     @media (max-width: $mobile)
-      grid-template-columns: 2fr 1fr
+      grid-template-columns: auto 60px
   &__editable-title
     @media (max-width: $mobile)
       grid-column: 1 / -1
@@ -53,3 +53,6 @@
     gap: 10px
     & input
       max-width: 50px
+  &__incription
+    padding-inline: 10px
+    margin-bottom: 40px
