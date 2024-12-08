@@ -172,7 +172,7 @@ export const updateUserWeight = async (
       const key = Object.keys(snapshot.val())[0];
 
       await userRef.child(key).update({ weight: newWeight });
-      dispatch(setUserWeight({user, newWeight}));
+      // dispatch(setUserWeight({user, newWeight}));
       console.log("User weight was successfully updated!");
     }
   } catch (error) {
@@ -195,7 +195,7 @@ export const updateUserTarget = async (
       const targetToUpdate = newTarget || NutritionTarget.WeightMaintenance;
 
       await userRef.child(key).update({ target: targetToUpdate });
-      dispatch(setUserTarget({ user, newTarget: targetToUpdate }));
+      // dispatch(setUserTarget({ user, newTarget: targetToUpdate }));
       console.log("User target was successfully updated!");
     }
   } catch (error) {

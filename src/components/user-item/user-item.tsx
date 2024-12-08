@@ -7,6 +7,7 @@ import { updateUserTarget, updateUserWeight } from "../../store/api-actions";
 import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
 import { formatDate } from "../../utils/format-date";
+import { setUserTarget, setUserWeight } from "../../store/action";
 
 type UserItemProps = {
   user: User;
@@ -20,9 +21,10 @@ export function UserItem({user}: UserItemProps): JSX.Element {
   const [target, setTarget] = useState(user.target);
 
   const handleEditWeight = async () => {
+    dispatch(setUserWeight({user, newWeight: weight}));
+    setWeightEditable(false);
     try {
       await updateUserWeight(user, weight, dispatch);
-      setWeightEditable(false);
       console.log("Weight updated successfully");
     } catch (error) {
       console.error("Failed to update weight", error);
@@ -34,10 +36,10 @@ export function UserItem({user}: UserItemProps): JSX.Element {
   }, [user.weight]);
 
   const handleEditTarget = async () => {
-    console.log('Target before saving:', target);
+    dispatch(setUserTarget({ user, newTarget: target }));
+    setTargetEditable(false);
     try {
       await updateUserTarget(user, target, dispatch);
-      setTargetEditable(false);
       console.log('Target updated successfully');
     } catch (error) {
       console.error('Failed to update target:', error);
@@ -99,7 +101,6 @@ export function UserItem({user}: UserItemProps): JSX.Element {
               <select className="user__editable-info user__editable-info--on" name="user-change-target" id="user-change-target" value={target}
                 onChange={(e) => {
                   const newTarget = e.target.value as NutritionTarget;
-                  console.log('Selected target:', newTarget);
                   setTarget(newTarget);
                 }}
               >
