@@ -11,21 +11,23 @@ export function ChooseTraining(): JSX.Element {
   }
 
   return (
-    <section className="trainings">
-      <div className="trainings__buttons">
-        <h1 className="title title--secondary">Выберите тип тренировки</h1>
-        {
-          Object.values(TrainingType).map((t) => (
-            <button
-              className={`button training__button training__button--${t.toLowerCase()}`}
-              type="button"
-              key={t}
-              onClick={() => handleChooseTraining(t)}
-            >
-              <span>{TrainingTypeTranslations[t]}</span>
-            </button>
-          ))
-        }
+    <section className="choose-training">
+      <div className="choose-training__container">
+        <h1 className="title title--secondary choose-training__title">Выберите тип тренировки</h1>
+        <div className="choose-training__buttons">
+          {
+            Object.values(TrainingType).map((t) => (
+              <button
+                className={`button choose-training__button choose-training__button--${t.toLowerCase()}`}
+                type="button"
+                key={t}
+                onClick={() => handleChooseTraining(t)}
+              >
+                <span>{TrainingTypeTranslations[t]}</span>
+              </button>
+            ))
+          }
+        </div>
       </div>
     </section>
   )

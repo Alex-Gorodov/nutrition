@@ -160,7 +160,7 @@ export enum AuthorizationStatus {
 }
 
 export enum Months {
-  Январь = 1,
+  Январь,
   Февраль,
   Март,
   Апрель,

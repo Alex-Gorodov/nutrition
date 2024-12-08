@@ -14,6 +14,7 @@ export function AddTraining(): JSX.Element {
   const dispatch = useDispatch();
   const activeTraining = useSelector((state: RootState) => state.page.activeTraining);
   const user = useSelector((state: RootState) => state.user);
+  const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
   const isFormOpened = useSelector((state: RootState) => state.page.isTrainingFormOpened);
 
   const formRef = useOutsideClick(() => {
@@ -22,10 +23,12 @@ export function AddTraining(): JSX.Element {
 
 
   const [intensity, setIntensity] = useState<METIntensity>("moderate");
-  const [weight, setWeight] = useState(user.weight || 70); // Значение веса по умолчанию
+  const [weight, setWeight] = useState(userWeight || 70); // Значение веса по умолчанию
   const [time, setTime] = useState(30); // Продолжительность тренировки
   const [calories, setCalories] = useState(0);
   const [isChoosingLocked, setIsChoosingLocked] = useState(true);
+
+  console.log('w', userWeight);
 
   // Обновление интенсивности и пересчёт калорий при смене активности
   useEffect(() => {

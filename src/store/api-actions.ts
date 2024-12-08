@@ -2,9 +2,9 @@ import { createAsyncThunk, ThunkDispatch } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
 import { RootState } from "./root-reducer";
 import { database } from "../services/database";
-import { APIRoute, AuthorizationStatus, TrainingSession } from "../const";
+import { APIRoute, AuthorizationStatus, NutritionTarget, TrainingSession } from "../const";
 import { Meal } from "../types/meal";
-import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading, trackUserMeal, trackUserTrainingSession } from "./action";
+import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading, setUserTarget, setUserWeight, trackUserMeal, trackUserTrainingSession } from "./action";
 import { User } from "../types/user";
 import { UserAuthData } from "../types/user-auth-data";
 import { AuthData } from "../types/authData";
@@ -156,6 +156,51 @@ export const addTrainingSessionToUser = async (
     }
   } catch (error) {
     console.error("Error adding training session to user schedule:", error);
+  }
+};
+
+export const updateUserWeight = async (
+  user: User,
+  newWeight: number,
+  dispatch: AppDispatch
+): Promise<void> => {
+  try {
+    const userRef = database.ref(APIRoute.Users);
+    const snapshot = await userRef.orderByChild('id').equalTo(user.id).once('value');
+
+    if (snapshot.exists()) {
+      const key = Object.keys(snapshot.val())[0];
+
+      await userRef.child(key).update({ weight: newWeight });
+      dispatch(setUserWeight({user, newWeight}));
+      console.log("User weight was successfully updated!");
+    }
+  } catch (error) {
+    console.error("Error updating user weight:", error);
+  }
+}
+
+export const updateUserTarget = async (
+  user: User,
+  newTarget: NutritionTarget,
+  dispatch: AppDispatch
+): Promise<void> => {
+  try {
+    const userRef = database.ref(APIRoute.Users);
+    const snapshot = await userRef.orderByChild('id').equalTo(user.id).once('value');
+
+    if (snapshot.exists()) {
+      const key = Object.keys(snapshot.val())[0];
+      const currentData = snapshot.val()[key];
+
+      const targetToUpdate = currentData.target || newTarget || NutritionTarget.WeightMaintenance;
+
+      await userRef.child(key).update({ target: targetToUpdate });
+      dispatch(setUserTarget({ user, newTarget: targetToUpdate }));
+      console.log("User target was successfully updated!");
+    }
+  } catch (error) {
+    console.error("Error updating user target:", error);
   }
 };
 

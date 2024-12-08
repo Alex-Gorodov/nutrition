@@ -30,7 +30,7 @@ export function HomePage(): JSX.Element {
       </Helmet>
       {
         !auth
-        &&
+        ||
         isMealsLoading
         ?
           <div className="loading-wrapper">

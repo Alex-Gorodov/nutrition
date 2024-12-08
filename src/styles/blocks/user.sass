@@ -9,8 +9,9 @@
     grid-template-columns: 120px auto
     gap: 40px
     padding-inline: 40px
-    @media (max-width: $mobile)
+    @media (max-width: $tablet)
       padding-inline: 20px
+      grid-template-columns: 1fr
   &__avatar-wrapper
     width: 120px
     height: 120px
@@ -19,3 +20,36 @@
     border-radius: 50%
   &__name
     font-size: 24px
+  &__editable-wrapper
+    display: grid
+    grid-template-columns: minmax(0px, 100px) minmax(50px, 250px) minmax(40px, 100px)
+    align-items: center
+    gap: 20px
+    @media (max-width: $mobile)
+      grid-template-columns: 2fr 1fr
+  &__editable-title
+    @media (max-width: $mobile)
+      grid-column: 1 / -1
+  &__editable-info
+    max-width: 220px
+    padding: 10px
+    margin: 0
+    border: none
+    background-color: transparent
+    font-size: 1.4rem
+    white-space: nowrap
+    @media (max-width: $mobile)
+      padding: 0
+    &--on
+      border-radius: 8px
+      background-color: lighten($light-blue, 5%)
+      appearance: none
+      &::-webkit-inner-spin-button
+        display: none
+      &:focus-visible
+        outline: none
+  &__editable-weight
+    display: flex
+    gap: 10px
+    & input
+      max-width: 50px

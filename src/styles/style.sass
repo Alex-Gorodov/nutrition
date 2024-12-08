@@ -1,20 +1,26 @@
 $main-fonts: "Arial", sans-serif
 
 
-$dark-green: #2c5f2d   // Dark green - for headers and accents
-$green: #88b04b        // Green - for buttons and interactive elements
-$yellow: #f4d35e       // Yellow - for accents and notifications
-$light-red: #e27d60    // Light red (salmon) - for action buttons
-$light-blue: #85c1e9   // Light blue - for the background
-$white: #ffffff        // White - for primary text on colored buttons or backgrounds
-$gray: #a1a1a1         // Gray - for secondary text or hints
+$dark-green: #2c5f2d
+$green: #88b04b
+$yellow: #f4d35e
+$light-red: #e27d60
+$light-blue: #85c1e9
+$white: #ffffff
+$gray: #a1a1a1
 $dark-gray: #585858
 $light-gray: #bdbdbd
 
-$breakfast: #f4a261         // Breakfast - Soft orange, representing warmth and morning energy
-$lunch: #2a9d8f            // Lunch - Teal, symbolizing freshness and balance
-$dinner: #264653           // Dinner - Deep blue-green, reflecting calm and relaxation
-$snack: #e76f51            // Snack - Reddish-orange, for energy and quick bites
+$breakfast: #f4a261
+$lunch: #2a9d8f
+$dinner: #264653
+$snack: #e76f51
+
+$walking: #6E9B62
+$running: #E94E77
+$cardio: #F39C12
+$gym: #34495E
+$swimming: #3498DB
 
 $regular: 400
 $medium: 500
@@ -141,11 +147,14 @@ body
     width: 100%
   &--submit
     background-color: darken($light-blue, 25%)
+  &--icon
+    border: none
+    background-color: transparent
 
 .main
   position: relative
+  min-width: 80vw
   margin: auto
-  // padding-inline: 0
   flex-grow: 1
   transition: 0.3s
 

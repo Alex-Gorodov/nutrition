@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { HeaderUserItem } from "../header-user-item/header-user-item";
 import { ReactComponent as Login } from '../../img/icons/login-icon.svg';
 import { ReactComponent as Logout } from '../../img/icons/logout-icon.svg';
+import { ReactComponent as Home } from '../../img/icons/home-icon.svg';
 
 export function Header(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,7 +50,7 @@ export function Header(): JSX.Element {
 
   return (
     <header className="header">
-      {
+      {/* {
         isMobile
         &&
         <ul className={listClassName}>
@@ -57,9 +58,9 @@ export function Header(): JSX.Element {
             <Link className="header-nav__link" to={AppRoute.Root} onClick={() => clearScreen()}>Домой</Link>
           </li>
         </ul>
-      }
+      } */}
       <div className="header__container">
-        {
+        {/* {
           isMobile
           &&
           <button className={`header-nav__toggler ${burgerClassName}`} type="button" onClick={() => setMenuOpened(!isMenuOpened)}>
@@ -70,14 +71,14 @@ export function Header(): JSX.Element {
             </span>
             <span className="burger__line"></span>
           </button>
-        }
+        } */}
 
         {
-          !isMobile
-          &&
+          // !isMobile
+          // &&
           <ul className={listClassName}>
             <li className="header-nav__item">
-              <Link className="header-nav__link" to={AppRoute.Root} onClick={() => clearScreen()}>Домой</Link>
+              <Link className="header-nav__link" to={AppRoute.Root} onClick={() => clearScreen()}><Home/></Link>
             </li>
           </ul>
         }

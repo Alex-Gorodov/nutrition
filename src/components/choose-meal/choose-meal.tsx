@@ -27,7 +27,7 @@ export function ChooseMeal(): JSX.Element {
 
       {!activeMeal && (
     <>
-      <h1 className="title title--secondary">Выберите тип приема пищи</h1>
+      <h1 className="title title--secondary meals__title">Выберите тип приема пищи</h1>
       <div className="meals__buttons">
         {Object.values(MealType).map((type) => (
           <button

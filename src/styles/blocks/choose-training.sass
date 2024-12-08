@@ -1,0 +1,27 @@
+.choose-training
+  margin-bottom: 80px
+  &__title
+    margin-bottom: 20px
+  &__buttons
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
+    gap: 40px
+  &__button
+    border-radius: 4px
+    border: none
+    box-shadow: 6px 6px 2px 2px black
+    text-transform: uppercase
+    padding: 40px
+    &--walking
+      background-color: $walking
+    &--running
+      background-color: $running
+    &--cardio
+      background-color: $cardio
+    &--gym
+      background-color: $gym
+    &--swimming
+      background-color: $swimming
+    &:hover
+      color: $dark-gray
+      box-shadow: 2px 2px 1px 1px black
