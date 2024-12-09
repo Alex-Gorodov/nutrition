@@ -35,3 +35,4 @@ export const setRegistrationStep = createAction<{step: RegistrationSteps}>('page
 export const setActiveTraining = createAction<{training: TrainingType}>('page/setActiveTraining');
 export const setNewMealFormOpened = createAction<{isOpened: boolean}>('page/setNewMealFormOpened');
 export const setTrainingFormOpened = createAction<{isOpened: boolean}>('page/setTrainingFormOpened');
+export const setMealFormOpened = createAction<{isOpened: boolean}>('page/setMealFormOpened');

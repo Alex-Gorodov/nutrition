@@ -1,7 +1,7 @@
 .form
   @include flex-column
-  position: absolute
-  top: -20px
+  position: fixed
+  top: 20px
   left: 50%
   transform: translateX(-50%)
   padding: 20px
@@ -36,10 +36,6 @@
       grid-template-columns: 1fr
   &__item
     @include flex-column
-    &--row div
-      display: grid
-      grid-template-columns: 1.5fr 1fr
-      gap: 12px
     &--wild-grid
       grid-column: 1 / -1
   &__input

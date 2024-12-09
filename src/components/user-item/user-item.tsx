@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import { ActivityLevelTranslations, MealTypeTranslations, NutritionTarget, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { userGreetings } from "../../utils/user-greetings";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUserTarget, updateUserWeight } from "../../store/api-actions";
 import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
+import { ReactComponent as AddIcon } from "../../img/icons/add-icon.svg";
 import { formatDate } from "../../utils/format-date";
-import { setUserTarget, setUserWeight } from "../../store/action";
+import { setMealFormOpened, setTrainingFormOpened, setUserTarget, setUserWeight } from "../../store/action";
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
+import { RootState } from "../../store/root-reducer";
+import { AddMeal } from "../add-meal/add-meal";
+import { AddTraining } from "../add-training/add-training";
 
 type UserItemProps = {
   user: User;
@@ -20,6 +24,9 @@ export function UserItem({user}: UserItemProps): JSX.Element {
   const [isTargetEditable, setTargetEditable] = useState(false);
   const [weight, setWeight] = useState(user.weight);
   const [target, setTarget] = useState(user.target);
+
+  const isTrainingFormOpened = useSelector((state: RootState) => state.page.isTrainingFormOpened)
+  const isMealFormOpened = useSelector((state: RootState) => state.page.isMealFormOpened)
 
   const handleEditWeight = async () => {
     dispatch(setUserWeight({user, newWeight: weight}));
@@ -152,7 +159,10 @@ export function UserItem({user}: UserItemProps): JSX.Element {
         user.trainingSessions && user.trainingSessions.length > 0
         &&
         <div className="user__trainings user-actions">
-          <h3 className="user-actions__title title title--3">Тренировки</h3>
+          <div className="user-actions__title-wrapper">
+            <h3 className="user-actions__title title title--3">Тренировки</h3>
+            <button className="button button--reset user-actions__add-btn" onClick={() => dispatch(setTrainingFormOpened({isOpened: true}))}><AddIcon/></button>
+          </div>
           <div className="user-actions__table">
             <div className="user-actions__head">
               <span>Активность</span>
@@ -180,7 +190,10 @@ export function UserItem({user}: UserItemProps): JSX.Element {
         user.mealSchedule && user.mealSchedule.length > 0
         &&
         <div className="user__meals user-actions">
-          <h3 className="user-actions__title title title--3">Приемы пищи</h3>
+          <div className="user-actions__title-wrapper">
+            <h3 className="user-actions__title title title--3">Приемы пищи</h3>
+            <button className="button button--reset user-actions__add-btn" onClick={() => dispatch(setMealFormOpened({isOpened: true}))}><AddIcon/></button>
+          </div>
           <div className="user-actions__table">
             <div className="user-actions__head">
               <span>Прием пищи</span>
@@ -209,6 +222,8 @@ export function UserItem({user}: UserItemProps): JSX.Element {
       <div className="user__incription">
         <i>*<br/>Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
       </div>
+      {isTrainingFormOpened ? <AddTraining isTrainingTypeUnset={true}/> : ''}
+      {isMealFormOpened ? <AddMeal/> : ''}
     </div>
   )
 }

@@ -3,10 +3,17 @@
   flex-direction: column
   grid-column: 1 / -1
   width: 100vw
-  &__title
+  &__title-wrapper
+    display: flex
+    justify-content: center
+    align-items: center
     padding: 20px
+    gap: 40px
     background-color: darken($light-blue, 50%)
+  &__title
     text-align: center
+    color: $light-blue
+  &__add-btn
     color: $light-blue
   &__head
     display: grid

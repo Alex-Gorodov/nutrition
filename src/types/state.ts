@@ -25,6 +25,7 @@ export type PageState = {
   isRegisterFormOpened: boolean;
   isNewMealFormOpened: boolean;
   isTrainingFormOpened: boolean;
+  isMealFormOpened: boolean;
   statusMessage: SuccessMessages | ErrorMessages | null;
   registrationStep: RegistrationSteps;
   activeTraining: TrainingType | null;

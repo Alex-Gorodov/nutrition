@@ -1,10 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { PageState } from "../../../types/state";
-import { setActiveMeal, setActiveTraining, setActiveUser, setLoginFormOpened, setNewMealFormOpened, setRegisterFormOpened, setRegistrationStep, setStatusMessage, setTrainingFormOpened, setUploadedPath } from "../../action";
+import { setActiveMeal, setActiveTraining, setActiveUser, setLoginFormOpened, setMealFormOpened, setNewMealFormOpened, setRegisterFormOpened, setRegistrationStep, setStatusMessage, setTrainingFormOpened, setUploadedPath } from "../../action";
 import { RegistrationSteps } from "../../../const";
 import { getUserFromLocalStorage } from "../../../services/token";
-import { useSelector } from "react-redux";
-import { RootState } from "../../root-reducer";
 
 const initialState: PageState = {
   registrationStep: RegistrationSteps.None,
@@ -12,6 +10,7 @@ const initialState: PageState = {
   isRegisterFormOpened: false,
   isNewMealFormOpened: false,
   isTrainingFormOpened: false,
+  isMealFormOpened: false,
   statusMessage: null,
   activeTraining: null,
   activeMeal: null,
@@ -38,6 +37,9 @@ export const PageReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setTrainingFormOpened, (state, action) => {
       state.isTrainingFormOpened = action.payload.isOpened;
+    })
+    .addCase(setMealFormOpened, (state, action) => {
+      state.isMealFormOpened = action.payload.isOpened;
     })
     .addCase(setRegistrationStep, (state, action) => {
       state.registrationStep = action.payload.step;

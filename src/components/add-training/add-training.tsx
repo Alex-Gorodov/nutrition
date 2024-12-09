@@ -5,32 +5,36 @@ import { ErrorMessages, METActivity, METIntensity, MET_VALUES, SuccessMessages, 
 import { setActiveTraining, setStatusMessage, setTrainingFormOpened } from "../../store/action";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { addTrainingSessionToUser } from "../../store/api-actions";
+import { ReactComponent as Lock } from "../../img/icons/lock-icon.svg";
+import { ReactComponent as Unlock } from "../../img/icons/unlock-icon.svg";
+
+type FormProps = {
+  isTrainingTypeUnset? : boolean;
+}
 
 function calculateCalories(met: number, weight: number, time: number): number {
   return met * weight * (time / 60); // Время переводится в часы
 }
 
-export function AddTraining(): JSX.Element {
+export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
   const dispatch = useDispatch();
   const activeTraining = useSelector((state: RootState) => state.page.activeTraining);
   const user = useSelector((state: RootState) => state.user);
   const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
-  const isFormOpened = useSelector((state: RootState) => state.page.isTrainingFormOpened);
 
   const formRef = useOutsideClick(() => {
     dispatch(setTrainingFormOpened({ isOpened: false }));
   }) as React.RefObject<HTMLFormElement>;
 
-
   const [intensity, setIntensity] = useState<METIntensity>("moderate");
   const [weight, setWeight] = useState(userWeight || 70);
   const [time, setTime] = useState(30);
   const [calories, setCalories] = useState(0);
-  const [isChoosingLocked, setIsChoosingLocked] = useState(true);
-
-  console.log('w', userWeight);
+  const [isChoosingLocked, setIsChoosingLocked] = useState(!isTrainingTypeUnset);
 
   useEffect(() => {
+    console.log(isTrainingTypeUnset);
+
     if (!activeTraining || !(activeTraining in MET_VALUES)) {
       console.error(`Invalid active training type: ${activeTraining}`);
     } else if (activeTraining in MET_VALUES) {
@@ -49,7 +53,7 @@ export function AddTraining(): JSX.Element {
       }
 
     }
-  }, [activeTraining, intensity, time, weight]);
+  }, [activeTraining, intensity, isTrainingTypeUnset, time, weight]);
 
   const handleCalculate = () => {
     if (!activeTraining || !(activeTraining in MET_VALUES)) {
@@ -101,14 +105,14 @@ export function AddTraining(): JSX.Element {
   }
 
   return (
-    <div>
+    <div className="add-training">
       <form className="form" method="post" ref={formRef}>
-        <h1 className="title title--2 form__title">Add Training</h1>
-        <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: !isFormOpened}))}>x</button>
+        <h1 className="title title--2 form__title">Добавить тренировку</h1>
+        <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}>x</button>
         <fieldset className="form__fieldset">
           <label className="form__item form__item--row" htmlFor="training-type">
             Activity:
-            <div>
+            <div className="add-training__select-wrapper">
               <select
                 className="form__input form__input--select"
                 value={activeTraining || ''}
@@ -122,7 +126,21 @@ export function AddTraining(): JSX.Element {
                   </option>
                 ))}
               </select>
-              <button className="button" type="button" onClick={() => setIsChoosingLocked(!isChoosingLocked)}>{isChoosingLocked ? 'unlock' : 'lock'}</button>
+              <button className="button button--reset" type="button" onClick={() => setIsChoosingLocked(!isChoosingLocked)}>
+                {
+                  isChoosingLocked
+                  ?
+                  <>
+                    <Lock/>
+                    <span className="visually-hidden">unlock</span>
+                  </>
+                    :
+                  <>
+                    <Unlock/>
+                    <span className="visually-hidden">unlock</span>
+                  </>
+                }
+              </button>
             </div>
           </label>
 
