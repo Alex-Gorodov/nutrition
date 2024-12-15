@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppRoute, MealType } from "../const";
-import { RootState } from "../store/root-reducer";
 import { redirectToRoute, setActiveMeal } from "../store/action";
 import { generatePath } from "react-router-dom";
 import { meals } from "../mocks/meals";

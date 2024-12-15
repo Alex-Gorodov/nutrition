@@ -1,5 +1,4 @@
 import { HelmetProvider } from 'react-helmet-async';
-import logo from './logo.svg';
 import { Provider } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import browserHistory from '../../browser-history';

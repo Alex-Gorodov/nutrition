@@ -4,7 +4,7 @@ import { RootState } from "./root-reducer";
 import { database } from "../services/database";
 import { APIRoute, AuthorizationStatus, NutritionTarget, TrainingSession } from "../const";
 import { Meal } from "../types/meal";
-import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading, setUserTarget, setUserWeight, trackUserMeal, trackUserTrainingSession } from "./action";
+import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading, trackUserMeal, trackUserTrainingSession } from "./action";
 import { User } from "../types/user";
 import { UserAuthData } from "../types/user-auth-data";
 import { AuthData } from "../types/authData";
