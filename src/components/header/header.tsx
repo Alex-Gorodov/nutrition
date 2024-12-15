@@ -35,9 +35,9 @@ export function Header(): JSX.Element {
 
   const [isMenuOpened, setMenuOpened] = useState(false);
 
-  const burgerClassName = cn("burger", {
-    "burger--opened": isMenuOpened,
-  });
+  // const burgerClassName = cn("burger", {
+  //   "burger--opened": isMenuOpened,
+  // });
 
   const listClassName = cn("header-nav__list", {
     "header-nav__list-mobile": isMobile,
