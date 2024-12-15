@@ -7,7 +7,6 @@ import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { addTrainingSessionToUser } from "../../store/api-actions";
 import { ReactComponent as Lock } from "../../img/icons/lock-icon.svg";
 import { ReactComponent as Unlock } from "../../img/icons/unlock-icon.svg";
-import { users } from "../../mocks/users";
 
 type FormProps = {
   isTrainingTypeUnset? : boolean;
@@ -21,8 +20,7 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
   const dispatch = useDispatch();
   const activeTraining = useSelector((state: RootState) => state.page.activeTraining);
   const user = useSelector((state: RootState) => state.user);
-  const userWeight = useSelector((state: RootState) => users.find((u) => u.id === user.id))?.weight;
-  // const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
+  const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
 
   const formRef = useOutsideClick(() => {
     dispatch(setTrainingFormOpened({ isOpened: false }));

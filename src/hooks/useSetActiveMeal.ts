@@ -1,12 +1,12 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppRoute, MealType } from "../const";
 import { redirectToRoute, setActiveMeal } from "../store/action";
 import { generatePath } from "react-router-dom";
-import { meals } from "../mocks/meals";
+import { RootState } from "../store/root-reducer";
 
 export function useSetActiveMeal() {
   const dispatch = useDispatch();
-  // const meals = useSelector((state: RootState) => state.data.meals);
+  const meals = useSelector((state: RootState) => state.data.meals);
 
   const handleSetActiveMeal = (mealType: MealType) => {
     const mealsOfType = meals.filter((meal) => meal.type === mealType);

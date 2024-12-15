@@ -23,7 +23,6 @@ import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
 import { checkAuthMethod } from "../../utils/check-auth-method";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { users } from "../../mocks/users";
 
 type FormField = {
   value: string;
@@ -65,7 +64,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
   const [data, setData] = useState<FormData>(initialData);
 
-  // const users = useSelector((state: RootState) => state.data.users);
+  const users = useSelector((state: RootState) => state.data.users);
 
   const handleFieldChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = target;

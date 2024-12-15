@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { meals } from "../../mocks/meals";
 import { RootState } from "../../store/root-reducer";
 import { Layout } from "../../components/layout/layout";
 import { redirectToRoute, setActiveMeal, setActiveMealType } from "../../store/action";
@@ -10,6 +9,8 @@ import { ReactComponent as MealIcon} from "../../img/icons/meal-icon.svg"
 export function MealsByTypePage(): JSX.Element {
   const dispatch = useDispatch();
   const activeMealType = useSelector((state: RootState) => state.page.activeMealType);
+
+  const meals = useSelector((state: RootState) => state.data.meals);
 
   const filteredMeals = meals.filter((meal) => meal.type === activeMealType);
 

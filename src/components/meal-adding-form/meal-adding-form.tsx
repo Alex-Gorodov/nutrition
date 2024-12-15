@@ -7,11 +7,10 @@ import { addNewMeal, setNewMealFormOpened } from "../../store/action";
 import { Meal } from "../../types/meal";
 import { Upload } from "../upload-picture/upload-picture";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { meals } from "../../mocks/meals";
 
 export function MealAddingForm(): JSX.Element {
   const dispatch = useDispatch();
-  // const meals = useSelector((state: RootState) => state.data.meals);
+  const meals = useSelector((state: RootState) => state.data.meals);
   const isFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const mealsAmount = meals.length.toString();
 
