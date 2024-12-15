@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { MealItem } from "../meal-item/meal-item";
-import { redirectToRoute, setActiveMealType, setMealFormOpened, setNewMealFormOpened } from "../../store/action";
+import { redirectToRoute, setActiveMeal, setActiveMealType, setMealFormOpened, setNewMealFormOpened } from "../../store/action";
 import cn from 'classnames';
 import { generatePath } from "react-router-dom";
 import { useEffect } from "react";
@@ -29,6 +29,8 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
 
   const handleOpenForm = () => {
     dispatch(setMealFormOpened({isOpened: false}));
+    dispatch(setActiveMeal({meal: null}));
+    dispatch(setActiveMealType({type: null}));
     dispatch(setNewMealFormOpened({isOpened: true}));
   }
 
@@ -45,7 +47,7 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
       )}
       {!activeMeal && (
       <>
-        <h1 className="title title--secondary meals__title">Выберите тип приема пищи</h1>
+        <h1 className="title title--secondary meals__title">Выберите прием пищи</h1>
         <div className="meals__buttons">
           {Object.values(MealType).map((type) => (
             <button

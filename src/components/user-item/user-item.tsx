@@ -326,7 +326,7 @@ export function UserItem({user}: UserItemProps): JSX.Element {
       <div className="user__incription">
         <i>*<br/>Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
       </div>
-      {isTrainingFormOpened ? <AddTraining isTrainingTypeUnset/> : ''}
+      {isTrainingFormOpened ? <AddTraining isTrainingTypeUnset={true}/> : ''}
       {isMealFormOpened ? <AddMeal/> : ''}
     </div>
   )

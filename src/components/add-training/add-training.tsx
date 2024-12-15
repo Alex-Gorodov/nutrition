@@ -22,10 +22,6 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
   const user = useSelector((state: RootState) => state.user);
   const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
 
-  const formRef = useOutsideClick(() => {
-    dispatch(setTrainingFormOpened({ isOpened: false }));
-  }) as React.RefObject<HTMLFormElement>;
-
   const [intensity, setIntensity] = useState<METIntensity>("moderate");
   const [weight, setWeight] = useState(userWeight || 70);
   const [time, setTime] = useState(30);
@@ -96,17 +92,18 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
         dispatch(setStatusMessage({message: SuccessMessages.TrainingAdded}))
         :
         dispatch(setStatusMessage({message: ErrorMessages.TrainingNoAuthError}))
-      setTrainingFormOpened({isOpened: false})
-    } catch(e) {
-      dispatch(setStatusMessage({message: ErrorMessages.ConnectionError}))
-      console.error('error!', e);
-    }
+      } catch(e) {
+        dispatch(setStatusMessage({message: ErrorMessages.ConnectionError}))
+        console.error('error!', e);
+      } finally {
+        setTrainingFormOpened({isOpened: false})
+      }
 
   }
 
   return (
     <div className="add-training">
-      <form className="form" method="post" ref={formRef}>
+      <form className="form" method="post">
         <h1 className="title title--2 form__title">Добавить тренировку</h1>
         <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}>x</button>
         <fieldset className="form__fieldset">
@@ -144,7 +141,6 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
             </div>
           </label>
 
-          {/* Интенсивность */}
           <label className="form__item" htmlFor="training-intensity">
             Интенсивность:
             <select
@@ -161,7 +157,6 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
             </select>
           </label>
 
-          {/* Вес */}
           <label className="form__item" htmlFor="training-weight">
             Вес (кг):
             <input
@@ -173,7 +168,6 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
             />
           </label>
 
-          {/* Время */}
           <label className="form__item" htmlFor="training-time">
             Время (в минутах):
             <input
@@ -189,7 +183,6 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
         <button className="button" type="button" onClick={handleCalculate}>
           Посчитать калории
         </button>
-        {/* Результат */}
         {calories > 0 && (
           <p>
             Вы затратили примерно <strong>{Math.floor(calories)}</strong>{" "}

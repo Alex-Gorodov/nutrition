@@ -13,8 +13,7 @@ export function AddMeal(): JSX.Element {
   return (
     <div>
       {
-        <div className="form" ref={formRef}>
-          <h1 className="title title--2 form__title">Добавить прием пищи</h1>
+        <div className="form form--add-meal" ref={formRef}>
           <button className="button form__button--close" onClick={() => dispatch(setMealFormOpened({isOpened: false}))}>x</button>
           <ChooseMeal isPopup/>
         </div>

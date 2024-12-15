@@ -6,16 +6,7 @@ export const useOutsideClick = (callback: () => void) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-
-      const isFalseTrigger =
-        target.closest('button')?.classList.contains('header__burger') ||
-        target.closest('div')?.classList.contains('header__burger') ||
-        target.closest('button')?.classList.contains('header__burger') ||
-        target.closest('button')?.classList.contains('header__button') ||
-        target.closest('button')?.classList.contains('user-navigation__button') ||
-        target.closest('li')?.classList.contains('shop__sorting-item');
-
-      if (!isFalseTrigger && ref.current && !ref.current.contains(target)) {
+      if (ref.current && !ref.current.contains(target)) {
         callback();
       }
     };
