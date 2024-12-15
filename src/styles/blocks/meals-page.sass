@@ -1,6 +1,7 @@
 .meals-page
   display: flex
   padding-top: 20px
+  margin-bottom: 40px
   flex-direction: column
   gap: 20px
   &__item
@@ -10,6 +11,12 @@
     gap: 20px
     text-decoration: none
     color: $black
+    border: 2px solid darken($light-blue, 50%)
+    padding: 10px
+    border-radius: 16px
+    transition: $hover-transition
+    &:hover
+      box-shadow: 4px 4px 4px 4px black
   &__image-wrapper
     justify-self: center
     grid-column: 1 / 2
@@ -22,3 +29,4 @@
     justify-content: space-around
     gap: 10px
     grid-column: 2 / 3
+    // & p

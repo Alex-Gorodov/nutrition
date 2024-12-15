@@ -48,7 +48,9 @@ export function MealsByTypePage(): JSX.Element {
               }
             </div>
             <div className="meals-page__wrapper">
-              {meal.name}
+              <p className="title title--3">
+                {meal.name}
+              </p>
               <div>
                 <span>Ккал: {meal.calories} </span>
                 <span>Б: {meal.proteins}г </span>
