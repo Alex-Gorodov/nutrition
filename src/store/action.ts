@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 import { Meal } from "../types/meal";
 import { User } from "../types/user";
-import { AppRoute, AuthorizationStatus, ErrorMessages, NutritionTarget, RegistrationSteps, SuccessMessages, TrainingSession, TrainingType } from "../const";
+import { AppRoute, AuthorizationStatus, ErrorMessages, MealType, NutritionTarget, RegistrationSteps, SuccessMessages, TrainingSession, TrainingType } from "../const";
 import { UserAuthData } from "../types/user-auth-data";
 
 // Data fetching
@@ -26,6 +26,7 @@ export const trackUserMeal = createAction<{user: User, meal: Meal}>('user/trackU
 export const trackUserTrainingSession = createAction<{user: User, session: TrainingSession}>('user/trackUserTrainingSession');
 
 // Page
+export const setActiveMealType = createAction<{type: MealType | null}>('page/setActiveMealType')
 export const setActiveMeal = createAction<{meal: Meal | null}>('page/setActiveMeal')
 export const setStatusMessage = createAction<{message: ErrorMessages | SuccessMessages | null}>('page/setStatusMessage');
 export const redirectToRoute = createAction<AppRoute>('page/redirectToRoute');

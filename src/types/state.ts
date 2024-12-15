@@ -1,4 +1,4 @@
-import { AuthorizationStatus, ErrorMessages, RegistrationSteps, SuccessMessages, TrainingType } from "../const";
+import { AuthorizationStatus, ErrorMessages, MealType, RegistrationSteps, SuccessMessages, TrainingType } from "../const";
 import { store } from "../store";
 import { Meal } from "./meal";
 import { User } from "./user";
@@ -29,6 +29,7 @@ export type PageState = {
   statusMessage: SuccessMessages | ErrorMessages | null;
   registrationStep: RegistrationSteps;
   activeTraining: TrainingType | null;
+  activeMealType: MealType | null;
   activeMeal: Meal | null;
   activeUser: User | null;
   uploadedPath: string | null;

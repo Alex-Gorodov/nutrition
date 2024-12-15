@@ -1,6 +1,6 @@
 .meals
-  // padding-top: 80px
   margin-bottom: 80px
+  padding-top: 20px
   &__title
     margin-bottom: 20px
   &__buttons
@@ -12,3 +12,11 @@
       padding: 0px
       grid-template-columns: repeat(2, 140px)
       grid-template-rows: repeat(2, 140px) 60px
+  &--popup
+    margin: 0
+    padding-top: 0
+    padding-bottom: 40px
+    & .meals__buttons
+      @media (max-width: $mobile)
+        justify-content: center
+        grid-template-columns: repeat(2, 120px)

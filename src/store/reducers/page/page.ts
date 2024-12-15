@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { PageState } from "../../../types/state";
-import { setActiveMeal, setActiveTraining, setActiveUser, setLoginFormOpened, setMealFormOpened, setNewMealFormOpened, setRegisterFormOpened, setRegistrationStep, setStatusMessage, setTrainingFormOpened, setUploadedPath } from "../../action";
+import { setActiveMeal, setActiveMealType, setActiveTraining, setActiveUser, setLoginFormOpened, setMealFormOpened, setNewMealFormOpened, setRegisterFormOpened, setRegistrationStep, setStatusMessage, setTrainingFormOpened, setUploadedPath } from "../../action";
 import { RegistrationSteps } from "../../../const";
 import { getUserFromLocalStorage } from "../../../services/token";
 
@@ -13,6 +13,7 @@ const initialState: PageState = {
   isMealFormOpened: false,
   statusMessage: null,
   activeTraining: null,
+  activeMealType: null,
   activeMeal: null,
   activeUser: null,
   uploadedPath: null,
@@ -43,6 +44,9 @@ export const PageReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setRegistrationStep, (state, action) => {
       state.registrationStep = action.payload.step;
+    })
+    .addCase(setActiveMealType, (state, action) => {
+      state.activeMealType = action.payload.type || null;
     })
     .addCase(setActiveMeal, (state, action) => {
       state.activeMeal = action.payload.meal;

@@ -4,6 +4,7 @@
   gap: 40px
   @media (max-width: $tablet)
     grid-template-columns: 1fr
+    padding: 10px
   @media (min-width: $desktop)
     grid-template-columns: 400px auto 400px
   &__title
@@ -12,8 +13,16 @@
     font-size: 24px
     @media (max-width: $tablet)
       display: block
+  &__image-wrapper
+    @media (max-width: $mobile)
+      display: flex
+      justify-content: center
+      align-items: center
   &__picture
     border-radius: 24px
+    @media (max-width: $mobile)
+      max-width: 320px
+      height: auto
   &__alt-picture
     display: flex
     justify-content: center

@@ -1,0 +1,24 @@
+.meals-page
+  display: flex
+  padding-top: 20px
+  flex-direction: column
+  gap: 20px
+  &__item
+    display: grid
+    grid-template-columns: 80px auto
+    align-items: center
+    gap: 20px
+    text-decoration: none
+    color: $black
+  &__image-wrapper
+    justify-self: center
+    grid-column: 1 / 2
+    max-height: 80px
+    & img
+      border-radius: 8px
+  &__wrapper
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+    gap: 10px
+    grid-column: 2 / 3

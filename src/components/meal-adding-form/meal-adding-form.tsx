@@ -7,10 +7,11 @@ import { addNewMeal, setNewMealFormOpened } from "../../store/action";
 import { Meal } from "../../types/meal";
 import { Upload } from "../upload-picture/upload-picture";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { meals } from "../../mocks/meals";
 
 export function MealAddingForm(): JSX.Element {
   const dispatch = useDispatch();
-  const meals = useSelector((state: RootState) => state.data.meals);
+  // const meals = useSelector((state: RootState) => state.data.meals);
   const isFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const mealsAmount = meals.length.toString();
 
@@ -91,7 +92,7 @@ export function MealAddingForm(): JSX.Element {
       }));
     } else if (name === "ingredients") {
       const ingredientsArray = value
-        ? value.split(",").map((ingredient) => ingredient.trim())
+        ? value.split(",").map((ingredient) => ingredient)
         : [];
 
       setData((prevdata) => ({
@@ -171,7 +172,7 @@ export function MealAddingForm(): JSX.Element {
             type="text"
             id="meal-ingredients"
             name="ingredients"
-            value={data.ingredients.join(", ")} // Преобразуем массив в строку для отображения
+            value={data.ingredients.join(",")} // Преобразуем массив в строку для отображения
             onChange={handleFieldChange}
             placeholder="Куриная грудка, лук, чеснок, специи..."
           />

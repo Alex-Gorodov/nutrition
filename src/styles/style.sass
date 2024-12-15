@@ -84,6 +84,13 @@ $popup-transition: 0.6s
   background-color: $white
   border-radius: 4px
 
+@mixin custom-select
+  -webkit-appearance: none
+  -moz-appearance: none
+  background-image: url("../../img/icons/down-icon.svg")
+  background-repeat: no-repeat
+  background-position: 100% center
+
 *,
 *::after,
 *::before
@@ -165,3 +172,9 @@ body
   flex-direction: column
   min-height: 100vh
   background-color: $light-blue
+
+.icon
+  transition: $hover-transition
+  height: 20px
+  &--rotated
+    transform: rotate(180deg)

@@ -1,7 +1,7 @@
 .user
   display: grid
   padding-top: 40px
-  gap: 40px
+  // gap: 40px
   @media (max-width: $mobile)
     padding-top: 20px
   &__wrapper
@@ -44,10 +44,10 @@
       border-radius: 8px
       background-color: lighten($light-blue, 5%)
       appearance: none
-      &::-webkit-inner-spin-button
-        display: none
       &:focus-visible
         outline: none
+    &--select
+      @include custom-select
   &__editable-weight
     display: flex
     gap: 10px

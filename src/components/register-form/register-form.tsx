@@ -11,9 +11,11 @@ import { generatePath } from "react-router-dom";
 import { useGetUser } from "../../hooks/useGetUser";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { users } from "../../mocks/users";
 
 export function RegisterForm(): JSX.Element {
-  const usersAmount = useSelector((state: RootState) => state.data.users.length);
+  const usersAmount = useSelector((state: RootState) => users.length);
+  // const usersAmount = useSelector((state: RootState) => state.data.users.length);
   const registrationStep = useSelector((state: RootState) => state.page.registrationStep);
 
   const dispatch = useDispatch();

@@ -26,20 +26,42 @@
       padding: 10px
     & span:last-child
       margin-left: auto
+  &__group-header
+    display: flex
+    flex-direction: column
+    & div
+      display: flex
+      max-height: 40px
+      padding: 10px 40px
+      border-bottom: 2px solid black
+      justify-content: space-between
+      cursor: pointer
+    & p
+      margin: auto
   &__list
     @include list-reset
     display: flex
     flex-direction: column
+  &__sublist
+    @include list-reset
   &__item
     display: grid
     padding: 10px 40px
     border-bottom: 2px solid black
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
     align-items: center
+    // text-transform: capitalize
     @media (max-width: $mobile)
       grid-template-columns: repeat(auto-fit, minmax(60px, 1fr))
       padding: 10px
+      font-size: 12px
     & span:last-child
       margin-left: auto
     &--breakfast
       background-color: $breakfast
+    &--lunch
+      background-color: $lunch
+    &--dinner
+      background-color: $dinner
+    &--snack
+      background-color: $snack

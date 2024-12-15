@@ -4,7 +4,7 @@ import { RootState } from "../../store/root-reducer";
 import { AppRoute, AuthorizationStatus } from "../../const";
 import { logoutAction } from "../../store/api-actions";
 import { AppDispatch } from "../../types/state";
-import { setActiveMeal, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
+import { setActiveMeal, setActiveMealType, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
 import { useState } from "react"
 import cn from 'classnames';
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ export function Header(): JSX.Element {
   const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
 
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
+  const activeMealType = useSelector((state: RootState) => state.page.activeMealType);
 
   const handleLogout = () => {
     dispatch(logoutAction());
@@ -45,6 +46,7 @@ export function Header(): JSX.Element {
 
   const clearScreen = () => {
     activeMeal && dispatch(setActiveMeal({meal: null}));
+    activeMealType && dispatch(setActiveMealType({type: null}))
     setMenuOpened(false);
   }
 

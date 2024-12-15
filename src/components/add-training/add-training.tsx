@@ -7,6 +7,7 @@ import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { addTrainingSessionToUser } from "../../store/api-actions";
 import { ReactComponent as Lock } from "../../img/icons/lock-icon.svg";
 import { ReactComponent as Unlock } from "../../img/icons/unlock-icon.svg";
+import { users } from "../../mocks/users";
 
 type FormProps = {
   isTrainingTypeUnset? : boolean;
@@ -20,7 +21,8 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
   const dispatch = useDispatch();
   const activeTraining = useSelector((state: RootState) => state.page.activeTraining);
   const user = useSelector((state: RootState) => state.user);
-  const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
+  const userWeight = useSelector((state: RootState) => users.find((u) => u.id === user.id))?.weight;
+  // const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
 
   const formRef = useOutsideClick(() => {
     dispatch(setTrainingFormOpened({ isOpened: false }));
@@ -111,7 +113,7 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
         <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}>x</button>
         <fieldset className="form__fieldset">
           <label className="form__item form__item--row" htmlFor="training-type">
-            Activity:
+            Активность:
             <div className="add-training__select-wrapper">
               <select
                 className="form__input form__input--select"
@@ -146,7 +148,7 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
 
           {/* Интенсивность */}
           <label className="form__item" htmlFor="training-intensity">
-            Intensity:
+            Интенсивность:
             <select
               className="form__input form__input--select"
               value={intensity}
@@ -163,7 +165,7 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
 
           {/* Вес */}
           <label className="form__item" htmlFor="training-weight">
-            Weight (kg):
+            Вес (кг):
             <input
               className="form__input"
               type="number"
@@ -175,7 +177,7 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
 
           {/* Время */}
           <label className="form__item" htmlFor="training-time">
-            Time (minutes):
+            Время (в минутах):
             <input
               className="form__input"
               type="number"
@@ -187,13 +189,13 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
         </fieldset>
 
         <button className="button" type="button" onClick={handleCalculate}>
-          Calculate Calories
+          Посчитать калории
         </button>
         {/* Результат */}
         {calories > 0 && (
           <p>
-            You burned approximately <strong>{Math.floor(calories)}</strong>{" "}
-            calories!
+            Вы затратили примерно <strong>{Math.floor(calories)}</strong>{" "}
+            калорий! Так держать!
           </p>
         )}
         <button className="button button--submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>

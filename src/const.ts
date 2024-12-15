@@ -1,6 +1,8 @@
 export enum AppRoute {
   Root = "/nutrition",
-  UserPage = "/nutrition/user/:id"
+  UserPage = "/nutrition/user/:id",
+  MealPage = "/nutrition/meal/:id",
+  MealsByTypePage = "/nutrition/meals/:type",
 }
 
 export enum APIRoute {
