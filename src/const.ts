@@ -61,29 +61,35 @@ export const MET_VALUES = {
     slow: { intensity: "Низко", speed: 3.2, met: 2.0 },
     moderate: { intensity: "Средне", speed: 5.0, met: 3.5 },
     fast: { intensity: "Высоко", speed: 6.4, met: 5.0 },
-    veryFast: { intensity: "Очень высоко", speed: 7.3, met: 6.3 },
+    veryFast: { intensity: "Очень высоко", speed: 8.0, met: 6.3 },  // Добавлено
   },
   Running: {
-    slow: { intensity: "", speed: 8.0, met: 8.3 },
+    slow: { intensity: "Низко", speed: 8.0, met: 8.3 },
     moderate: { intensity: "Средне", speed: 10.0, met: 9.8 },
     fast: { intensity: "Высоко", speed: 12.0, met: 11.5 },
+    veryFast: { intensity: "Очень высоко", speed: 14.0, met: 13.0 },  // Добавлено
   },
   Swimming: {
     low: { intensity: "Низко", met: 6.0 },
     moderate: { intensity: "Средне", met: 8.0 },
     high: { intensity: "Высоко", met: 10.0 },
+    veryHigh: { intensity: "Очень высоко", met: 12.0 }, // Для плавания оставляем veryHigh
   },
   Cardio: {
-    low: { intensity: "Низко", met: 6.0 },
-    moderate: { intensity: "Средне", met: 8.0 },
-    high: { intensity: "Высоко", met: 10.0 },
+    low: { intensity: "Низко", met: 3.0 },
+    moderate: { intensity: "Средне", met: 6.0 },
+    high: { intensity: "Высоко", met: 8.0 },
+    veryHigh: { intensity: "Очень высоко", met: 10.0 },  // Добавлено
   },
   Gym: {
-    low: { intensity: "Низко", met: 6.0 },
-    moderate: { intensity: "Средне", met: 8.0 },
-    high: { intensity: "Высоко", met: 10.0 },
+    low: { intensity: "Низко", met: 3.5 },
+    moderate: { intensity: "Средне", met: 5.5 },
+    high: { intensity: "Высоко", met: 8.0 },
+    veryHigh: { intensity: "Очень высоко", met: 10.0 },  // Добавлено
   },
 } as const;
+
+
 
 export type METActivity = keyof typeof MET_VALUES;
 export type METIntensity = "slow" | "moderate" | "fast" | "low" | "high";
@@ -112,6 +118,24 @@ export enum ActivityLevel {
   ExtraActive = 1.9,
 }
 
+export enum NutritionTarget {
+  WeightMaintenance = 'Поддержание веса',
+  WeightLoss = 'Похудение',
+  MuscleGain = 'Набор массы',
+}
+
+export enum CaloricGoals {
+  WeightLoss = 0.85,
+  WeightMaintenance = 1,
+  MuscleGain = 1.15,
+}
+
+export const NutritionTargetToCaloricGoals: Record<NutritionTarget, keyof typeof CaloricGoals> = {
+  [NutritionTarget.WeightMaintenance]: 'WeightMaintenance',
+  [NutritionTarget.WeightLoss]: 'WeightLoss',
+  [NutritionTarget.MuscleGain]: 'MuscleGain',
+};
+
 export const ActivityLevelTranslations: Record<ActivityLevel, string> = {
   [ActivityLevel.Sedentary]: 'Малая подвижность',
   [ActivityLevel.LightlyActive]: 'Низкая активность',
@@ -123,12 +147,6 @@ export const ActivityLevelTranslations: Record<ActivityLevel, string> = {
 export enum Genders {
   Male = 'мужской',
   Female = 'женский',
-}
-
-export enum NutritionTarget {
-  WeightMaintenance = 'Поддержание веса',
-  WeightLoss = 'Похудение',
-  MuscleGain = 'Набор массы',
 }
 
 export enum RegistrationSteps {

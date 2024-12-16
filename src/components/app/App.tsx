@@ -11,19 +11,22 @@ import PrivateRoute from '../private-route/private-route';
 import { UserPage } from '../../pages/user-page/user-page';
 import { MealPage } from '../../pages/meal-page/meal-page';
 import { MealsByTypePage } from '../../pages/meals-by-type-page/meals-by-type-page';
+import { Layout } from '../layout/layout';
 
 function App() {
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory} basename="/">
         <Provider store={store}>
-          <Routes>
-            <Route path={AppRoute.Root} element={<HomePage/>}/>
-            <Route path={AppRoute.UserPage} element={<PrivateRoute element={<UserPage />} />}/>
-            <Route path={AppRoute.MealPage} element={<PrivateRoute element={<MealPage />} />}/>
-            <Route path={AppRoute.MealsByTypePage} element={<PrivateRoute element={<MealsByTypePage />} />}/>
-            <Route path="*" element={<PageNotFound/>}/>
-          </Routes>
+          <Layout>
+            <Routes>
+              <Route path={AppRoute.Root} element={<HomePage/>}/>
+              <Route path={AppRoute.UserPage} element={<PrivateRoute element={<UserPage />} />}/>
+              <Route path={AppRoute.MealPage} element={<PrivateRoute element={<MealPage />} />}/>
+              <Route path={AppRoute.MealsByTypePage} element={<PrivateRoute element={<MealsByTypePage />} />}/>
+              <Route path="*" element={<PageNotFound/>}/>
+            </Routes>
+          </Layout>
         </Provider>
       </HistoryRouter>
     </HelmetProvider>

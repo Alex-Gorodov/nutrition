@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { PageState } from "../../../types/state";
 import { setActiveMeal, setActiveMealType, setActiveTraining, setActiveUser, setLoginFormOpened, setMealFormOpened, setNewMealFormOpened, setRegisterFormOpened, setRegistrationStep, setStatusMessage, setTrainingFormOpened, setUploadedPath } from "../../action";
-import { RegistrationSteps } from "../../../const";
+import { RegistrationSteps, TrainingType } from "../../../const";
 import { getUserFromLocalStorage } from "../../../services/token";
 
 const initialState: PageState = {
@@ -12,7 +12,7 @@ const initialState: PageState = {
   isTrainingFormOpened: false,
   isMealFormOpened: false,
   statusMessage: null,
-  activeTraining: null,
+  activeTraining: TrainingType.Walking,
   activeMealType: null,
   activeMeal: null,
   activeUser: null,

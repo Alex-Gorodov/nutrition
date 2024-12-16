@@ -9,7 +9,11 @@ import { Upload } from "../upload-picture/upload-picture";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
-export function MealAddingForm(): JSX.Element {
+type MealAddingFormProps = {
+  type?: MealType;
+}
+
+export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
   const dispatch = useDispatch();
   const meals = useSelector((state: RootState) => state.data.meals);
   const isFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
@@ -143,13 +147,14 @@ export function MealAddingForm(): JSX.Element {
       <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}>x</button>
       <h1 className="title title--2 form__title">Добавление нового блюда</h1>
       <fieldset className="form__fieldset">
+
         <label className="form__item" htmlFor="meal-type">
           <span>Выберите прием пищи: </span>
           <select
             className="form__input form__input--select"
             name="type"
             id="meal-type"
-            value={data.type}
+            value={type ? type : data.type}
             onChange={handleSelectChange}
           >
             {Object.values(MealType).map((type) => (
@@ -159,6 +164,7 @@ export function MealAddingForm(): JSX.Element {
             ))}
           </select>
         </label>
+
         <label className="form__item" htmlFor="meal-name">
           <span>Название блюда: </span>
           <input
@@ -171,6 +177,7 @@ export function MealAddingForm(): JSX.Element {
             placeholder="Запеченая куриная грудка"
           />
         </label>
+
         <label className="form__item form__item--wild-grid" htmlFor="meal-ingredients">
           <span>Ингредиенты: </span>
           <input
@@ -183,6 +190,7 @@ export function MealAddingForm(): JSX.Element {
             placeholder="Куриная грудка, лук, чеснок, специи..."
           />
         </label>
+
         <label className="form__item form__item--wild-grid" htmlFor="meal-recipe">
           <span>Опиши рецепт (пошагово): </span>
           <textarea
@@ -195,6 +203,7 @@ export function MealAddingForm(): JSX.Element {
             placeholder="Рецепт..."
           />
         </label>
+
         <label className="form__item" htmlFor="meal-calories">
           <span>Калории: </span>
           <input
@@ -207,6 +216,7 @@ export function MealAddingForm(): JSX.Element {
             min={0}
           />
         </label>
+
         <label className="form__item" htmlFor="meal-proteins">
           <span>Белки: </span>
           <input

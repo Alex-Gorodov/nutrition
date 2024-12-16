@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { Layout } from "../../components/layout/layout";
 import { AppRoute } from "../../const";
 import { Helmet } from "react-helmet-async";
 
 export function PageNotFound(): JSX.Element {
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Nutrition | 404</title>
       </Helmet>
@@ -20,6 +19,6 @@ export function PageNotFound(): JSX.Element {
           Go to main
         </Link>
       </div>
-    </Layout>
+    </>
   )
 }

@@ -91,6 +91,28 @@ $popup-transition: 0.6s
   background-repeat: no-repeat
   background-position: 100% center
 
+@keyframes loader-animation
+  0%
+    transform: scale(1)
+  20%
+    transform: scale(1.2)
+  40%
+    transform: scale(0.8)
+  60%
+    transform: scale(1.1)
+  80%
+    transform: scale(0.9)
+  100%
+    transform: scale(1)
+
+@keyframes loader-disappearing
+  0%
+    transform: scale(1)
+  100%
+    transform: scale(100)
+    color: $light-blue
+    opacity: 0
+
 *,
 *::after,
 *::before

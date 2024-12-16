@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityLevelTranslations, MealTypeTranslations, NutritionTarget, TrainingTypeTranslations } from "../../const";
+import { ActivityLevelTranslations, CaloricGoals, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { userGreetings } from "../../utils/user-greetings";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ import { setMealFormOpened, setTrainingFormOpened, setUserTarget, setUserWeight 
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { groupByDate } from "../../utils/groupByDate";
 import { ReactComponent as CollapseIcon } from "../../img/icons/down-icon.svg"
+import { RadialProgressBar } from "../radial-progress-bar/radial-progress-bar";
 
 type UserItemProps = {
   user: User;
@@ -27,20 +28,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   const [trainingExpandedDates, setTrainingExpandedDates] = useState<Record<string, boolean>>({});
   const [mealsExpandedDates, setMealsExpandedDates] = useState<Record<string, boolean>>({});
 
-  // const toggleTrainingDate = (date: string) => {
-  //   setTrainingExpandedDates((prev) => ({
-  //     ...Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {}),
-  //     [date]: !prev[date],
-  //   }));
-  // };
-
-  // const toggleMealsDate = (date: string) => {
-  //   setMealsExpandedDates((prev) => ({
-  //     ...Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {}),
-  //     [date]: !prev[date],
-  //   }));
-  // };
-
   const toggleTrainingDate = (date: string) => {
     setTrainingExpandedDates((prev) => ({
       ...prev,
@@ -55,6 +42,28 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     }));
   };
 
+  useEffect(() => {
+    const todayFormatted = formatDate(new Date());
+    setTrainingExpandedDates((prev) => ({
+      ...prev,
+      [todayFormatted]: true,
+    }));
+    setMealsExpandedDates((prev) => ({
+      ...prev,
+      [todayFormatted]: true,
+    }));
+  }, []);
+
+
+  const calculateActiveBmr = (
+    bmr: number,
+    activityLevel: number,
+    nutritionTarget: NutritionTarget
+  ): number => {
+    const caloricGoalKey = NutritionTargetToCaloricGoals[nutritionTarget]; // Получение ключа
+    const caloricGoal = CaloricGoals[caloricGoalKey]; // Получение значения
+    return Math.floor(bmr * activityLevel * caloricGoal); // Расчёт
+  };
 
   const today = new Date().getDate();
 
@@ -89,7 +98,8 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   }, [user.target]);
 
   const bmr = getBasalMetabolicRate(user).valueOf();
-  const activeBmr = Math.floor(bmr * user.activityLevel);
+
+  const activeBmr = calculateActiveBmr(bmr, user.activityLevel, user.target);
 
   const todayStyle = {
     backgroundColor: 'red'
@@ -108,19 +118,26 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     carbs += m[0].carbs
   })
 
+  console.log('====================================');
+  console.log(activeBmr);
+  console.log('====================================');
+
   return (
     <div className="user">
       <div className="user__wrapper">
         <div className="user__info">
           <p className="user__name">{userGreetings(user.name)}</p>
           <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
-          <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}), вам необходимо получать из пищи <b>{activeBmr}</b> ккал.</p>
+          <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}) и вашу цель ({user.target.toLowerCase()}), вам необходимо получать из пищи <b>{activeBmr}</b> ккал.</p>
           <div>
             <p>Сегодня вы получили из пищи:</p>
             <p style={todayStyle}>calories: {calories}</p>
             <p style={todayStyle}>proteins: {proteins}</p>
             <p style={todayStyle}>fats: {fats}</p>
             <p style={todayStyle}>carbs: {carbs}</p>
+          </div>
+          <div>
+            <RadialProgressBar target={activeBmr} value={calories} field="калорий"/>
           </div>
           <p className="user__editable-wrapper">
             <span className="user__editable-title">Ваш вес:</span>

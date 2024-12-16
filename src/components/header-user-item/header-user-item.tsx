@@ -3,10 +3,10 @@ import { RootState } from "../../store/root-reducer";
 import { useEffect, useState } from "react";
 import { User } from "../../types/user";
 import { generatePath, Link } from "react-router-dom";
-import { AppRoute } from "../../const";
+import { AppRoute, TrainingType } from "../../const";
 import { useGetUser } from "../../hooks/useGetUser";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
-import { setActiveMeal, setActiveMealType, setMealFormOpened } from "../../store/action";
+import { setActiveMeal, setActiveMealType, setActiveTraining, setMealFormOpened } from "../../store/action";
 
 export function HeaderUserItem(): JSX.Element {
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ export function HeaderUserItem(): JSX.Element {
     dispatch(setMealFormOpened({isOpened: false}));
     dispatch(setActiveMeal({meal: null}));
     dispatch(setActiveMealType({type: null}));
+    dispatch(setActiveTraining({training: TrainingType.Walking}))
   }
 
   useEffect(() => {
