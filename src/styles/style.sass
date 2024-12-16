@@ -30,10 +30,10 @@ $extra-bold: 800
 $black: #000
 $white: #fff
 
-$container-max-width: 1440px
+$container-max-width: 1200px
 $desktop: 1280px
 $shop-grid: 875px
-$tablet: 900px
+$tablet: 768px
 $mobile: 490px
 
 $hover-transition: 0.3s
@@ -183,7 +183,10 @@ body
 
 .main
   position: relative
-  min-width: 80vw
+  // min-width: 80vw
+  width: 100%
+  padding: 0 20px
+  max-width: $container-max-width
   margin: auto
   flex-grow: 1
   transition: 0.3s

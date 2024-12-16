@@ -4,14 +4,12 @@
     margin-bottom: 20px
   &__buttons
     display: grid
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
+    grid-template-columns: repeat(12, 1fr)
     gap: 40px
     @media (max-width: $tablet)
+      gap: 20px
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))
   &__button
-    // display: flex
-    // justify-content: center
-    // align-items: center
     display: grid
     grid-template-columns: auto 40px
     gap: 20px
@@ -23,32 +21,44 @@
     color: $light-blue
     font-size: 1.5rem
     @media (max-width: $tablet)
+      display: flex
+      flex-direction: column-reverse
       padding: 20px
-      grid-template-columns: 1fr
       justify-items: center
-      // flex-direction: column
-      font-size: 1.25rem
+      font-size: 0.75rem
     &:hover
       color: darken($light-blue, 50%)
       box-shadow: 2px 2px 1px 1px black
     &--walking
       background-color: darken($walking, 15%)
+      @media (min-width: $tablet)
+        grid-column: 1 / 5
       &:hover
         background-color: $walking
     &--running
       background-color: darken($running, 15%)
+      @media (min-width: $tablet)
+        grid-column: 5 / 9
       &:hover
         background-color: $running
     &--cardio
       background-color: darken($cardio, 15%)
+      @media (min-width: $tablet)
+        grid-column: 9 / 13
       &:hover
         background-color: $cardio
     &--gym
+      grid-row: 2
       background-color: darken($gym, 15%)
+      @media (min-width: $tablet)
+        grid-column: span 6
       &:hover
         color: lighten($light-blue, 50%)
         background-color: $gym
     &--swimming
+      grid-row: 2
       background-color: darken($swimming, 15%)
+      @media (min-width: $tablet)
+        grid-column: span 6
       &:hover
         background-color: $swimming

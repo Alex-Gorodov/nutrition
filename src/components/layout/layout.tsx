@@ -66,7 +66,11 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
       {!showLoader && (
         <>
           <Header />
-          <main className="main">{children}</main>
+            <main className="main">
+              <div className="main__container">
+                {children}
+              </div>
+            </main>
           <Modals />
         </>
       )}
