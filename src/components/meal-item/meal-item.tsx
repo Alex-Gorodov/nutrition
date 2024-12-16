@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppRoute, MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
-import { formatRecipe } from "../../utils/format-recipe";
+import { formatRecipe } from "../../utils/formatRecipe";
 import { RootState } from "../../store/root-reducer";
 import { redirectToRoute, setActiveMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";

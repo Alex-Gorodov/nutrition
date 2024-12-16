@@ -21,7 +21,7 @@ import { ActivityLevel, AuthorizationStatus, ErrorMessages, Genders, NutritionTa
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
-import { checkAuthMethod } from "../../utils/check-auth-method";
+import { checkAuthMethod } from "../../utils/checkAuthMethod";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 type FormField = {

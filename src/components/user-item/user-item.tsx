@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { ActivityLevelTranslations, CaloricGoals, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
-import { userGreetings } from "../../utils/user-greetings";
+import { setUserGreetings } from "../../utils/setUserGreetings";
 import { useDispatch } from "react-redux";
 import { updateUserTarget, updateUserWeight } from "../../store/api-actions";
 import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
 import { ReactComponent as AddIcon } from "../../img/icons/add-icon.svg";
-import { formatDate } from "../../utils/format-date";
+import { formatDate } from "../../utils/formatDate";
 import { setMealFormOpened, setTrainingFormOpened, setUserTarget, setUserWeight } from "../../store/action";
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { groupByDate } from "../../utils/groupByDate";
@@ -126,7 +126,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     <div className="user">
       <div className="user__wrapper">
         <div className="user__info">
-          <p className="user__name">{userGreetings(user.name)}</p>
+          <p className="user__name">{setUserGreetings(user.name)}</p>
           <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
           <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}) и вашу цель ({user.target.toLowerCase()}), вам необходимо получать из пищи <b>{activeBmr}</b> ккал.</p>
           <div>

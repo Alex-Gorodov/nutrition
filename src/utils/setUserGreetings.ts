@@ -1,4 +1,4 @@
-export function userGreetings(name: string): string {
+export function setUserGreetings(name: string): string {
   const localTime = new Date().getHours();
   let greeting;
 
