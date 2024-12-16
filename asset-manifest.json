@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/nutrition/static/css/main.d0a4a237.css",
-    "main.js": "/nutrition/static/js/main.e75133f6.js",
+    "main.css": "/nutrition/static/css/main.e9395531.css",
+    "main.js": "/nutrition/static/js/main.32cb11ee.js",
     "static/media/meal-icon.svg": "/nutrition/static/media/meal-icon.7ba9d6180045eeb1fb29502f763917bd.svg",
     "static/media/walking-icon.svg": "/nutrition/static/media/walking-icon.09037ba9abdec250ff38ca82fde90a42.svg",
     "static/media/running-icon.svg": "/nutrition/static/media/running-icon.ee43ce864bd69f6eb091abdfb6d7d72b.svg",
@@ -9,8 +9,7 @@
     "static/media/swimming-icon.svg": "/nutrition/static/media/swimming-icon.a791985a7d4cd7661c36ad79afa57ce8.svg",
     "static/media/upload-icon.svg": "/nutrition/static/media/upload-icon.ebe207d3351196557cc989def0b4c71a.svg",
     "static/media/apply-icon.svg": "/nutrition/static/media/apply-icon.236fb9d9f3da1fafb8c6914fc3492457.svg",
-    "static/media/lock-icon.svg": "/nutrition/static/media/lock-icon.03d09f32905fd072fde1333215662355.svg",
-    "static/media/unlock-icon.svg": "/nutrition/static/media/unlock-icon.27afc8a8946f1ca6478a122f53b2974b.svg",
+    "static/media/loader-logo.svg": "/nutrition/static/media/loader-logo.0bc95736580224e73873c0ce20cf0ddd.svg",
     "static/media/login-icon.svg": "/nutrition/static/media/login-icon.1bda062857536379f414352eae5405ed.svg",
     "static/media/logout-icon.svg": "/nutrition/static/media/logout-icon.c50e89b142f5d524a58fd7a399f4d0b4.svg",
     "index.html": "/nutrition/index.html",
@@ -20,11 +19,11 @@
     "static/media/add-icon.svg": "/nutrition/static/media/add-icon.ef8c93182b0a00b8551e680e0b823c1f.svg",
     "static/media/edit-icon.svg": "/nutrition/static/media/edit-icon.5a8887859ef64349e6f63fe9ed4da67d.svg",
     "static/media/down-icon.svg": "/nutrition/static/media/down-icon.fb1880fe77be07d0f18a34a4fe5cad20.svg",
-    "main.d0a4a237.css.map": "/nutrition/static/css/main.d0a4a237.css.map",
-    "main.e75133f6.js.map": "/nutrition/static/js/main.e75133f6.js.map"
+    "main.e9395531.css.map": "/nutrition/static/css/main.e9395531.css.map",
+    "main.32cb11ee.js.map": "/nutrition/static/js/main.32cb11ee.js.map"
   },
   "entrypoints": [
-    "static/css/main.d0a4a237.css",
-    "static/js/main.e75133f6.js"
+    "static/css/main.e9395531.css",
+    "static/js/main.32cb11ee.js"
   ]
 }
