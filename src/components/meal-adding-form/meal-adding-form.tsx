@@ -156,6 +156,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
             id="meal-type"
             value={type ? type : data.type}
             onChange={handleSelectChange}
+            required
           >
             {Object.values(MealType).map((type) => (
               <option key={type} value={type}>
@@ -175,6 +176,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
             value={data.name}
             onChange={handleFieldChange}
             placeholder="Запеченая куриная грудка"
+            required
           />
         </label>
 
@@ -188,6 +190,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
             value={data.ingredients.join(",")} // Преобразуем массив в строку для отображения
             onChange={handleFieldChange}
             placeholder="Куриная грудка, лук, чеснок, специи..."
+            required
           />
         </label>
 
