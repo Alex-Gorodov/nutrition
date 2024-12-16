@@ -58,20 +58,30 @@ export enum BasicTrainingCaloriesPerHour {
 
 export const MET_VALUES = {
   Walking: {
-    slow: { speed: 3.2, met: 2.0 },
-    moderate: { speed: 5.0, met: 3.5 },
-    fast: { speed: 6.4, met: 5.0 },
-    veryFast: { speed: 7.3, met: 6.3 },
+    slow: { intensity: "Низко", speed: 3.2, met: 2.0 },
+    moderate: { intensity: "Средне", speed: 5.0, met: 3.5 },
+    fast: { intensity: "Высоко", speed: 6.4, met: 5.0 },
+    veryFast: { intensity: "Очень высоко", speed: 7.3, met: 6.3 },
   },
   Running: {
-    slow: { speed: 8.0, met: 8.3 },
-    moderate: { speed: 10.0, met: 9.8 },
-    fast: { speed: 12.0, met: 11.5 },
+    slow: { intensity: "", speed: 8.0, met: 8.3 },
+    moderate: { intensity: "Средне", speed: 10.0, met: 9.8 },
+    fast: { intensity: "Высоко", speed: 12.0, met: 11.5 },
   },
   Swimming: {
-    low: { intensity: "low", met: 6.0 },
-    moderate: { intensity: "moderate", met: 8.0 },
-    high: { intensity: "high", met: 10.0 },
+    low: { intensity: "Низко", met: 6.0 },
+    moderate: { intensity: "Средне", met: 8.0 },
+    high: { intensity: "Высоко", met: 10.0 },
+  },
+  Cardio: {
+    low: { intensity: "Низко", met: 6.0 },
+    moderate: { intensity: "Средне", met: 8.0 },
+    high: { intensity: "Высоко", met: 10.0 },
+  },
+  Gym: {
+    low: { intensity: "Низко", met: 6.0 },
+    moderate: { intensity: "Средне", met: 8.0 },
+    high: { intensity: "Высоко", met: 10.0 },
   },
 } as const;
 
@@ -150,7 +160,7 @@ export enum ErrorMessages {
 };
 
 export enum SuccessMessages {
-  AddToPreOrder = "Item successfully added to your pre-order list!",
+  AddNewMeal = "Ваш рецепт добавлен в базу!",
   TrainingAdded = "Training successfully added to your list!",
   Subscription = "Thank You for Subscribing!",
   CopiedToClipboard = "Copied to clipboard!",

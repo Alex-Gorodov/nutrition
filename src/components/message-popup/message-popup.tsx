@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { ErrorMessages, SuccessMessages } from "../../const";
-import { setStatusMessage } from "../../store/action";
+import { setLoginFormOpened, setMealFormOpened, setNewMealFormOpened, setRegisterFormOpened, setStatusMessage, setTrainingFormOpened } from "../../store/action";
+import { useEffect } from "react";
 
 type MessagePopupProps = {
   message: ErrorMessages | SuccessMessages;
@@ -8,6 +9,17 @@ type MessagePopupProps = {
 export function MessagePopup({message}: MessagePopupProps): JSX.Element {
 
   const dispatch = useDispatch();
+
+  const isOpened = false;
+
+  useEffect(() => {
+    message &&
+      dispatch(setMealFormOpened({isOpened}));
+      dispatch(setTrainingFormOpened({isOpened}));
+      dispatch(setRegisterFormOpened({isOpened}));
+      dispatch(setLoginFormOpened({isOpened}));
+      dispatch(setNewMealFormOpened({isOpened}));
+  })
 
   return (
     <div className="popup">

@@ -24,6 +24,7 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
     if (activeMealType) {
       const link = generatePath(AppRoute.MealsByTypePage, { type: `${activeMealType}` });
       dispatch(redirectToRoute(link as AppRoute));
+      dispatch(setMealFormOpened({isOpened: false}));
     }
   }, [activeMealType, dispatch]);
 

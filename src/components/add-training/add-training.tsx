@@ -9,14 +9,14 @@ import { ReactComponent as Lock } from "../../img/icons/lock-icon.svg";
 import { ReactComponent as Unlock } from "../../img/icons/unlock-icon.svg";
 
 type FormProps = {
-  isTrainingTypeUnset? : boolean;
+  isLocked: boolean;
 }
 
 function calculateCalories(met: number, weight: number, time: number): number {
   return met * weight * (time / 60); // Время переводится в часы
 }
 
-export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
+export function AddTraining({isLocked}: FormProps): JSX.Element {
   const dispatch = useDispatch();
   const activeTraining = useSelector((state: RootState) => state.page.activeTraining);
   const user = useSelector((state: RootState) => state.user);
@@ -26,11 +26,13 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
   const [weight, setWeight] = useState(userWeight || 70);
   const [time, setTime] = useState(30);
   const [calories, setCalories] = useState(0);
-  const [isChoosingLocked, setIsChoosingLocked] = useState(!isTrainingTypeUnset);
+  const [isChoosingLocked, setIsChoosingLocked] = useState(isLocked);
+
+  const formRef = useOutsideClick(() => {
+    dispatch(setTrainingFormOpened({ isOpened: false }));
+  }) as React.RefObject<HTMLFormElement>;
 
   useEffect(() => {
-    console.log(isTrainingTypeUnset);
-
     if (!activeTraining || !(activeTraining in MET_VALUES)) {
       console.error(`Invalid active training type: ${activeTraining}`);
     } else if (activeTraining in MET_VALUES) {
@@ -49,7 +51,7 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
       }
 
     }
-  }, [activeTraining, intensity, isTrainingTypeUnset, time, weight]);
+  }, [activeTraining, intensity, isLocked, time, weight]);
 
   const handleCalculate = () => {
     if (!activeTraining || !(activeTraining in MET_VALUES)) {
@@ -98,100 +100,96 @@ export function AddTraining({isTrainingTypeUnset}: FormProps): JSX.Element {
       } finally {
         setTrainingFormOpened({isOpened: false})
       }
-
   }
 
   return (
-    <div className="add-training">
-      <form className="form" method="post">
-        <h1 className="title title--2 form__title">Добавить тренировку</h1>
-        <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}>x</button>
-        <fieldset className="form__fieldset">
-          <label className="form__item form__item--row" htmlFor="training-type">
-            Активность:
-            <div className="add-training__select-wrapper">
-              <select
-                className="form__input form__input--select"
-                value={activeTraining || ''}
-                disabled={isChoosingLocked}
-                id="training-type"
-                onChange={(e) => handleChangeTrainingType(e.target.value)}
-              >
-                {Object.keys(MET_VALUES).map((key) => (
-                  <option key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
-              </select>
-              <button className="button button--reset" type="button" onClick={() => setIsChoosingLocked(!isChoosingLocked)}>
-                {
-                  isChoosingLocked
-                  ?
-                  <>
-                    <Lock/>
-                    <span className="visually-hidden">unlock</span>
-                  </>
-                    :
-                  <>
-                    <Unlock/>
-                    <span className="visually-hidden">unlock</span>
-                  </>
-                }
-              </button>
-            </div>
-          </label>
-
-          <label className="form__item" htmlFor="training-intensity">
-            Интенсивность:
+    <form className="form" method="post" ref={formRef}>
+      <h1 className="title title--2 form__title">Добавить тренировку</h1>
+      <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}>x</button>
+      <fieldset className="form__fieldset">
+        <label className="form__item form__item--row" htmlFor="training-type">
+          Активность:
+          <div className="add-training__select-wrapper">
             <select
               className="form__input form__input--select"
-              value={intensity}
-              id="training-intensity"
-              onChange={(e) => setIntensity(e.target.value as METIntensity)}
+              value={activeTraining || ''}
+              disabled={isChoosingLocked}
+              id="training-type"
+              onChange={(e) => handleChangeTrainingType(e.target.value)}
             >
-              {Object.keys(MET_VALUES[activeTraining as METActivity] || {}).map((key) => (
+              {Object.keys(MET_VALUES).map((key) => (
                 <option key={key} value={key}>
                   {key}
                 </option>
               ))}
             </select>
-          </label>
+            <button className="button button--reset" type="button" onClick={() => setIsChoosingLocked(!isChoosingLocked)}>
+              {
+                isChoosingLocked
+                ?
+                <>
+                  <Lock/>
+                  <span className="visually-hidden">unlock</span>
+                </>
+                  :
+                <>
+                  <Unlock/>
+                  <span className="visually-hidden">unlock</span>
+                </>
+              }
+            </button>
+          </div>
+        </label>
 
-          <label className="form__item" htmlFor="training-weight">
-            Вес (кг):
-            <input
-              className="form__input"
-              type="number"
-              id="training-weight"
-              value={weight}
-              onChange={(e) => setWeight(Number(e.target.value))}
-            />
-          </label>
+        <label className="form__item" htmlFor="training-intensity">
+          Интенсивность:
+          <select
+            className="form__input form__input--select"
+            value={intensity}
+            id="training-intensity"
+            onChange={(e) => setIntensity(e.target.value as METIntensity)}
+          >
+            {Object.keys(MET_VALUES[activeTraining as METActivity] || {}).map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
+        </label>
 
-          <label className="form__item" htmlFor="training-time">
-            Время (в минутах):
-            <input
-              className="form__input"
-              type="number"
-              id="training-time"
-              value={time}
-              onChange={(e) => setTime(Number(e.target.value))}
-            />
-          </label>
-        </fieldset>
+        <label className="form__item" htmlFor="training-weight">
+          Вес (кг):
+          <input
+            className="form__input"
+            type="number"
+            id="training-weight"
+            value={weight}
+            onChange={(e) => setWeight(Number(e.target.value))}
+          />
+        </label>
 
-        <button className="button" type="button" onClick={handleCalculate}>
-          Посчитать калории
-        </button>
-        {calories > 0 && (
-          <p>
-            Вы затратили примерно <strong>{Math.floor(calories)}</strong>{" "}
-            калорий! Так держать!
-          </p>
-        )}
-        <button className="button button--submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
-      </form>
+        <label className="form__item" htmlFor="training-time">
+          Время (в минутах):
+          <input
+            className="form__input"
+            type="number"
+            id="training-time"
+            value={time}
+            onChange={(e) => setTime(Number(e.target.value))}
+          />
+        </label>
+      </fieldset>
 
-    </div>
+      <button className="button" type="button" onClick={handleCalculate}>
+        Посчитать калории
+      </button>
+      {calories > 0 && (
+        <p>
+          Вы затратили примерно <strong>{Math.floor(calories)}</strong>{" "}
+          калорий! Так держать!
+        </p>
+      )}
+      <button className="button button--submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
+    </form>
   );
 }

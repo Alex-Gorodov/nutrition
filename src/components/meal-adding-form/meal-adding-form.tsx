@@ -2,17 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { addMealToDatabase } from "../../store/api-actions";
-import { MealType, MealTypeTranslations } from "../../const";
-import { addNewMeal, setNewMealFormOpened } from "../../store/action";
+import { MealType, MealTypeTranslations, SuccessMessages } from "../../const";
+import { addNewMeal, setNewMealFormOpened, setStatusMessage } from "../../store/action";
 import { Meal } from "../../types/meal";
 import { Upload } from "../upload-picture/upload-picture";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
 export function MealAddingForm(): JSX.Element {
   const dispatch = useDispatch();
   const meals = useSelector((state: RootState) => state.data.meals);
   const isFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const mealsAmount = meals.length.toString();
+  const [isRecipeAdding, setIsRecipeAdding] = useState(false);
 
   const formRef = useOutsideClick(() => {
     dispatch(setNewMealFormOpened({ isOpened: false }));
@@ -111,16 +113,21 @@ export function MealAddingForm(): JSX.Element {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(addNewMeal({ meal: data }));
+    setIsRecipeAdding(true);
 
     try {
       await addMealToDatabase(data);
 
       setData({
         ...defaultData,
-        id: getNextId(meals, MealType.Breakfast),
+        id: getNextId(meals, data.type),
       });
+      dispatch(setNewMealFormOpened({isOpened: false}));
+      dispatch(setStatusMessage({message: SuccessMessages.AddNewMeal}))
     } catch (error) {
       console.error("Error adding meal:", error);
+    } finally {
+      setIsRecipeAdding(false);
     }
   };
 
@@ -241,7 +248,7 @@ export function MealAddingForm(): JSX.Element {
         </label>
       </fieldset>
       <button className="button button--submit" type="submit">
-        Добавить рецепт!
+        { isRecipeAdding ? <LoadingSpinner size="40"/> : "Добавить рецепт!"}
       </button>
     </form>
   );

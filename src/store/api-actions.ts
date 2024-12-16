@@ -54,34 +54,26 @@ export const fetchUsersAction = createAsyncThunk<void, undefined, ThunkOptions>(
 
 export const addMealToDatabase = async (meal: Meal) => {
   try {
-    const mealRef = database.ref(`${APIRoute.Meals}`);
+    const mealRef = database.ref(APIRoute.Meals); // Указываем путь к массиву meals напрямую
     const snapshot = await mealRef.once('value');
-    let mealData = snapshot.val();
+    let meals = snapshot.val();
 
-    if (!mealData) {
-      mealData = { meals: [] };
+    // Если данных нет, инициализируем пустой массив
+    if (!meals) {
+      meals = [];
     }
 
-    const newMeal = {
-      id: meal.id,
-      name: meal.name,
-      ingredients: meal.ingredients,
-      type: meal.type,
-      recipe: meal.recipe,
-      picture: meal.picture,
-      calories: meal.calories,
-      proteins: meal.proteins,
-      fats: meal.fats,
-      carbs: meal.carbs,
-    };
+    // Добавляем новое блюдо
+    meals.push(meal);
 
-    mealData.meals.push(newMeal);
-
-    await mealRef.set(mealData);
+    // Сохраняем только массив в meals
+    await mealRef.set(meals);
+    console.log("Meal successfully added!");
   } catch (error) {
     console.error("Error adding meal: ", error);
   }
 };
+
 
 export const addNewUserToDatabase = async (user: User, dispatch: AppDispatch) => {
   try {

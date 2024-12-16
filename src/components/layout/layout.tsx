@@ -7,6 +7,7 @@ import { AddTraining } from '../add-training/add-training';
 import { AuthForm } from '../auth-form/auth-form';
 import { MealAddingForm } from '../meal-adding-form/meal-adding-form';
 import { RegisterForm } from '../register-form/register-form';
+import { AddMeal } from '../add-meal/add-meal';
 
 type LayoutProps = {
   children: ReactNode;
@@ -19,6 +20,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
   const isAddMealFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const isTrainingFormOpened = useSelector((state: RootState) => state.page.isTrainingFormOpened);
+  const isMealFormOpened = useSelector((state: RootState) => state.page.isMealFormOpened);
 
   return (
     <div className="page-container">
@@ -27,8 +29,9 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
       { statusMessage && <MessagePopup message={statusMessage}/> }
-      { isTrainingFormOpened && <AddTraining/> }
+      { isTrainingFormOpened && <AddTraining isLocked={true}/> }
       { isAddMealFormOpened && <MealAddingForm/> }
+      { isMealFormOpened && <AddMeal/>}
       { isLoginFormOpened && <AuthForm/> }
       { isRegistrationFormOpened && <RegisterForm/> }
       {/* <Footer /> */}
