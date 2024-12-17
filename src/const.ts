@@ -118,6 +118,14 @@ export enum ActivityLevel {
   ExtraActive = 1.9,
 }
 
+export const ActivityLevelTranslations: Record<ActivityLevel, string> = {
+  [ActivityLevel.Sedentary]: 'Малая подвижность',
+  [ActivityLevel.LightlyActive]: 'Низкая активность',
+  [ActivityLevel.ModeratelyActive]: 'Умеренная активность',
+  [ActivityLevel.VeryActive]: 'Высокая активность',
+  [ActivityLevel.ExtraActive]: 'Очень высокая активность',
+}
+
 export enum NutritionTarget {
   WeightMaintenance = 'Поддержание веса',
   WeightLoss = 'Похудение',
@@ -135,14 +143,6 @@ export const NutritionTargetToCaloricGoals: Record<NutritionTarget, keyof typeof
   [NutritionTarget.WeightLoss]: 'WeightLoss',
   [NutritionTarget.MuscleGain]: 'MuscleGain',
 };
-
-export const ActivityLevelTranslations: Record<ActivityLevel, string> = {
-  [ActivityLevel.Sedentary]: 'Малая подвижность',
-  [ActivityLevel.LightlyActive]: 'Низкая активность',
-  [ActivityLevel.ModeratelyActive]: 'Умеренная активность',
-  [ActivityLevel.VeryActive]: 'Высокая активность',
-  [ActivityLevel.ExtraActive]: 'Очень высокая активность',
-}
 
 export enum Genders {
   Male = 'мужской',

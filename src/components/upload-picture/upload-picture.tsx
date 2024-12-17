@@ -93,13 +93,13 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
           </div>
         }
       </div>
-      {
+      {/* {
         isMobile && fileUrl
         ?
         <img src={fileUrl} alt="Uploaded file" width={100} height={100} className="upload__preview" />
         :
         ''
-      }
+      } */}
     </div>
   );
 }

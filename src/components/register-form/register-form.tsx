@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/root-reducer"
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
@@ -8,7 +8,7 @@ import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { setUser } from "../../store/slices/user-slice";
 import { Upload } from "../upload-picture/upload-picture";
 import { generatePath } from "react-router-dom";
-import { useGetUser } from "../../hooks/useGetUser";
+// import { useGetUser } from "../../hooks/useGetUser";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
@@ -27,7 +27,7 @@ export function RegisterForm(): JSX.Element {
   }) as React.RefObject<HTMLFormElement>;
 
   const defaultData = {
-    id: usersAmount,
+    id: usersAmount.toString(),
     name: "",
     email: "",
     isAdmin: false,
@@ -46,6 +46,8 @@ export function RegisterForm(): JSX.Element {
 
   const [data, setData] = useState(defaultData)
 
+  const [userPageLink, setUserPageLink] = useState("");
+
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = event.target;
 
@@ -58,21 +60,109 @@ export function RegisterForm(): JSX.Element {
       setData((prevdata) => ({
         ...prevdata,
         [name]: value,
-
       }));
     }
   };
+
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setData((prevdata) => ({
+      ...prevdata,
+      [name]: value,
+    }));
+  }
 
   const closeForms = () => {
     dispatch(setLoginFormOpened({ isOpened: false }));
     dispatch(setRegisterFormOpened({ isOpened: false }));
   }
 
-  const user = useGetUser();
+  useEffect(() => {
+    setUserPageLink(generatePath(AppRoute.UserPage, { id: data.id }))
+  }, [userPageLink, dispatch, data]);
 
-  const link = generatePath(AppRoute.UserPage, {
-    id: `${user?.id}`,
-  });
+  // const handleRegister = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setIsAuthing(true);
+  //   const auth = getAuth();
+
+  //   try {
+  //     if (registrationStep === RegistrationSteps.AccountSetup) {
+  //       // Переход к следующему шагу
+  //       dispatch(setRegistrationStep({ step: RegistrationSteps.HealthGoals }));
+  //       setIsAuthing(false);
+  //       return;
+  //     }
+
+  //     if (registrationStep === RegistrationSteps.HealthGoals) {
+  //       // Валидация пароля
+  //       if (data.password !== data.confirmPassword) {
+  //         dispatch(setStatusMessage({ message: ErrorMessages.RegisterPasswordNotMatch }));
+  //         setIsAuthing(false);
+  //         return;
+  //       }
+
+  //       if (!PasswordValidationRegex.test(data.password)) {
+  //         dispatch(setStatusMessage({ message: ErrorMessages.PasswordError }));
+  //         setIsAuthing(false);
+  //         return;
+  //       }
+
+  //       // Регистрация пользователя
+  //       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+  //       const user = userCredential.user;
+  //       const token = await user.getIdToken();
+  //       console.log('====================================');
+  //       console.log('bafore await ', userPageLink);
+
+  //       await addNewUserToDatabase({
+  //         id: user.uid,
+  //         name: data.name,
+  //         email: data.email,
+  //         isAdmin: false,
+  //         mealSchedule: data.mealSchedule,
+  //         trainingSessions: data.trainingSessions,
+  //         avatar: data.avatar,
+  //         token,
+  //         gender: data.gender,
+  //         age: data.age,
+  //         weight: data.weight,
+  //         height: data.height,
+  //         target: data.target,
+  //         activityLevel: data.activityLevel
+  //       }, dispatch);
+
+  //       // Сохранение данных пользователя
+  //       const userInfo = {
+  //         email: user.email!,
+  //         id: user.uid,
+  //         token,
+  //       };
+  //       dispatch(setUser(userInfo));
+  //       dispatch(setActiveUser({ activeUser: userInfo }));
+  //       loginAction({
+  //         login: data.email,
+  //         password: data.password
+  //       })
+  //       dispatch(setUserInformation({userInformation: userInfo}))
+  //       dispatch(setUploadedPath({ path: null }));
+  //       localStorage.setItem('nutrition-user', JSON.stringify(userInfo));
+
+  //       setUserPageLink(generatePath(AppRoute.UserPage, { id: userInfo.id }))
+  //       console.log('====================================');
+  //       console.log('after await ', userPageLink);
+  //       dispatch(redirectToRoute(userPageLink as AppRoute));
+  //       dispatch(setRegistrationStep({ step: RegistrationSteps.None }));
+  //       setData(defaultData);
+  //       closeForms();
+  //     }
+  //   } catch (error) {
+  //     console.error('Error registering user:', error);
+  //     dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
+  //   } finally {
+  //     setIsAuthing(false);
+  //   }
+  // };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,14 +171,12 @@ export function RegisterForm(): JSX.Element {
 
     try {
       if (registrationStep === RegistrationSteps.AccountSetup) {
-        // Переход к следующему шагу
         dispatch(setRegistrationStep({ step: RegistrationSteps.HealthGoals }));
         setIsAuthing(false);
         return;
       }
 
       if (registrationStep === RegistrationSteps.HealthGoals) {
-        // Валидация пароля
         if (data.password !== data.confirmPassword) {
           dispatch(setStatusMessage({ message: ErrorMessages.RegisterPasswordNotMatch }));
           setIsAuthing(false);
@@ -101,18 +189,35 @@ export function RegisterForm(): JSX.Element {
           return;
         }
 
-        // Регистрация пользователя
         const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
         const user = userCredential.user;
         const token = await user.getIdToken();
+
+        setData({
+          id: user.uid,
+          name: data.name,
+          email: data.email,
+          isAdmin: false,
+          mealSchedule: data.mealSchedule,
+          trainingSessions: data.trainingSessions,
+          avatar: data.avatar,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+          gender: data.gender,
+          age: data.age,
+          weight: data.weight,
+          height: data.height,
+          target: data.target,
+          activityLevel: data.activityLevel
+        })
 
         await addNewUserToDatabase({
           id: user.uid,
           name: data.name,
           email: data.email,
           isAdmin: false,
-          mealSchedule: [],
-          trainingSessions: [],
+          mealSchedule: data.mealSchedule,
+          trainingSessions: data.trainingSessions,
           avatar: data.avatar,
           token,
           gender: data.gender,
@@ -120,10 +225,9 @@ export function RegisterForm(): JSX.Element {
           weight: data.weight,
           height: data.height,
           target: data.target,
-          activityLevel: ActivityLevel.Sedentary
+          activityLevel: data.activityLevel
         }, dispatch);
 
-        // Сохранение данных пользователя
         const userInfo = {
           email: user.email!,
           id: user.uid,
@@ -134,13 +238,15 @@ export function RegisterForm(): JSX.Element {
         loginAction({
           login: data.email,
           password: data.password
-        })
-        dispatch(setUserInformation({userInformation: userInfo}))
+        });
+        dispatch(setUserInformation({ userInformation: userInfo }));
         dispatch(setUploadedPath({ path: null }));
         localStorage.setItem('nutrition-user', JSON.stringify(userInfo));
 
-        // Перенаправление на страницу пользователя
-        dispatch(redirectToRoute(link as AppRoute));
+        if (userPageLink) {
+          dispatch(redirectToRoute(userPageLink as AppRoute));
+        }
+
         dispatch(setRegistrationStep({ step: RegistrationSteps.None }));
         setData(defaultData);
         closeForms();
@@ -152,6 +258,7 @@ export function RegisterForm(): JSX.Element {
       setIsAuthing(false);
     }
   };
+
 
 
   const handleFileUpload = (fileUrl: string) => {
@@ -196,7 +303,7 @@ export function RegisterForm(): JSX.Element {
         <fieldset className="form__fieldset">
           <label className="form__item" htmlFor="register-gender">
             <span>Пол*: </span>
-            <select className="form__input form__input--select" name="gender" aria-label="choose registration gender:" required>
+            <select className="form__input form__input--select" value={data.gender} name="gender" aria-label="choose registration gender:" onChange={handleSelectChange} required>
               {
                 Object.values(Genders).map((g) => (
                   <option key={`gender-${g}`} value={g}>{g}</option>
@@ -218,17 +325,24 @@ export function RegisterForm(): JSX.Element {
           </label>
           <label className="form__item" htmlFor="register-activity">
             <span>Уровень активности*: </span>
-            <select className="form__input form__input--select" name="activity" aria-label="choose activity level:" required>
-              {
-                Object.values(ActivityLevelTranslations).map((l) => (
-                  <option key={`activity-${l}`} value={l}>{l}</option>
-                ))
+            <select className="form__input form__input--select" value={data.activityLevel} name="activityLevel" aria-label="choose activity level:" onChange={handleSelectChange} required>
+            {Object.values(ActivityLevel).map((level) => {
+              const label = ActivityLevelTranslations[level as keyof typeof ActivityLevelTranslations];
+              // Проверяем, если label существует
+              if (label) {
+                return (
+                  <option key={`activity-${level}`} value={level}>
+                    {label}
+                  </option>
+                );
               }
+              return null; // Если нет значения, не рендерим <option>
+            })}
             </select>
           </label>
           <label className="form__item" htmlFor="register-target">
             <span>Цель программы*: </span>
-            <select className="form__input form__input--select" name="target" aria-label="choose nutrition target:" required>
+            <select className="form__input form__input--select" value={data.target} name="target" aria-label="choose nutrition target:" onChange={handleSelectChange} required>
               {
                 Object.values(NutritionTarget).map((t) => (
                   <option key={`target-${t}`} value={t}>{t}</option>

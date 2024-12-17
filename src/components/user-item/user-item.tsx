@@ -105,22 +105,18 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     backgroundColor: 'red'
   }
 
-  const todayMeals = user.mealSchedule.filter((m) => new Date(m[1]).getDate() === today)
+  const todayMeals = user.mealSchedule && user.mealSchedule.filter((m) => new Date(m[1]).getDate() === today)
 
   let calories = 0;
   let proteins = 0;
   let fats = 0;
   let carbs = 0;
-  todayMeals.forEach((m) => {
+  todayMeals && todayMeals.forEach((m) => {
     calories += m[0].calories
     proteins += m[0].proteins
     fats += m[0].fats
     carbs += m[0].carbs
   })
-
-  console.log('====================================');
-  console.log(activeBmr);
-  console.log('====================================');
 
   return (
     <div className="user">
@@ -287,65 +283,68 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           </div>
         </div>
       )}
-      <div className="user__meals user-actions">
-        <div className="user-actions__title-wrapper">
-          <h3 className="user-actions__title title title--3">Приемы пищи</h3>
-          <button className="button button--reset user-actions__add-btn" onClick={() => dispatch(setMealFormOpened({ isOpened: true }))}><AddIcon /></button>
-        </div>
-        <div className="user-actions__table">
-          <div className="user-actions__head">
-            <span>Прием пищи</span>
-            <span>Название блюда</span>
-            <span>Получено калорий</span>
-            <span>Дата</span>
+      {
+        user.mealSchedule && user.mealSchedule.length > 0 &&
+        <div className="user__meals user-actions">
+          <div className="user-actions__title-wrapper">
+            <h3 className="user-actions__title title title--3">Приемы пищи</h3>
+            <button className="button button--reset user-actions__add-btn" onClick={() => dispatch(setMealFormOpened({ isOpened: true }))}><AddIcon /></button>
           </div>
-          <ul className="user-actions__list">
-            {
-              Object.entries(groupByDate(user.mealSchedule, (m) => formatDate(m[1]))).map(
-                ([date, schedule]) =>
-                  <li key={`${schedule[0][0].name}-${schedule[0]}-${date}`}>
-                    {
-                      !mealsExpandedDates[date]
-                        ?
-                        <div
-                          className="user-actions__group-header"
-                        >
-                          <div onClick={() => toggleMealsDate(date)}>
-                            <p>{date}</p>
-                            <CollapseIcon className="icon" />
+          <div className="user-actions__table">
+            <div className="user-actions__head">
+              <span>Прием пищи</span>
+              <span>Название блюда</span>
+              <span>Получено калорий</span>
+              <span>Дата</span>
+            </div>
+            <ul className="user-actions__list">
+              {
+                Object.entries(groupByDate(user.mealSchedule, (m) => formatDate(m[1]))).map(
+                  ([date, schedule]) =>
+                    <li key={`${schedule[0][0].name}-${schedule[0]}-${date}`}>
+                      {
+                        !mealsExpandedDates[date]
+                          ?
+                          <div
+                            className="user-actions__group-header"
+                          >
+                            <div onClick={() => toggleMealsDate(date)}>
+                              <p>{date}</p>
+                              <CollapseIcon className="icon" />
+                            </div>
                           </div>
-                        </div>
-                        :
-                        <div
-                          className="user-actions__group-header"
-                        >
-                          <div onClick={() => toggleMealsDate(date)}>
-                            <p>{date}</p>
-                            <CollapseIcon className="icon icon--rotated" />
+                          :
+                          <div
+                            className="user-actions__group-header"
+                          >
+                            <div onClick={() => toggleMealsDate(date)}>
+                              <p>{date}</p>
+                              <CollapseIcon className="icon icon--rotated" />
+                            </div>
+                            <ul className="user-actions__sublist">
+                              {
+                                schedule.map((m, i) => (
+                                  <li
+                                    className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()}`}
+                                    key={`${m[0].name}-${m[0]}-${date}-${i}`}
+                                  >
+                                    <span>{MealTypeTranslations[m[0].type]}</span>
+                                    <span>{m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}</span>
+                                    <span>{Math.floor(m[0].calories)}</span>
+                                    <span>{date}</span>
+                                  </li>
+                                ))
+                              }
+                            </ul>
                           </div>
-                          <ul className="user-actions__sublist">
-                            {
-                              schedule.map((m, i) => (
-                                <li
-                                  className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()}`}
-                                  key={`${m[0].name}-${m[0]}-${date}-${i}`}
-                                >
-                                  <span>{MealTypeTranslations[m[0].type]}</span>
-                                  <span>{m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}</span>
-                                  <span>{Math.floor(m[0].calories)}</span>
-                                  <span>{date}</span>
-                                </li>
-                              ))
-                            }
-                          </ul>
-                        </div>
-                    }
-                  </li>
-              )
-            }
-          </ul>
+                      }
+                    </li>
+                )
+              }
+            </ul>
+          </div>
         </div>
-      </div>
+      }
       <div className="user__incription">
         <i>*<br />Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
       </div>
