@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/nutrition/static/css/main.1783a178.css",
+    "main.css": "/nutrition/static/css/main.1200023f.css",
     "main.js": "/nutrition/static/js/main.81af774b.js",
     "static/media/meal-icon.svg": "/nutrition/static/media/meal-icon.7ba9d6180045eeb1fb29502f763917bd.svg",
     "static/media/walking-icon.svg": "/nutrition/static/media/walking-icon.09037ba9abdec250ff38ca82fde90a42.svg",
@@ -19,11 +19,11 @@
     "static/media/add-icon.svg": "/nutrition/static/media/add-icon.ef8c93182b0a00b8551e680e0b823c1f.svg",
     "static/media/edit-icon.svg": "/nutrition/static/media/edit-icon.5a8887859ef64349e6f63fe9ed4da67d.svg",
     "static/media/down-icon.svg": "/nutrition/static/media/down-icon.fb1880fe77be07d0f18a34a4fe5cad20.svg",
-    "main.1783a178.css.map": "/nutrition/static/css/main.1783a178.css.map",
+    "main.1200023f.css.map": "/nutrition/static/css/main.1200023f.css.map",
     "main.81af774b.js.map": "/nutrition/static/js/main.81af774b.js.map"
   },
   "entrypoints": [
-    "static/css/main.1783a178.css",
+    "static/css/main.1200023f.css",
     "static/js/main.81af774b.js"
   ]
 }
