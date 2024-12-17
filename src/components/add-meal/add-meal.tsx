@@ -11,13 +11,13 @@ export function AddMeal(): JSX.Element {
   }) as React.RefObject<HTMLDivElement>;
 
   return (
-    <div>
-      {
+    // <div>
+    //   {
         <div className="form form--add-meal" ref={formRef}>
           <button className="button form__button--close" onClick={() => dispatch(setMealFormOpened({isOpened: false}))}>x</button>
           <ChooseMeal isPopup/>
         </div>
-      }
-    </div>
+    //   }
+    // </div>
   )
 }

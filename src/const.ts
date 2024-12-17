@@ -138,11 +138,24 @@ export enum CaloricGoals {
   MuscleGain = 1.15,
 }
 
+export enum CaloricValues {
+  Proteins = 4,
+  Fats = 9,
+  Carbs = 4,
+}
+
 export const NutritionTargetToCaloricGoals: Record<NutritionTarget, keyof typeof CaloricGoals> = {
   [NutritionTarget.WeightMaintenance]: 'WeightMaintenance',
   [NutritionTarget.WeightLoss]: 'WeightLoss',
   [NutritionTarget.MuscleGain]: 'MuscleGain',
 };
+
+export const MacronutrientRatios = {
+  [NutritionTarget.WeightMaintenance]: { proteins: 0.3, fats: 0.3, carbs: 0.4 },
+  [NutritionTarget.WeightLoss]: { proteins: 0.4, fats: 0.25, carbs: 0.35 },
+  [NutritionTarget.MuscleGain]: { proteins: 0.35, fats: 0.25, carbs: 0.4 },
+};
+
 
 export enum Genders {
   Male = 'мужской',

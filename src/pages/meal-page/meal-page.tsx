@@ -9,7 +9,7 @@ export function MealPage(): JSX.Element {
   return (
     <>
       <Helmet>
-        <title>Nutrition | {activeMeal?.name}</title>
+        <title>Nutrition | {activeMeal ? activeMeal.name : ''}</title>
       </Helmet>
       {activeMeal && <MealItem meal={activeMeal}/>}
     </>

@@ -1,12 +1,10 @@
 .user
   display: grid
   padding-top: 40px
-  // gap: 40px
   @media (max-width: $mobile)
     padding-top: 20px
   &__wrapper
     display: grid
-    // grid-template-columns: 120px auto
     gap: 40px
     padding-inline: 40px
     @media (max-width: $tablet)
@@ -53,6 +51,14 @@
     gap: 10px
     & input
       max-width: 50px
+  &__targets
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
+    gap: 20px
+  &__title
+    margin-bottom: 40px
+    grid-row: 1
+    grid-column: 1 / -1
   &__incription
     padding-inline: 10px
     margin-bottom: 40px

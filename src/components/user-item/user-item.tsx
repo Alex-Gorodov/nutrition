@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityLevelTranslations, CaloricGoals, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
+import { ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { setUserGreetings } from "../../utils/setUserGreetings";
 import { useDispatch } from "react-redux";
@@ -8,11 +8,12 @@ import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
 import { ReactComponent as AddIcon } from "../../img/icons/add-icon.svg";
 import { formatDate } from "../../utils/formatDate";
-import { setMealFormOpened, setTrainingFormOpened, setUserTarget, setUserWeight } from "../../store/action";
+import { setActiveMeal, setMealFormOpened, setTrainingFormOpened, setUserTarget, setUserWeight } from "../../store/action";
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { groupByDate } from "../../utils/groupByDate";
 import { ReactComponent as CollapseIcon } from "../../img/icons/down-icon.svg"
 import { RadialProgressBar } from "../radial-progress-bar/radial-progress-bar";
+import { generatePath, Link } from "react-router-dom";
 
 type UserItemProps = {
   user: User;
@@ -97,15 +98,24 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     setTarget(user.target);
   }, [user.target]);
 
+  const todayMeals = user.mealSchedule && user.mealSchedule.filter((m) => new Date(m[1]).getDate() === today)
+
   const bmr = getBasalMetabolicRate(user).valueOf();
 
-  const activeBmr = calculateActiveBmr(bmr, user.activityLevel, user.target);
+  const caloriesTarget = calculateActiveBmr(bmr, user.activityLevel, user.target);
 
-  const todayStyle = {
-    backgroundColor: 'red'
-  }
+  // Получаем соотношение БЖУ для выбранной цели
+  const { proteins: proteinRatio, fats: fatRatio, carbs: carbRatio } = MacronutrientRatios[user.target];
 
-  const todayMeals = user.mealSchedule && user.mealSchedule.filter((m) => new Date(m[1]).getDate() === today)
+  // Общая цель по калориям
+  const caloricGoal = CaloricGoals[NutritionTargetToCaloricGoals[user.target]];
+  const totalCalorieTarget = Math.round(caloriesTarget * caloricGoal);
+
+  // Рассчитываем цель по БЖУ
+  const proteinsTarget = Math.round((totalCalorieTarget * proteinRatio) / CaloricValues.Proteins);
+  const fatsTarget = Math.round((totalCalorieTarget * fatRatio) / CaloricValues.Fats);
+  const carbsTarget = Math.round((totalCalorieTarget * carbRatio) / CaloricValues.Carbs);
+
 
   let calories = 0;
   let proteins = 0;
@@ -118,22 +128,23 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     carbs += m[0].carbs
   })
 
+
+  // const link = generatePath(AppRoute.MealPage, { id: meal.id });
+  // dispatch(redirectToRoute(link as AppRoute));
+
   return (
     <div className="user">
       <div className="user__wrapper">
         <div className="user__info">
           <p className="user__name">{setUserGreetings(user.name)}</p>
           <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
-          <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}) и вашу цель ({user.target.toLowerCase()}), вам необходимо получать из пищи <b>{activeBmr}</b> ккал.</p>
-          <div>
-            <p>Сегодня вы получили из пищи:</p>
-            <p style={todayStyle}>calories: {calories}</p>
-            <p style={todayStyle}>proteins: {proteins}</p>
-            <p style={todayStyle}>fats: {fats}</p>
-            <p style={todayStyle}>carbs: {carbs}</p>
-          </div>
-          <div>
-            <RadialProgressBar target={activeBmr} value={calories} field="калорий"/>
+          <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}) и вашу цель ({user.target.toLowerCase()}), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
+          <div className="user__targets">
+            <p className="title title--3 user__title">За сегодня вы употребили: </p>
+            <RadialProgressBar target={caloriesTarget} value={calories} field="калорий"/>
+            <RadialProgressBar target={proteinsTarget} value={proteins} field="белков"/>
+            <RadialProgressBar target={fatsTarget} value={fats} field="жиров"/>
+            <RadialProgressBar target={carbsTarget} value={carbs} field="углеводов"/>
           </div>
           <p className="user__editable-wrapper">
             <span className="user__editable-title">Ваш вес:</span>
@@ -323,17 +334,25 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                             </div>
                             <ul className="user-actions__sublist">
                               {
-                                schedule.map((m, i) => (
+
+                                schedule.map((m, i) => {
+                                  const link = generatePath(AppRoute.MealPage, { id: m[0].id });
+
+                                  return (
                                   <li
                                     className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()}`}
                                     key={`${m[0].name}-${m[0]}-${date}-${i}`}
                                   >
                                     <span>{MealTypeTranslations[m[0].type]}</span>
-                                    <span>{m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}</span>
+                                    <span>
+                                      <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
+                                        {m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}
+                                      </Link>
+                                    </span>
                                     <span>{Math.floor(m[0].calories)}</span>
                                     <span>{date}</span>
                                   </li>
-                                ))
+                                )})
                               }
                             </ul>
                           </div>

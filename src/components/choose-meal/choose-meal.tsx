@@ -35,7 +35,7 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
     dispatch(setNewMealFormOpened({isOpened: true}));
   }
 
-  const className = cn('meals', {
+  const className = cn('section meals', {
     'meals--popup': isPopup,
   })
 

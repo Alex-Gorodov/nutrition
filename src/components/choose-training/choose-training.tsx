@@ -24,27 +24,25 @@ export function ChooseTraining(): JSX.Element {
   }
 
   return (
-    <section className="choose-training">
-      <div className="choose-training__container">
-        <h1 className="title title--secondary choose-training__title">Выберите тип тренировки</h1>
-        <div className="choose-training__buttons">
-          {
-            Object.values(TrainingType).map((t) => {
-              const TrainingComponent = TrainingIcons[t as keyof typeof TrainingIcons];
+    <section className="section choose-training">
+      <h1 className="title title--secondary choose-training__title">Выберите тип тренировки</h1>
+      <div className="choose-training__buttons">
+        {
+          Object.values(TrainingType).map((t) => {
+            const TrainingComponent = TrainingIcons[t as keyof typeof TrainingIcons];
 
-              return (
-                <button
-                  className={`button choose-training__button choose-training__button--${t.toLowerCase()}`}
-                  type="button"
-                  key={t}
-                  onClick={() => handleChooseTraining(t)}
-                >
-                  <span>{TrainingTypeTranslations[t]}</span>
-                  {TrainingComponent && <TrainingComponent />}
-                </button>
-              )})
-          }
-        </div>
+            return (
+              <button
+                className={`button choose-training__button choose-training__button--${t.toLowerCase()}`}
+                type="button"
+                key={t}
+                onClick={() => handleChooseTraining(t)}
+              >
+                <span>{TrainingTypeTranslations[t]}</span>
+                {TrainingComponent && <TrainingComponent />}
+              </button>
+            )})
+        }
       </div>
     </section>
   )

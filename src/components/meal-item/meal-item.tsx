@@ -34,7 +34,6 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
 
   return (
     <div className="meal">
-
       <div className="meal__item meal-item">
         <h2 className="title title--2 meal-item__title">
           {meal.name} <span className="meal-item__type">(на {MealTypeTranslations[meal.type].toLowerCase()})</span>
