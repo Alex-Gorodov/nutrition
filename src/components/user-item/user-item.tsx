@@ -127,15 +127,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     carbs += m[0].carbs
   })
 
-  console.log('====================================');
-  console.log('totalCalorieTarget: ', totalCalorieTarget,
-              'proteinRatio: ', proteinRatio, 'proteinsTarget: ', proteinsTarget,
-              'fatsRatio: ', fatRatio, 'fatsTarget: ', fatsTarget,
-              'carbRatio: ', carbRatio, 'carbsTarget: ', carbsTarget,
-              'carbsValue: ', carbs, 'proteinsValue: ', proteins, 'fatsValue: ', fats,
-              'cal %: ', Math.floor(calories/totalCalorieTarget * 100), 'prot %: ', Math.floor(proteins/proteinsTarget * 100), 'fats % ', Math.floor(fats/fatsTarget * 100), 'carb %', Math.floor(carbs/carbsTarget * 100));
-  console.log('====================================');
-
   return (
     <div className="user">
       <div className="user__wrapper">
@@ -271,7 +262,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                         </div>
                         :
                         <div
-                          className="user-actions__group-header"
+                          className="user-actions__group-header user-actions__group-header--opened"
                         >
                           <div onClick={() => toggleTrainingDate(date)}>
                             <p>{date}</p>
@@ -330,7 +321,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                           </div>
                           :
                           <div
-                            className="user-actions__group-header"
+                            className="user-actions__group-header user-actions__group-header--opened"
                           >
                             <div onClick={() => toggleMealsDate(date)}>
                               <p>{date}</p>

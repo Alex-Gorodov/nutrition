@@ -13,7 +13,7 @@ export function RadialProgressBar({ target, value, field }: RadialProgressBarPro
 
   const isTargetAchieved = 360 - angle <= 0;
   const style = {
-    background: isTargetAchieved ? 'green' : `conic-gradient(#ddd 0deg ${360 - angle}deg, #028cd5 ${360 - angle}deg 360deg)`,
+    background: isTargetAchieved ? 'green' : `conic-gradient(#ddd 0deg ${360 - angle}deg, rgb(63.75, 63.75, 63.75) ${360 - angle}deg 360deg)`,
   };
 
   return (
@@ -25,7 +25,7 @@ export function RadialProgressBar({ target, value, field }: RadialProgressBarPro
           <DoneIcon/>
           :
           <>
-            <b>{value}</b>
+            <b>{value}{field !== 'калорий' && ' г'}</b>
             <span>{field}</span>
           </>
         }

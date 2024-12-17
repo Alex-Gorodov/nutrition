@@ -6,31 +6,15 @@
     height: 100%
   &__button
     border-radius: 8px
-    border: none
-    box-shadow: 8px 8px 4px 4px $black
+    // border: none
+    // box-shadow: 8px 8px 4px 4px $black
     text-transform: uppercase
-    color: $white
+    // color: $white
     font-size: 2rem
     cursor: pointer
     transition: $hover-transition
-    // animation-iteration-count: 1
-    // animation-duration: 1s
-    // animation-fill-mode: forwards
     @media (max-width: $mobile)
-      font-size: 1.5rem
-      box-shadow: 4px 4px 2px 2px $black
-    &--breakfast
-      // animation-name: button-appearing-top-left
-      background-color: $breakfast
-    &--lunch
-      // animation-name: button-appearing-top-right
-      background-color: $lunch
-    &--dinner
-      // animation-name: button-appearing-left
-      background-color: $dinner
-    &--snack
-      // animation-name: button-appearing-right
-      background-color: $snack
+      font-size: 1rem
     &--accept
       padding: 20px 80px
       background-color: $green
@@ -46,12 +30,12 @@
     &--add-new-meal
       // animation-name: button-appearing-bottom
       grid-column: 1 / -1
-      background-color: $light-gray
-      color: $white
-      line-height: 3
+      // background-color: $light-gray
+      // color: $black
+      // line-height: 1
     &:hover
-      color: $dark-gray
-      box-shadow: 3px 3px 1px 1px black
+      // color: $dark-gray
+      // box-shadow: 3px 3px 1px 1px black
     &:active
       box-shadow: none
   &__buttons

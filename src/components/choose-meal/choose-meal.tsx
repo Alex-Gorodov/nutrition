@@ -48,11 +48,11 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
       )}
       {!activeMeal && (
       <>
-        <h1 className="title title--secondary meals__title">Выберите прием пищи</h1>
+        <h1 className="title title--secondary meals__title">Выбери прием пищи</h1>
         <div className="meals__buttons">
           {Object.values(MealType).map((type) => (
             <button
-              className={`button meal__button meal__button--${type.toLowerCase()}`}
+              className={`button meal__button`}
               type="button"
               key={type}
               onClick={() => handleSetActiveMealType(type)}
@@ -60,6 +60,7 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
               <span>{MealTypeTranslations[type]}</span>
             </button>
           ))}
+          <h2 className="title title--secondary meals__title">Или добавь новое блюдо</h2>
           <button className="button meal__button meal__button--add-new-meal" onClick={() => handleOpenForm()}>+</button>
         </div>
       </>
