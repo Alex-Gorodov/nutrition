@@ -1,5 +1,6 @@
 export enum AppRoute {
-  Root = "/nutrition",
+  Landing = "/nutrition",
+  Root = "/nutrition/home",
   UserPage = "/nutrition/user/:id",
   MealPage = "/nutrition/meal/:id",
   MealsByTypePage = "/nutrition/meals/:type",

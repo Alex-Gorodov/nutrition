@@ -116,7 +116,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   const fatsTarget = Math.round((totalCalorieTarget * fatRatio) / CaloricValues.Fats);
   const carbsTarget = Math.round((totalCalorieTarget * carbRatio) / CaloricValues.Carbs);
 
-
   let calories = 0;
   let proteins = 0;
   let fats = 0;
@@ -128,9 +127,14 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     carbs += m[0].carbs
   })
 
-
-  // const link = generatePath(AppRoute.MealPage, { id: meal.id });
-  // dispatch(redirectToRoute(link as AppRoute));
+  console.log('====================================');
+  console.log('totalCalorieTarget: ', totalCalorieTarget,
+              'proteinRatio: ', proteinRatio, 'proteinsTarget: ', proteinsTarget,
+              'fatsRatio: ', fatRatio, 'fatsTarget: ', fatsTarget,
+              'carbRatio: ', carbRatio, 'carbsTarget: ', carbsTarget,
+              'carbsValue: ', carbs, 'proteinsValue: ', proteins, 'fatsValue: ', fats,
+              'cal %: ', Math.floor(calories/totalCalorieTarget * 100), 'prot %: ', Math.floor(proteins/proteinsTarget * 100), 'fats % ', Math.floor(fats/fatsTarget * 100), 'carb %', Math.floor(carbs/carbsTarget * 100));
+  console.log('====================================');
 
   return (
     <div className="user">
@@ -141,7 +145,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}) и вашу цель ({user.target.toLowerCase()}), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
           <div className="user__targets">
             <p className="title title--3 user__title">За сегодня вы употребили: </p>
-            <RadialProgressBar target={caloriesTarget} value={calories} field="калорий"/>
+            <RadialProgressBar target={totalCalorieTarget} value={calories} field="калорий"/>
             <RadialProgressBar target={proteinsTarget} value={proteins} field="белков"/>
             <RadialProgressBar target={fatsTarget} value={fats} field="жиров"/>
             <RadialProgressBar target={carbsTarget} value={carbs} field="углеводов"/>

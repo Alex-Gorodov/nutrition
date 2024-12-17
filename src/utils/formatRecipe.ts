@@ -1,5 +1,5 @@
 export function formatRecipe(recipe: string): string {
-  const stepPattern = /(\d+\.\s)/g;
+  const stepPattern = /(\d+(\.|\))\s)/g;
   const steps = recipe.split(stepPattern).filter((step) => step.trim() !== "");
 
   let formattedRecipe = "";

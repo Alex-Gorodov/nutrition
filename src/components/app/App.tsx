@@ -10,6 +10,7 @@ import { PageNotFound } from '../../pages/page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
 import { UserPage } from '../../pages/user-page/user-page';
 import { MealPage } from '../../pages/meal-page/meal-page';
+import { LandingPage } from '../../pages/landing-page/landing-page';
 import { MealsByTypePage } from '../../pages/meals-by-type-page/meals-by-type-page';
 import { Layout } from '../layout/layout';
 
@@ -20,7 +21,8 @@ function App() {
         <Provider store={store}>
           <Layout>
             <Routes>
-              <Route path={AppRoute.Root} element={<HomePage/>}/>
+              <Route path={AppRoute.Landing} element={<LandingPage/>}/>
+              <Route path={AppRoute.Root} element={<PrivateRoute element={<HomePage/>}/>}/>
               <Route path={AppRoute.UserPage} element={<PrivateRoute element={<UserPage />} />}/>
               <Route path={AppRoute.MealPage} element={<PrivateRoute element={<MealPage />} />}/>
               <Route path={AppRoute.MealsByTypePage} element={<PrivateRoute element={<MealsByTypePage />} />}/>
