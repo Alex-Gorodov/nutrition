@@ -23,6 +23,7 @@ import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
 import { checkAuthMethod } from "../../utils/checkAuthMethod";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
 
 type FormField = {
   value: string;
@@ -120,22 +121,30 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         dispatch(
           requireAuthorization({ authorizationStatus: AuthorizationStatus.Auth })
         );
-        dispatch(setUserInformation({userInformation: userInfo}))
+        dispatch(setUserInformation({ userInformation: userInfo }));
         loginAction({
           login: email.value,
           password: password.value
-        })
+        });
         closeForms();
       } else if (await checkAuthMethod() === "Google") {
         dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
       }
-    } catch (error) {
-      dispatch(setStatusMessage({ message: ErrorMessages.ConnectionError }));
+    } catch (error: any) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found" || error.code === "auth/invalid-credential") {
+        dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
+      } else {
+        dispatch(setStatusMessage({ message: ErrorMessages.ConnectionError }));
+      }
       console.error("Login error:", error);
     } finally {
       setIsAuthing(false);
     }
   };
+
 
   const handleGoogleSignIn = async () => {
     setIsAuthing(true);
@@ -207,7 +216,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
     <div className="form__wrapper">
       <form className={`form login__form ${className}`} onSubmit={handleLogin} autoComplete="off" ref={formRef}>
         <h3 className="title title--3 form__title">Войти</h3>
-        <button className="button form__button--close" onClick={() => dispatch(setLoginFormOpened({isOpened: !isFormOpened}))}>x</button>
+        <button className="button form__button--close" onClick={() => dispatch(setLoginFormOpened({isOpened: !isFormOpened}))}><Close/></button>
         {Object.keys(data).map((fieldName) => {
           const field = data[fieldName];
           return (

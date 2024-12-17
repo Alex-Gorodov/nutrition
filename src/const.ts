@@ -180,22 +180,22 @@ export enum ScreenSizes {
 export const PasswordValidationRegex = /^(?=.*\d).{8,}$/;
 
 export enum ErrorMessages {
-  PasswordError = 'Password must have at least one letter, one number, and be 8+ characters long.',
-  TrainingNoAuthError = 'Please sign in or register to add training.',
-  MealNoAuthError = 'Please sign in or register to add meal.',
-  AuthError = 'Invalid username or password. Please try again.',
-  RegisterEmptyFields = 'Fill the required fields, please.',
-  RegisterPasswordNotMatch = 'Passwords do not match.',
-  EmailError = 'Please enter correct e-mail.',
-  HasAccountError = "This email is already registered. Please login with your mail + password pair or check your e-mail correctness.",
-  ConnectionError = "Connection error. Check your internet connection and try again."
+  PasswordError = 'Пароль должен содержать хотя бы одну букву, одну цифру и быть длиной не менее 8 символов.',
+  TrainingNoAuthError = 'Пожалуйста, войдите в систему или зарегистрируйтесь, чтобы добавить тренировку.',
+  MealNoAuthError = 'Пожалуйста, войдите в систему или зарегистрируйтесь, чтобы добавить прием пищи.',
+  AuthError = 'Неправильное имя пользователя или пароль. Пожалуйста, попробуйте еще раз.',
+  RegisterEmptyFields = 'Пожалуйста, заполните обязательные поля.',
+  RegisterPasswordNotMatch = 'Пароли не совпадают.',
+  EmailError = 'Пожалуйста, введите корректный адрес электронной почты.',
+  HasAccountError = "Эта почта уже зарегистрирована. Пожалуйста, войдите с вашей парой почта + пароль или проверьте правильность почты.",
+  ConnectionError = "Ошибка соединения. Проверьте ваше интернет-соединение и попробуйте снова."
 };
 
 export enum SuccessMessages {
-  AddNewMeal = "Ваш рецепт добавлен в базу!",
-  TrainingAdded = "Training successfully added to your list!",
-  Subscription = "Thank You for Subscribing!",
-  CopiedToClipboard = "Copied to clipboard!",
+  AddNewMeal = "Ваш рецепт добавлен в базу.",
+  AddMeal = "Блюдо успешно добавлено.",
+  TrainingAdded = "Тренировка успешно добавлена в ваш список.",
+
 };
 
 export enum AuthorizationStatus {

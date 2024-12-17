@@ -4,14 +4,14 @@ import { RootState } from "../../store/root-reducer";
 import { AppRoute, AuthorizationStatus } from "../../const";
 import { logoutAction } from "../../store/api-actions";
 import { AppDispatch } from "../../types/state";
-import { setActiveMeal, setActiveMealType, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
+import { redirectToRoute, setActiveMeal, setActiveMealType, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
 import { useState } from "react"
 import cn from 'classnames';
 import { Link } from "react-router-dom";
 import { HeaderUserItem } from "../header-user-item/header-user-item";
 import { ReactComponent as Login } from '../../img/icons/login-icon.svg';
 import { ReactComponent as Logout } from '../../img/icons/logout-icon.svg';
-import { ReactComponent as Home } from '../../img/icons/home-icon.svg';
+import { ReactComponent as Logo } from '../../img/icons/logo-icon-small.svg';
 
 export function Header(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,6 +26,7 @@ export function Header(): JSX.Element {
 
   const handleLogout = () => {
     dispatch(logoutAction());
+    dispatch(redirectToRoute(AppRoute.Landing))
   };
 
   const handleOpenLoginForm = () => {
@@ -80,7 +81,7 @@ export function Header(): JSX.Element {
           // &&
           <ul className={listClassName}>
             <li className="header-nav__item">
-              <Link className="header-nav__link" to={AppRoute.Root} onClick={() => clearScreen()}><Home/></Link>
+              <Link className="header-nav__link header-nav__link--black" to={AppRoute.Root} onClick={() => clearScreen()}><Logo/></Link>
             </li>
           </ul>
         }
@@ -90,9 +91,9 @@ export function Header(): JSX.Element {
         {
           authorizationStatus === AuthorizationStatus.Auth
           ?
-          <button className="button header-nav__button header-nav__item" type="button" onClick={handleLogout}><Logout/></button>
+          <button className="header-nav__button header-nav__item" type="button" onClick={handleLogout}><Logout/></button>
           :
-          <button className="button header-nav__button header-nav__item" type="button" onClick={handleOpenLoginForm}><Login/></button>
+          <button className="header-nav__button header-nav__item" type="button" onClick={handleOpenLoginForm}><Login/></button>
         }
       </div>
     </header>

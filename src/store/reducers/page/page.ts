@@ -5,7 +5,7 @@ import { RegistrationSteps, TrainingType } from "../../../const";
 import { getUserFromLocalStorage } from "../../../services/token";
 
 const initialState: PageState = {
-  registrationStep: RegistrationSteps.None,
+  registrationStep: RegistrationSteps.AccountSetup,
   isLoginFormOpened: false,
   isRegisterFormOpened: false,
   isNewMealFormOpened: false,

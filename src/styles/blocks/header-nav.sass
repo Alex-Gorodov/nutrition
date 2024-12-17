@@ -22,18 +22,24 @@
     justify-content: center
     align-items: center
   &__link
-    // padding: 25px
     color: $white
     text-decoration: none
     text-transform: uppercase
     font-size: 1.4rem
-    // @media (max-width: $mobile)
-    //   padding: 25px 100%
+    transition: $hover-transition
+    &:focus-visible
+      scale: 0.9
+      outline: none
+    &--black
+      color: $black
   &__item
     transition: $hover-transition
     &:hover
-      opacity: 0.6
+      scale: 1.1
     &:active
-      opacity: 0.3
+      scale: 0.9
+    &:focus-visible
+      scale: 1.1
+      outline: none
   &__button
     @include button-reset

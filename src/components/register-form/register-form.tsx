@@ -8,8 +8,8 @@ import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { setUser } from "../../store/slices/user-slice";
 import { Upload } from "../upload-picture/upload-picture";
 import { generatePath } from "react-router-dom";
-// import { useGetUser } from "../../hooks/useGetUser";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
+import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 export function RegisterForm(): JSX.Element {
@@ -80,89 +80,6 @@ export function RegisterForm(): JSX.Element {
   useEffect(() => {
     setUserPageLink(generatePath(AppRoute.UserPage, { id: data.id }))
   }, [userPageLink, dispatch, data]);
-
-  // const handleRegister = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setIsAuthing(true);
-  //   const auth = getAuth();
-
-  //   try {
-  //     if (registrationStep === RegistrationSteps.AccountSetup) {
-  //       // Переход к следующему шагу
-  //       dispatch(setRegistrationStep({ step: RegistrationSteps.HealthGoals }));
-  //       setIsAuthing(false);
-  //       return;
-  //     }
-
-  //     if (registrationStep === RegistrationSteps.HealthGoals) {
-  //       // Валидация пароля
-  //       if (data.password !== data.confirmPassword) {
-  //         dispatch(setStatusMessage({ message: ErrorMessages.RegisterPasswordNotMatch }));
-  //         setIsAuthing(false);
-  //         return;
-  //       }
-
-  //       if (!PasswordValidationRegex.test(data.password)) {
-  //         dispatch(setStatusMessage({ message: ErrorMessages.PasswordError }));
-  //         setIsAuthing(false);
-  //         return;
-  //       }
-
-  //       // Регистрация пользователя
-  //       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-  //       const user = userCredential.user;
-  //       const token = await user.getIdToken();
-  //       console.log('====================================');
-  //       console.log('bafore await ', userPageLink);
-
-  //       await addNewUserToDatabase({
-  //         id: user.uid,
-  //         name: data.name,
-  //         email: data.email,
-  //         isAdmin: false,
-  //         mealSchedule: data.mealSchedule,
-  //         trainingSessions: data.trainingSessions,
-  //         avatar: data.avatar,
-  //         token,
-  //         gender: data.gender,
-  //         age: data.age,
-  //         weight: data.weight,
-  //         height: data.height,
-  //         target: data.target,
-  //         activityLevel: data.activityLevel
-  //       }, dispatch);
-
-  //       // Сохранение данных пользователя
-  //       const userInfo = {
-  //         email: user.email!,
-  //         id: user.uid,
-  //         token,
-  //       };
-  //       dispatch(setUser(userInfo));
-  //       dispatch(setActiveUser({ activeUser: userInfo }));
-  //       loginAction({
-  //         login: data.email,
-  //         password: data.password
-  //       })
-  //       dispatch(setUserInformation({userInformation: userInfo}))
-  //       dispatch(setUploadedPath({ path: null }));
-  //       localStorage.setItem('nutrition-user', JSON.stringify(userInfo));
-
-  //       setUserPageLink(generatePath(AppRoute.UserPage, { id: userInfo.id }))
-  //       console.log('====================================');
-  //       console.log('after await ', userPageLink);
-  //       dispatch(redirectToRoute(userPageLink as AppRoute));
-  //       dispatch(setRegistrationStep({ step: RegistrationSteps.None }));
-  //       setData(defaultData);
-  //       closeForms();
-  //     }
-  //   } catch (error) {
-  //     console.error('Error registering user:', error);
-  //     dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
-  //   } finally {
-  //     setIsAuthing(false);
-  //   }
-  // };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -272,7 +189,7 @@ export function RegisterForm(): JSX.Element {
     <form className="form" action="" method="post" onSubmit={handleRegister} ref={formRef}>
       <h1 className="title title--2">Регистрация</h1>
       <p className="form__register-step-title">{registrationStep}</p>
-      <button className="button form__button--close" onClick={() => dispatch(setRegisterFormOpened({isOpened: !isFormOpened}))}>x</button>
+      <button className="button form__button--close" onClick={() => dispatch(setRegisterFormOpened({isOpened: !isFormOpened}))}><Close/></button>
       {
         registrationStep === RegistrationSteps.AccountSetup &&
         <fieldset className="form__fieldset">

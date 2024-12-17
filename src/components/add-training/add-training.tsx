@@ -5,6 +5,7 @@ import { ErrorMessages, METActivity, METIntensity, MET_VALUES, SuccessMessages, 
 import { setActiveTraining, setStatusMessage, setTrainingFormOpened } from "../../store/action";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { addTrainingSessionToUser } from "../../store/api-actions";
+import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
 
 function calculateCalories(met: number, weight: number, time: number): number {
   return met * weight * (time / 60);
@@ -104,7 +105,7 @@ export function AddTraining(): JSX.Element {
   return (
     <form className="form" method="post" ref={formRef}>
       <h1 className="title title--2 form__title">Добавить тренировку</h1>
-      <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}>x</button>
+      <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}><Close/></button>
       <fieldset className="form__fieldset">
       <label className="form__item form__item--row" htmlFor="training-type">
         Активность:

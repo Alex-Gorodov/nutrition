@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux"
 import { setMealFormOpened } from "../../store/action";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { ChooseMeal } from "../choose-meal/choose-meal";
+import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
 
 export function AddMeal(): JSX.Element {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ export function AddMeal(): JSX.Element {
 
   return (
     <div className="form form--add-meal" ref={formRef}>
-      <button className="button form__button--close" onClick={() => dispatch(setMealFormOpened({isOpened: false}))}>x</button>
+      <button className="button form__button--close" onClick={() => dispatch(setMealFormOpened({isOpened: false}))}><Close/></button>
       <ChooseMeal isPopup/>
     </div>
   )

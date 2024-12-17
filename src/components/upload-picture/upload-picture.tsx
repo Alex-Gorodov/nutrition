@@ -56,16 +56,16 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
 
   return (
     <div className="upload">
-      <div className="upload__wrapper" {...getRootProps()}>
+      <div className="upload__wrapper" {...getRootProps()} tabIndex={-1}>
         {
           fileUrl
           ?
           <img src={fileUrl} alt="Uploaded file" width={100} height={100} className="upload__preview" />
           :
-          <div>
+          <>
             {
               isMobile &&
-              <button className="button button--no-shadow upload__button" onClick={handleButtonClick} type="button">
+              <button className="button upload__button" onClick={handleButtonClick} type="button">
                 <UploadIcon />
               </button>
             }
@@ -83,14 +83,14 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
                 <p className="upload__description">Перетащи сюда изображение или кликни для загрузки.</p>
               </div>
             }
-            <input {...getInputProps} className="visually-hidden" name={name} onChange={handleChange}/>
+            <input {...getInputProps} className="visually-hidden" tabIndex={-1} name={name} onChange={handleChange}/>
             {uploadedFiles.map((file) => (
               <div className="upload__image-wrapper" key={file.name}>
                 <img src={fileUrl ? fileUrl : ''} alt="Uploaded file" width={60} height={60} className="upload__preview" />
               </div>
             ))}
             <p className="upload__description">PNG, GIF, WEBP, JPG, JPEG. Max 1Gb.</p>
-          </div>
+          </>
         }
       </div>
       {/* {

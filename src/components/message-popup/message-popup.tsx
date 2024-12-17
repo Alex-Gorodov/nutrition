@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { ErrorMessages, SuccessMessages } from "../../const";
 import { setLoginFormOpened, setMealFormOpened, setNewMealFormOpened, setRegisterFormOpened, setStatusMessage, setTrainingFormOpened } from "../../store/action";
 import { useEffect } from "react";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 type MessagePopupProps = {
   message: ErrorMessages | SuccessMessages;
@@ -11,6 +12,10 @@ export function MessagePopup({message}: MessagePopupProps): JSX.Element {
   const dispatch = useDispatch();
 
   const isOpened = false;
+
+  const ref = useOutsideClick(() => {
+    dispatch(setStatusMessage({message: null}))
+  }) as React.RefObject<HTMLDivElement>
 
   useEffect(() => {
     message &&
@@ -22,9 +27,9 @@ export function MessagePopup({message}: MessagePopupProps): JSX.Element {
   })
 
   return (
-    <div className="popup">
-      <p>{message}</p>
-      <button className="button popup__button" onClick={() => dispatch(setStatusMessage({message: null}))}>close</button>
+    <div className="popup" ref={ref}>
+      <p className="popup__message">{message}</p>
+      <button className="button button--submit" onClick={() => dispatch(setStatusMessage({message: null}))}>Закрыть</button>
     </div>
   )
 }

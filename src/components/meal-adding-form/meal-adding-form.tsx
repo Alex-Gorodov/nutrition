@@ -8,6 +8,7 @@ import { Meal } from "../../types/meal";
 import { Upload } from "../upload-picture/upload-picture";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
+import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
 
 type MealAddingFormProps = {
   type?: MealType;
@@ -144,7 +145,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
 
   return (
     <form className="form" method="post" action="#" onSubmit={handleFormSubmit} ref={formRef}>
-      <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}>x</button>
+      <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}><Close/></button>
       <h1 className="title title--2 form__title">Добавление нового блюда</h1>
       <fieldset className="form__fieldset">
 
