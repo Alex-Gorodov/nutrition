@@ -45,7 +45,7 @@ export function MealsByTypePage(): JSX.Element {
           })()}
         </title>
       </Helmet>
-      <h2 className="title title--2">Выберите блюдо:</h2>
+      <h2 className="title title--2">Выбери блюдо:</h2>
       {filteredMeals.map((meal) => (
         <Link
           className="meals-page__item"

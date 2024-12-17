@@ -133,7 +133,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
         <div className="user__info">
           <p className="user__name">{setUserGreetings(user.name)}</p>
           <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
-          <p>Учитывая ваш уровень физической нагрузки ({ActivityLevelTranslations[user.activityLevel].toLowerCase()}) и вашу цель ({user.target.toLowerCase()}), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
+          <p>Учитывая ваш уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) и вашу цель (<i>{user.target.toLowerCase()}</i>), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
           <div className="user__targets">
             <p className="title title--3 user__title">За сегодня вы употребили: </p>
             <RadialProgressBar target={totalCalorieTarget} value={calories} field="калорий"/>
@@ -147,7 +147,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
               isWeightEditable
                 ?
                 <label className="user__editable-weight" htmlFor="user-edit-weight">
-                  <input className="user__editable-info user__editable-info--on" autoFocus={isWeightEditable} type="number" id="user-edit-weight" value={weight} onChange={(e) => setWeight(Number(e.target.value))} />
+                  <input className="form__input user__editable-info user__editable-info--on" autoFocus={isWeightEditable} type="number" id="user-edit-weight" value={weight} onChange={(e) => setWeight(Number(e.target.value))} />
                 </label>
                 :
                 <span className="user__editable-info">{user.weight}</span>
@@ -226,6 +226,9 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
               }</span>
             </button>
           </p>
+        </div>
+        <div className="user__incription">
+          <i>*<br />Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
         </div>
       </div>
       {user.trainingSessions && user.trainingSessions.length > 0 && (
@@ -359,9 +362,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           </div>
         </div>
       }
-      <div className="user__incription">
-        <i>*<br />Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
-      </div>
     </div>
   )
 }

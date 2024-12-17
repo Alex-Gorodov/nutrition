@@ -25,7 +25,7 @@ export function ChooseTraining(): JSX.Element {
 
   return (
     <section className="section choose-training">
-      <h1 className="title title--secondary choose-training__title">Выберите тип тренировки</h1>
+      <h1 className="title title--secondary choose-training__title">Выбери тип тренировки</h1>
       <div className="choose-training__buttons">
         {
           Object.values(TrainingType).map((t) => {

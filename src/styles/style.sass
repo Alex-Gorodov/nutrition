@@ -237,16 +237,23 @@ body
   &--icon
     border: none
     background-color: transparent
+    &:hover,
+    &:focus-visible
+      scale: 1.2
+      border: none
+      background-color: transparent
+      color: $black
   &--reset
     @include button-reset
 
 .main
   position: relative
   width: 100%
-  max-width: $container-max-width
   margin: auto
   flex-grow: 1
   transition: 0.3s
+  &:not(:has(.user))
+    max-width: $container-max-width
 
 .page-container
   position: relative

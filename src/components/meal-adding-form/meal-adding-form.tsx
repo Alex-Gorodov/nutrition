@@ -153,7 +153,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
       <fieldset className="form__fieldset">
 
         <label className="form__item" htmlFor="meal-type">
-          <span>Выберите прием пищи: </span>
+          <span>Выбери прием пищи: </span>
           <select
             className="form__input form__input--select"
             name="type"

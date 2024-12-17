@@ -18,7 +18,15 @@ import {
   setUserInformation,
 } from "../../store/action";
 import { RootState } from "../../store/root-reducer";
-import { ActivityLevel, AppRoute, AuthorizationStatus, ErrorMessages, Genders, NutritionTarget, RegistrationSteps } from "../../const";
+import {
+  ActivityLevel,
+  AppRoute,
+  AuthorizationStatus,
+  ErrorMessages,
+  Genders,
+  NutritionTarget,
+  RegistrationSteps
+} from "../../const";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
@@ -48,6 +56,8 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
   const formRef = useOutsideClick(() => {
     dispatch(setLoginFormOpened({ isOpened: false }));
   }) as React.RefObject<HTMLFormElement>;
+
+  const isAuth = useSelector((state:RootState) => state.auth.authorizationStatus) === AuthorizationStatus.Auth;
 
   const initialData: FormData = {
     email: {
@@ -128,7 +138,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
           password: password.value
         });
         closeForms();
-        dispatch(redirectToRoute(AppRoute.Root))
       } else if (await checkAuthMethod() === "Google") {
         dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
       }
@@ -143,6 +152,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
       }
       console.error("Login error:", error);
     } finally {
+      isAuth && dispatch(redirectToRoute(AppRoute.Root))
       setIsAuthing(false);
     }
   };
@@ -199,12 +209,12 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
       dispatch(
         requireAuthorization({ authorizationStatus: AuthorizationStatus.Auth })
       );
-      dispatch(redirectToRoute(AppRoute.Root))
       closeForms();
     } catch (error) {
       console.error("Google Sign-In Error:", error);
       dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
     } finally {
+      isAuth && dispatch(redirectToRoute(AppRoute.Root))
       setIsAuthing(false);
     }
   };
