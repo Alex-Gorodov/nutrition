@@ -109,8 +109,11 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
       const numericFields = ["calories", "proteins", "fats", "carbs"];
       setData((prevdata) => ({
         ...prevdata,
-        [name]:
-          numericFields.includes(name) ? parseFloat(value) || 0 : value,
+        [name]: numericFields.includes(name)
+          ? value === ""
+            ? ""
+            : parseFloat(value) || 0
+          : value,
       }));
     }
   };
