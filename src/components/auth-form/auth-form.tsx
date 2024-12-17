@@ -9,6 +9,7 @@ import { ChangeEvent, useState } from "react";
 import { AppDispatch } from "../../types/state";
 import { setUser } from "../../store/slices/user-slice";
 import {
+  redirectToRoute,
   requireAuthorization,
   setLoginFormOpened,
   setRegisterFormOpened,
@@ -17,7 +18,7 @@ import {
   setUserInformation,
 } from "../../store/action";
 import { RootState } from "../../store/root-reducer";
-import { ActivityLevel, AuthorizationStatus, ErrorMessages, Genders, NutritionTarget, RegistrationSteps } from "../../const";
+import { ActivityLevel, AppRoute, AuthorizationStatus, ErrorMessages, Genders, NutritionTarget, RegistrationSteps } from "../../const";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { ReactComponent as Google } from "../../img/icons/google-icon.svg";
@@ -127,6 +128,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
           password: password.value
         });
         closeForms();
+        dispatch(redirectToRoute(AppRoute.Root))
       } else if (await checkAuthMethod() === "Google") {
         dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
       }
@@ -197,6 +199,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
       dispatch(
         requireAuthorization({ authorizationStatus: AuthorizationStatus.Auth })
       );
+      dispatch(redirectToRoute(AppRoute.Root))
       closeForms();
     } catch (error) {
       console.error("Google Sign-In Error:", error);

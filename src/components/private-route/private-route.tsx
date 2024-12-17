@@ -15,11 +15,11 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element, isAdminRoute = fal
   const user = useGetUser();
 
   if (authorizationStatus !== AuthorizationStatus.Auth) {
-    return <Navigate to={AppRoute.Root} />;
+    return <Navigate to={AppRoute.Landing} />;
   }
 
   if (isAdminRoute && !user?.isAdmin) {
-    return <Navigate to={AppRoute.Root} />;
+    return <Navigate to={AppRoute.Landing} />;
   }
 
   return element;
