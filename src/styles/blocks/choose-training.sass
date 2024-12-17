@@ -2,13 +2,17 @@
   margin-bottom: 80px
   &__title
     margin-bottom: 20px
+    animation-name: button-appearing-right
+    animation-iteration-count: 1
+    animation-duration: 1s
+    animation-fill-mode: forwards
   &__buttons
     display: grid
     grid-template-columns: repeat(12, 1fr)
     gap: 40px
     @media (max-width: $tablet)
-      gap: 20px
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))
+    gap: 20px
+    // grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))
   &__button
     display: grid
     grid-template-columns: auto 40px
@@ -20,6 +24,9 @@
     padding: 40px
     color: $light-blue
     font-size: 1.5rem
+    animation-iteration-count: 1
+    animation-duration: 1s
+    animation-fill-mode: forwards
     @media (max-width: $tablet)
       display: flex
       flex-direction: column-reverse
@@ -31,34 +38,39 @@
       box-shadow: 2px 2px 1px 1px black
     &--walking
       background-color: darken($walking, 15%)
-      @media (min-width: $tablet)
-        grid-column: 1 / 5
+      animation-name: button-appearing-top-left
+      // @media (min-width: $tablet)
+      grid-column: 1 / 5
       &:hover
         background-color: $walking
     &--running
       background-color: darken($running, 15%)
-      @media (min-width: $tablet)
-        grid-column: 5 / 9
+      animation-name: button-appearing-top
+      // @media (min-width: $tablet)
+      grid-column: 5 / 9
       &:hover
         background-color: $running
     &--cardio
       background-color: darken($cardio, 15%)
-      @media (min-width: $tablet)
-        grid-column: 9 / 13
+      animation-name: button-appearing-top-right
+      // @media (min-width: $tablet)
+      grid-column: 9 / 13
       &:hover
         background-color: $cardio
     &--gym
       grid-row: 2
       background-color: darken($gym, 15%)
-      @media (min-width: $tablet)
-        grid-column: span 6
+      animation-name: button-appearing-left
+      // @media (min-width: $tablet)
+      grid-column: span 6
       &:hover
         color: lighten($light-blue, 50%)
         background-color: $gym
     &--swimming
       grid-row: 2
       background-color: darken($swimming, 15%)
-      @media (min-width: $tablet)
-        grid-column: span 6
+      animation-name: button-appearing-right
+      // @media (min-width: $tablet)
+      grid-column: span 6
       &:hover
         background-color: $swimming

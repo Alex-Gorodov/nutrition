@@ -4,7 +4,8 @@ $dark-green: #2c5f2d
 $green: #88b04b
 $yellow: #f4d35e
 $light-red: #e27d60
-$light-blue: #85c1e9
+$light-blue: #ffffff
+// $light-blue: #85c1e9
 $white: #ffffff
 $gray: #a1a1a1
 $dark-gray: #585858
@@ -112,6 +113,56 @@ $popup-transition: 0.6s
     transform: scale(100)
     color: $light-blue
     opacity: 0
+
+@keyframes button-appearing-top-left
+  0%
+    opacity: 0
+    transform: translateX(-100vw) translateY(-10vh)
+  100%
+    opacity: 1
+    transform: translateX(0) translateY(0)
+
+@keyframes button-appearing-top-right
+  0%
+    opacity: 0
+    transform: translateX(100vw) translateY(-10vh)
+  100%
+    opacity: 1
+    transform: translateX(0) translateY(0)
+
+@keyframes button-appearing-left
+  0%
+    opacity: 0
+    transform: translateX(-100vw)
+  100%
+    opacity: 1
+    transform: translateX(0)
+
+@keyframes button-appearing-right
+  0%
+    opacity: 0
+    transform: translateX(100vw)
+  100%
+    opacity: 1
+    transform: translateX(0)
+
+@keyframes button-appearing-bottom
+  0%
+    opacity: 0
+    transform: translateY(100vh)
+  100%
+    opacity: 1
+    transform: translateY(0)
+
+@keyframes button-appearing-top
+  0%
+    opacity: 0
+    transform: translateY(-100vh)
+  100%
+    opacity: 1
+    transform: translateY(0)
+
+
 
 *,
 *::after,

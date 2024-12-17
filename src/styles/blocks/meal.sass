@@ -13,16 +13,23 @@
     font-size: 2rem
     cursor: pointer
     transition: $hover-transition
+    animation-iteration-count: 1
+    animation-duration: 1s
+    animation-fill-mode: forwards
     @media (max-width: $mobile)
       font-size: 1.5rem
       box-shadow: 4px 4px 2px 2px $black
     &--breakfast
+      animation-name: button-appearing-top-left
       background-color: $breakfast
     &--lunch
+      animation-name: button-appearing-top-right
       background-color: $lunch
     &--dinner
+      animation-name: button-appearing-left
       background-color: $dinner
     &--snack
+      animation-name: button-appearing-right
       background-color: $snack
     &--accept
       padding: 20px 80px
@@ -37,6 +44,7 @@
       background-color: $light-red
       font-size: 1.4rem
     &--add-new-meal
+      animation-name: button-appearing-bottom
       grid-column: 1 / -1
       background-color: $light-gray
       color: $white
