@@ -1,12 +1,13 @@
 {
   "files": {
-    "main.css": "/nutrition/static/css/main.e03f497b.css",
-    "main.js": "/nutrition/static/js/main.c773e0b2.js",
+    "main.css": "/nutrition/static/css/main.6bd9e20e.css",
+    "main.js": "/nutrition/static/js/main.d0655c10.js",
     "static/media/meal-icon.svg": "/nutrition/static/media/meal-icon.7ba9d6180045eeb1fb29502f763917bd.svg",
     "static/media/walking-icon.svg": "/nutrition/static/media/walking-icon.09037ba9abdec250ff38ca82fde90a42.svg",
     "static/media/running-icon.svg": "/nutrition/static/media/running-icon.ee43ce864bd69f6eb091abdfb6d7d72b.svg",
     "static/media/google-icon.svg": "/nutrition/static/media/google-icon.ce9a8677aa16fb43aaea5134d4e4c385.svg",
     "static/media/swimming-icon.svg": "/nutrition/static/media/swimming-icon.a791985a7d4cd7661c36ad79afa57ce8.svg",
+    "static/media/gym-icon.svg": "/nutrition/static/media/gym-icon.3728fb8e020844b4626d5ece1840a018.svg",
     "static/media/upload-icon.svg": "/nutrition/static/media/upload-icon.ebe207d3351196557cc989def0b4c71a.svg",
     "static/media/apply-icon.svg": "/nutrition/static/media/apply-icon.236fb9d9f3da1fafb8c6914fc3492457.svg",
     "static/media/loader-logo.svg": "/nutrition/static/media/loader-logo.7db883fb382d894ee21d33370893c431.svg",
@@ -16,16 +17,15 @@
     "index.html": "/nutrition/index.html",
     "static/media/cross-icon.svg": "/nutrition/static/media/cross-icon.34807849d41de05c00d3db56be9685ae.svg",
     "static/media/cardio-icon.svg": "/nutrition/static/media/cardio-icon.211e44a8d07d5d3edfb98937f22eaf0c.svg",
-    "static/media/gym-icon.svg": "/nutrition/static/media/gym-icon.30ab05291fccf8726f75eaf0271eadfc.svg",
     "static/media/add-icon.svg": "/nutrition/static/media/add-icon.ef8c93182b0a00b8551e680e0b823c1f.svg",
     "static/media/done-v-icon.svg": "/nutrition/static/media/done-v-icon.c08c785ae4301f25f83a9d3dc480a8d8.svg",
     "static/media/edit-icon.svg": "/nutrition/static/media/edit-icon.5a8887859ef64349e6f63fe9ed4da67d.svg",
     "static/media/down-icon.svg": "/nutrition/static/media/down-icon.fb1880fe77be07d0f18a34a4fe5cad20.svg",
-    "main.e03f497b.css.map": "/nutrition/static/css/main.e03f497b.css.map",
-    "main.c773e0b2.js.map": "/nutrition/static/js/main.c773e0b2.js.map"
+    "main.6bd9e20e.css.map": "/nutrition/static/css/main.6bd9e20e.css.map",
+    "main.d0655c10.js.map": "/nutrition/static/js/main.d0655c10.js.map"
   },
   "entrypoints": [
-    "static/css/main.e03f497b.css",
-    "static/js/main.c773e0b2.js"
+    "static/css/main.6bd9e20e.css",
+    "static/js/main.d0655c10.js"
   ]
 }
