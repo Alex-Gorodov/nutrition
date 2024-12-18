@@ -104,8 +104,10 @@ export function AddTraining(): JSX.Element {
 
   return (
     <form className="form" method="post" ref={formRef}>
-      <h1 className="title title--2 form__title">Добавить тренировку</h1>
-      <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}><Close/></button>
+      <div className="form__header">
+        <h1 className="title title--2 form__title">Добавить тренировку</h1>
+        <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}><Close/></button>
+      </div>
       <fieldset className="form__fieldset">
       <label className="form__item form__item--row" htmlFor="training-type">
         Активность:
@@ -180,15 +182,15 @@ export function AddTraining(): JSX.Element {
           />
         </label>
 
+        {calories > 0 && (
+          <p>
+            Вы затратили примерно <strong>{Math.floor(calories)}</strong>{" "}
+            калорий! Так держать!
+          </p>
+        )}
       </fieldset>
 
-      {calories > 0 && (
-        <p>
-          Вы затратили примерно <strong>{Math.floor(calories)}</strong>{" "}
-          калорий! Так держать!
-        </p>
-      )}
-      <button className="button button--submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
+      <button className="button button--submit form__submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
     </form>
   );
 }

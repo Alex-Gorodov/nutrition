@@ -97,7 +97,6 @@ export const addNewUserToDatabase = async (user: User, dispatch: AppDispatch) =>
 export const addMealToUserSchedule = async (
   user: User,
   meal: Meal,
-  dispatch: AppDispatch
 ): Promise<void> => {
   try {
     const userRef = database.ref(APIRoute.Users);
@@ -113,7 +112,6 @@ export const addMealToUserSchedule = async (
 
       updatedScheduleItems.push([meal, new Date()]);
       await userRef.child(key).update({ mealSchedule: updatedScheduleItems });
-      dispatch(trackUserMeal({user: user, meal: meal}))
       console.log('Meal successfully added to user schedule');
     } else {
       console.log('User not found in the database');

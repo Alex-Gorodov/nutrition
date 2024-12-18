@@ -3,7 +3,7 @@ import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
 import { formatRecipe } from "../../utils/formatRecipe";
 import { RootState } from "../../store/root-reducer";
-import { redirectToRoute, setActiveMeal } from "../../store/action";
+import { redirectToRoute, setActiveMeal, trackUserMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 import { addMealToUserSchedule } from "../../store/api-actions";
 import { useState } from "react";
@@ -31,7 +31,8 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
   const handleSetActiveMeal = useSetActiveMeal();
 
   const handleAddToSchedule = () => {
-    activeMeal && addMealToUserSchedule(activeUser, activeMeal, dispatch);
+    activeMeal && addMealToUserSchedule(activeUser, activeMeal);
+    activeMeal && dispatch(trackUserMeal({user: activeUser, meal: activeMeal}));
     activeMeal && setIsAdded(true);
   }
 

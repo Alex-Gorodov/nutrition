@@ -153,10 +153,10 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           <p>Учитывая ваш уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) и вашу цель (<i>{user.target.toLowerCase()}</i>), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
           <div className="user__targets">
             <p className="title title--3 user__title">За сегодня вы употребили: </p>
-            <RadialProgressBar target={totalCalorieTarget} value={calories} field="калорий"/>
-            <RadialProgressBar target={proteinsTarget} value={proteins} field="белков"/>
-            <RadialProgressBar target={fatsTarget} value={fats} field="жиров"/>
-            <RadialProgressBar target={carbsTarget} value={carbs} field="углеводов"/>
+            <RadialProgressBar target={totalCalorieTarget} value={calories} field={ totalCalorieTarget - calories > 0 ? 'калорий' : 'калории'}/>
+            <RadialProgressBar target={proteinsTarget} value={proteins} field={ proteinsTarget - proteins > 0 ? 'белков' : 'белки'}/>
+            <RadialProgressBar target={fatsTarget} value={fats} field={ fatsTarget - fats > 0 ? 'жиров' : 'жиры'}/>
+            <RadialProgressBar target={carbsTarget} value={carbs} field={ carbsTarget - carbs > 0 ? 'углеводов' : 'углеводы'}/>
           </div>
           <p className="user__editable-wrapper">
             <span className="user__editable-title">Ваш вес:</span>

@@ -22,11 +22,16 @@ export function RadialProgressBar({ target, value, field }: RadialProgressBarPro
         {
           isTargetAchieved
           ?
-          <DoneIcon/>
+          <>
+            <DoneIcon/>
+            {field}
+          </>
           :
           <>
-            <b>{value}{field !== 'калорий' && ' г'}</b>
-            <span className='radial-bar__target'>/ {target}</span>
+            <p>
+              <b>{value}{field !== 'калорий' && ' г'}</b>
+              <span className='radial-bar__target'>/ {target}</span>
+            </p>
             <span>{field}</span>
           </>
         }

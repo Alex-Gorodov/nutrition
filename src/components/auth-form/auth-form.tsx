@@ -228,62 +228,67 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
   return (
     <div className="form__wrapper">
       <form className={`form login__form ${className}`} onSubmit={handleLogin} autoComplete="off" ref={formRef}>
-        <h3 className="title title--3 form__title">Войти</h3>
-        <button className="button form__button--close" onClick={() => dispatch(setLoginFormOpened({isOpened: !isFormOpened}))}><Close/></button>
-        {Object.keys(data).map((fieldName) => {
-          const field = data[fieldName];
-          return (
-            <label
-              key={fieldName}
-              className="form__item"
-              htmlFor={`login-${fieldName}`}
+        <div className="form__header">
+          <h3 className="title title--3 form__title">Войти</h3>
+          <button className="button form__button--close" onClick={() => dispatch(setLoginFormOpened({isOpened: !isFormOpened}))}><Close/></button>
+        </div>
+        <fieldset className="form__fieldset form__fieldset--no-grid">
+
+          {Object.keys(data).map((fieldName) => {
+            const field = data[fieldName];
+            return (
+              <label
+                key={fieldName}
+                className="form__item"
+                htmlFor={`login-${fieldName}`}
+              >
+                <span className="form__label">
+                  {fieldName === "email" ? "E-mail:" : "Пароль:"}
+                </span>
+                <input
+                  className={`form__input ${field.error ? "input--error" : ""}`}
+                  type={fieldName === "email" ? "email" : "password"}
+                  name={fieldName}
+                  id={`login-${fieldName}`}
+                  required
+                  value={field.value}
+                  onChange={handleFieldChange}
+                  autoComplete={fieldName === "password" ? "off" : "on"}
+                />
+                {field.error && (
+                  <span className="form__error">{field.errorValue}</span>
+                )}
+              </label>
+            );
+          })}
+          <div className="form__buttons">
+            <button
+              className="button button--submit"
+              type="submit"
+              disabled={isAuthing}
             >
-              <span className="form__label">
-                {fieldName === "email" ? "E-mail:" : "Пароль:"}
-              </span>
-              <input
-                className={`form__input ${field.error ? "input--error" : ""}`}
-                type={fieldName === "email" ? "email" : "password"}
-                name={fieldName}
-                id={`login-${fieldName}`}
-                required
-                value={field.value}
-                onChange={handleFieldChange}
-                autoComplete={fieldName === "password" ? "off" : "on"}
-              />
-              {field.error && (
-                <span className="form__error">{field.errorValue}</span>
-              )}
-            </label>
-          );
-        })}
-        <div className="form__buttons">
-          <button
-            className="button button--submit"
-            type="submit"
-            disabled={isAuthing}
-          >
-            {isAuthing ? <LoadingSpinner size="16" /> : "Войти"}
-          </button>
-          <button
-            className="button button--google"
-            type="button"
-            onClick={handleGoogleSignIn}
-            disabled={isAuthing}
-          >
-            <span>Войти с</span> <Google />
-          </button>
-        </div>
-        <div className="form__buttons form__buttons--column">
-          <p>Еще нет аккаунта?</p>
-          <button
-            className="button"
-            type="button"
-            onClick={handleOpenRegister}
-          >
-            Регистрация
-          </button>
-        </div>
+              {isAuthing ? <LoadingSpinner size="16" /> : "Войти"}
+            </button>
+            <button
+              className="button button--google"
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={isAuthing}
+            >
+              <span>Войти с</span> <Google />
+            </button>
+          </div>
+          <div className="form__buttons form__buttons--column">
+            <p>Еще нет аккаунта?</p>
+            <button
+              className="button"
+              type="button"
+              onClick={handleOpenRegister}
+            >
+              Регистрация
+            </button>
+          </div>
+        </fieldset>
       </form>
     </div>
   );

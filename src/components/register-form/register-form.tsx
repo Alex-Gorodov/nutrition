@@ -187,9 +187,13 @@ export function RegisterForm(): JSX.Element {
 
   return (
     <form className="form" action="" method="post" onSubmit={handleRegister} ref={formRef}>
-      <h1 className="title title--2">Регистрация</h1>
-      <p className="form__register-step-title">{registrationStep}</p>
-      <button className="button form__button--close" onClick={() => dispatch(setRegisterFormOpened({isOpened: !isFormOpened}))}><Close/></button>
+      <div className="form__header">
+        <div>
+          <h1 className="title title--2">Регистрация</h1>
+          <p className="form__register-step-title">{registrationStep}</p>
+        </div>
+        <button className="button form__button--close" onClick={() => dispatch(setRegisterFormOpened({isOpened: !isFormOpened}))}><Close/></button>
+      </div>
       {
         registrationStep === RegistrationSteps.AccountSetup &&
         <fieldset className="form__fieldset">
@@ -272,10 +276,10 @@ export function RegisterForm(): JSX.Element {
       {
         registrationStep === RegistrationSteps.HealthGoals
         &&
-        <button className="button" type="button" onClick={() => dispatch(setRegistrationStep({ step: RegistrationSteps.AccountSetup }))}>Назад</button>
+        <button className="button form__submit form__submit--navigation" type="button" onClick={() => dispatch(setRegistrationStep({ step: RegistrationSteps.AccountSetup }))}>Назад</button>
       }
       <button
-        className={`button ${registrationStep === RegistrationSteps.HealthGoals ? 'button--submit' : ''}`}
+        className={`button form__submit ${registrationStep === RegistrationSteps.HealthGoals ? 'button--submit' : 'form__submit--navigation'}`}
         type={registrationStep === RegistrationSteps.HealthGoals ? 'submit' : 'button'}
         onClick={handleRegister}
       >
@@ -290,7 +294,7 @@ export function RegisterForm(): JSX.Element {
               :
               'Регистрация!'}
       </button>
-      <p>* - обязательные поля</p>
+      <p className="form__require-description">* - обязательные поля</p>
     </form>
   )
 }

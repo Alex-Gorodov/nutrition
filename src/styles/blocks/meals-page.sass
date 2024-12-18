@@ -18,6 +18,9 @@
     transition: $hover-transition
     &:hover
       background-color: darken($white, 25%)
+    &:focus-visible
+      outline: 2px solid $black
+      outline-offset: 0
   &__image-wrapper
     justify-self: center
     grid-column: 1 / 2

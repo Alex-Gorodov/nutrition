@@ -133,7 +133,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
 
     try {
       await addMealToDatabase(data);
-      addToUser && activeUser && await addMealToUserSchedule(activeUser, data, dispatch);
+      addToUser && activeUser && await addMealToUserSchedule(activeUser, data);
       setData({
         ...defaultData,
         id: getNextId(meals, data.type),
@@ -157,8 +157,10 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
 
   return (
     <form className="form" method="post" action="#" onSubmit={handleFormSubmit} ref={formRef}>
-      <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}><Close/></button>
-      <h1 className="title title--2 form__title">Добавление нового блюда</h1>
+      <div className="form__header">
+        <h1 className="title title--2 form__title">Добавление нового блюда</h1>
+        <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}><Close/></button>
+      </div>
       <fieldset className="form__fieldset">
 
         <label className="form__item" htmlFor="meal-type">
@@ -278,7 +280,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
           <span>Кушац!</span>
         </label>
       </fieldset>
-      <button className="button button--submit" type="submit">
+      <button className="button button--submit form__submit" type="submit">
         { isRecipeAdding ? <LoadingSpinner size="40"/> : "Добавить рецепт!"}
       </button>
     </form>
