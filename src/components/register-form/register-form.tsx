@@ -187,6 +187,7 @@ export function RegisterForm(): JSX.Element {
 
   return (
     <form className="form" action="" method="post" onSubmit={handleRegister} ref={formRef}>
+      <p className="form__easter-egg">Привет =) <br/><br/> Отпусти!)) <br/><br/> Хватит =(</p>
       <div className="form__header">
         <div>
           <h1 className="title title--2">Регистрация</h1>

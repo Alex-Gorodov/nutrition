@@ -157,6 +157,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
 
   return (
     <form className="form" method="post" action="#" onSubmit={handleFormSubmit} ref={formRef}>
+      <p className="form__easter-egg">Привет =) <br/> Отпусти!))</p>
       <div className="form__header">
         <h1 className="title title--2 form__title">Добавление нового блюда</h1>
         <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}><Close/></button>
