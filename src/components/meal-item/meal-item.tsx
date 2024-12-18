@@ -84,26 +84,26 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
           <span className="title title--3">Ингредиенты:</span>
           <ol>
             {meal.ingredients.map((i) => (
-              <li key={`${meal.name}-ingredient-${i}`}>{i}</li>
+              <li key={`${meal.name}-ingredient-${i}`}>
+                {i.trimStart().replace(/^\S/, (char) => char.toUpperCase())}
+              </li>
             ))}
           </ol>
         </div>
         {
           meal.recipe &&
-          <div className="meal-item__recipe">
-            <span className="title title--3">Рецепт:</span>
-            <p>
-              {formattedRecipe
-                .split("\n")
-                .filter((line) => line.trim() !== "") // Убираем пустые строки
-                .map((line, index) => (
-                  <span key={`${meal.name}-recipe-line-${index}`}>
-                    {line}
-                    <br />
-                  </span>
-                ))}
-            </p>
-          </div>
+          <div className="meal-item__recipe-wrapper">
+  <span className="title title--3">Рецепт:</span>
+  <ol className="meal-item__recipe-list">
+    {formattedRecipe
+      .split("\n")
+      .map((line, index) => (
+        <li key={`recipe-line-${index}`}>
+          {line.charAt(0).toUpperCase() + line.slice(1)}
+        </li>
+      ))}
+  </ol>
+</div>
         }
         <div className="meal-item__buttons">
           <button className="button button--submit meal-item__button" onClick={() => handleAddToSchedule()}>{isAdded ? 'Молодец!' : 'Кушац!'}</button>

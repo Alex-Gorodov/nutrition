@@ -1,22 +1,15 @@
 export function formatRecipe(recipe: string): string {
-  const stepPattern = /\d+(\.|\))\s/g; // Захват номера шага с точкой или скобкой
-  const rawSteps = recipe.split(stepPattern).filter((step) => step.trim() !== ""); // Убираем пустые строки
+  const rawSteps = recipe.split(/(?=\d+[\.\)])\s*/);
 
   let formattedRecipe = "";
-  let currentStepNumber = 0;
 
-  for (const step of rawSteps) {
-    const trimmedStep = step.trim();
+  rawSteps.forEach((step) => {
+    const cleanedStep = step.replace(/^\d+[\.\)]\s*/, '').trim();
 
-    // Пропускаем шаги, которые содержат только закрывающую скобку или пустую строку
-    if (trimmedStep === ")" || trimmedStep === ".") {
-      continue;
+    if (cleanedStep) {
+      formattedRecipe += `${cleanedStep}\n`;
     }
+  });
 
-    // Увеличиваем номер шага только для содержательных строк
-    currentStepNumber++;
-    formattedRecipe += `${currentStepNumber}. ${trimmedStep}\n`;
-  }
-
-  return formattedRecipe.trim(); // Убираем лишние переносы
+  return formattedRecipe.trim();
 }
