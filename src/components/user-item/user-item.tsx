@@ -154,7 +154,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           {
             totalCalorieTarget - calories > 0
             ?
-            <p>Сегодня ты в цефиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
+            <p>Сегодня ты в дефиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
             :
             <p>Сегодня ты в профиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
           }
