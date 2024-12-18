@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
+import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { setUserGreetings } from "../../utils/setUserGreetings";
 import { useDispatch } from "react-redux";
-import { updateUserTarget, updateUserWeight } from "../../store/api-actions";
+import { updateUserActivity, updateUserTarget, updateUserWeight } from "../../store/api-actions";
 import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
 import { ReactComponent as AddIcon } from "../../img/icons/add-icon.svg";
 import { formatDate } from "../../utils/formatDate";
-import { setActiveMeal, setMealFormOpened, setTrainingFormOpened, setUserTarget, setUserWeight } from "../../store/action";
+import { setActiveMeal, setMealFormOpened, setTrainingFormOpened, setUserActivity, setUserTarget, setUserWeight } from "../../store/action";
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { groupByDate } from "../../utils/groupByDate";
 import { ReactComponent as CollapseIcon } from "../../img/icons/down-icon.svg"
@@ -23,8 +23,10 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   const dispatch = useDispatch();
   const [isWeightEditable, setWeightEditable] = useState(false);
   const [isTargetEditable, setTargetEditable] = useState(false);
+  const [isActivityEditable, setActivityEditable] = useState(false);
   const [weight, setWeight] = useState(user.weight);
   const [target, setTarget] = useState(user.target);
+  const [activity, setActivity] = useState(user.activityLevel);
 
   const [trainingExpandedDates, setTrainingExpandedDates] = useState<Record<string, boolean>>({});
   const [mealsExpandedDates, setMealsExpandedDates] = useState<Record<string, boolean>>({});
@@ -87,7 +89,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     dispatch(setUserTarget({ user, newTarget: target }));
     setTargetEditable(false);
     try {
-      await updateUserTarget(user, target, dispatch);
+      await updateUserTarget(user, target);
       console.log('Target updated successfully');
     } catch (error) {
       console.error('Failed to update target:', error);
@@ -97,6 +99,21 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   useEffect(() => {
     setTarget(user.target);
   }, [user.target]);
+
+  const handleEditActivity = async () => {
+    dispatch(setUserActivity({ user, newActivity: activity }));
+    setActivityEditable(false);
+    try {
+      await updateUserActivity(user, activity);
+      console.log('Activity updated successfully');
+    } catch (error) {
+      console.error('Failed to update activity:', error);
+    }
+  };
+
+  useEffect(() => {
+    setActivity(user.activityLevel);
+  }, [user.activityLevel]);
 
   const todayMeals = user.mealSchedule && user.mealSchedule.filter((m) => new Date(m[1]).getDate() === today)
 
@@ -224,6 +241,65 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                   :
                   'edit'
               }</span>
+            </button>
+          </p>
+          <p className="user__editable-wrapper">
+            <span className="user__editable-title">Ваша активность:</span>
+            {
+              isActivityEditable
+                ?
+                <select
+                  className="user__editable-info user__editable-info--select user__editable-info--on"
+                  name="user-change-activity"
+                  id="user-change-activity"
+                  value={activity}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (Object.values(ActivityLevel).includes(value)) {
+                      setActivity(value as ActivityLevel);
+                    } else {
+                      console.error(`Invalid activity level: ${value}`);
+                    }
+                  }}
+                >
+                  {
+                    Object.values(ActivityLevel)
+                      .filter((level) => typeof level === 'number') // Фильтруем только числовые значения
+                      .map((level) => (
+                        <option
+                          value={level}
+                          key={`${user.name}-activity-${level}`}
+                        >
+                          {ActivityLevelTranslations[level as ActivityLevel]}
+                        </option>
+                      ))
+                  }
+                </select>
+
+                :
+                <span className="user__editable-info">
+                  {ActivityLevelTranslations[user.activityLevel as ActivityLevel]}
+                </span>
+            }
+            <button
+              className="button button--icon"
+              type="button"
+              onClick={() => {
+                if (isActivityEditable) {
+                  handleEditActivity();
+                } else {
+                  setActivityEditable(true);
+                }
+              }}
+            >
+              {
+                isActivityEditable
+                  ? <ApplyIcon />
+                  : <EditIcon />
+              }
+              <span className="visually-hidden">
+                {isActivityEditable ? 'apply' : 'edit'}
+              </span>
             </button>
           </p>
         </div>

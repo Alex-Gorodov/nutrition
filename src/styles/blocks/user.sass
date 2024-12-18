@@ -22,21 +22,23 @@
     font-size: 24px
   &__editable-wrapper
     display: grid
-    grid-template-columns: minmax(0px, 100px) minmax(50px, 250px) 60px
+    // grid-template-columns: minmax(0px, 100px) minmax(50px, 250px) 60px
+    grid-template-columns: minmax(0px, 200px) minmax(50px, 350px) 60px
     align-items: center
-    gap: 20px
+    // gap: 20px
     @media (max-width: $mobile)
       grid-template-columns: auto 60px
   &__editable-title
+    font-size: 1rem
     @media (max-width: $mobile)
       grid-column: 1 / -1
   &__editable-info
-    max-width: 220px
+    // max-width: 220px
     padding: 10px
     margin: 0
     border: none
     background-color: transparent
-    font-size: 1.4rem
+    font-size: 1.2rem
     white-space: nowrap
     @media (max-width: $mobile)
       padding: 0

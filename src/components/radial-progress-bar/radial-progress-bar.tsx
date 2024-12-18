@@ -26,6 +26,7 @@ export function RadialProgressBar({ target, value, field }: RadialProgressBarPro
           :
           <>
             <b>{value}{field !== 'калорий' && ' г'}</b>
+            <span className='radial-bar__target'>/ {target}</span>
             <span>{field}</span>
           </>
         }

@@ -1,18 +1,19 @@
 .meals
   margin-bottom: 20px
-  padding-top: 20px
+  // padding-top: 20px
   &__title
     margin: 0
     grid-column: 1 / -1
+    margin: 20px
   &__buttons
     display: grid
     grid-template-columns: repeat(2, 1fr)
-    grid-template-rows: repeat(2, 80px)
+    grid-template-rows: repeat(2, 60px)
     gap: 20px
-    margin-top: 20px
     @media (max-width: $mobile)
       padding: 0px
-      grid-template-rows: 40px 40px auto 40px
+      gap: 8px
+      grid-template-rows: repeat(2, 40px)
   &--popup
     margin: 0
     padding-top: 0

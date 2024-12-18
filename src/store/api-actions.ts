@@ -2,7 +2,7 @@ import { createAsyncThunk, ThunkDispatch } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
 import { RootState } from "./root-reducer";
 import { database } from "../services/database";
-import { APIRoute, AuthorizationStatus, NutritionTarget, TrainingSession } from "../const";
+import { ActivityLevel, APIRoute, AuthorizationStatus, NutritionTarget, TrainingSession } from "../const";
 import { Meal } from "../types/meal";
 import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading, trackUserMeal, trackUserTrainingSession } from "./action";
 import { User } from "../types/user";
@@ -175,7 +175,6 @@ export const updateUserWeight = async (
 export const updateUserTarget = async (
   user: User,
   newTarget: NutritionTarget,
-  dispatch: AppDispatch
 ): Promise<void> => {
   try {
     const userRef = database.ref(APIRoute.Users);
@@ -187,13 +186,33 @@ export const updateUserTarget = async (
       const targetToUpdate = newTarget || NutritionTarget.WeightMaintenance;
 
       await userRef.child(key).update({ target: targetToUpdate });
-      // dispatch(setUserTarget({ user, newTarget: targetToUpdate }));
       console.log("User target was successfully updated!");
     }
   } catch (error) {
     console.error("Error updating user target:", error);
   }
 };
+
+export const updateUserActivity = async (
+  user: User,
+  newActivity: ActivityLevel,
+): Promise<void> => {
+  try {
+    const userRef = database.ref(APIRoute.Users);
+    const snapshot = await userRef.orderByChild('id').equalTo(user.id).once('value');
+
+    if (snapshot.exists()) {
+      const key = Object.keys(snapshot.val())[0];
+
+      const activityToUpdate = newActivity || ActivityLevel.ModeratelyActive;
+
+      await userRef.child(key).update({ activity: activityToUpdate });
+      console.log("User activity level was successfully updated!");
+    }
+  } catch (error) {
+    console.error("Error updating user activity level:", error)
+  }
+}
 
 
 export const loginAction = createAsyncThunk<

@@ -60,9 +60,9 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
               <span>{MealTypeTranslations[type]}</span>
             </button>
           ))}
-          <h2 className="title title--secondary meals__title">Или добавь новое блюдо</h2>
-          <button className="button meal__button meal__button--add-new-meal" onClick={() => handleOpenForm()}>+</button>
         </div>
+        <h2 className="title title--secondary meals__title">Или добавь новое блюдо</h2>
+        <button className="button meal__button meal__button--add-new-meal" onClick={() => handleOpenForm()}>+</button>
       </>
       )}
     </section>

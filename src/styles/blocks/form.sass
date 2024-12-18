@@ -40,6 +40,8 @@
     gap: 8px
     &--wild-grid
       grid-column: 1 / -1
+    &--checkbox
+      flex-direction: row
   &__input
     padding: 14px 12px
     font-size: 16px
@@ -61,6 +63,30 @@
     &:focus-visible
       outline: 1px solid $black
       background-color: lighten($black, 90%)
+  &__custom-checkbox
+    position: relative
+    width: 48px
+    height: 24px
+    border: 2px solid $black
+    border-radius: 16px
+    transition: $hover-transition
+    &::after
+      position: absolute
+      top: 50%
+      left: 2px
+      transform: translateY(-50%)
+      width: 18px
+      height: 18px
+      background-color: $black
+      border-radius: 50%
+      transition: $hover-transition
+      content: ''
+  &__checkbox:checked
+    & + .form__custom-checkbox
+      background-color: $green
+    & + .form__custom-checkbox::after
+      position: absolute
+      left: 24px
 
   &__buttons
     display: grid

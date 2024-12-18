@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { DataState } from "../../../types/state";
-import { loadMeals, loadUsers, setMealsDataLoadingStatus, setUsersDataLoading, addNewMeal, trackUserMeal, trackUserTrainingSession, setUserWeight, setUserTarget } from "../../action";
+import { loadMeals, loadUsers, setMealsDataLoadingStatus, setUsersDataLoading, addNewMeal, trackUserMeal, trackUserTrainingSession, setUserWeight, setUserTarget, setUserActivity } from "../../action";
 import { getUserFromLocalStorage } from "../../../services/token";
 import { RegistrationSteps } from "../../../const";
 
@@ -72,6 +72,16 @@ export const DataReducer = createReducer(initialState, (builder) => {
 
       if (userIndex !== -1) {
         state.users[userIndex].target = newTarget;
+      } else {
+        console.error('User not found in state');
+      }
+    })
+    .addCase(setUserActivity, (state, action) => {
+      const { user, newActivity } = action.payload;
+      const userIndex = state.users.findIndex((u) => u.id === user.id);
+
+      if (userIndex !== -1) {
+        state.users[userIndex].activityLevel = newActivity;
       } else {
         console.error('User not found in state');
       }

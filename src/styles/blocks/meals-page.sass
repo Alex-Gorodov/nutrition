@@ -12,12 +12,12 @@
     gap: 20px
     text-decoration: none
     color: $black
-    border: 2px solid darken($light-blue, 50%)
+    border: 2px solid $black
     padding: 10px
-    border-radius: 16px
+    border-radius: 8px
     transition: $hover-transition
     &:hover
-      box-shadow: 4px 4px 4px 4px black
+      background-color: darken($white, 25%)
   &__image-wrapper
     justify-self: center
     grid-column: 1 / 2
@@ -33,4 +33,3 @@
   &__add-meal-btn
     background-color: $light-blue
     font-size: 24px
-    border-radius: 16px

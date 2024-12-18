@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { addMealToDatabase } from "../../store/api-actions";
+import { addMealToDatabase, addMealToUserSchedule } from "../../store/api-actions";
 import { MealType, MealTypeTranslations, SuccessMessages } from "../../const";
-import { addNewMeal, setNewMealFormOpened, setStatusMessage } from "../../store/action";
+import { addNewMeal, setNewMealFormOpened, setStatusMessage, trackUserMeal } from "../../store/action";
 import { Meal } from "../../types/meal";
 import { Upload } from "../upload-picture/upload-picture";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
@@ -20,6 +20,14 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
   const isFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const mealsAmount = meals.length.toString();
   const [isRecipeAdding, setIsRecipeAdding] = useState(false);
+
+  const authUser = useSelector((state: RootState) => state.auth.userInfo);
+
+  const activeUser = useSelector((state: RootState) =>
+    state.data.users.find((user) => user.id === authUser?.id)
+  );
+
+  const [addToUser, setAddToUser] = useState(true);
 
   const formRef = useOutsideClick(() => {
     dispatch(setNewMealFormOpened({ isOpened: false }));
@@ -125,13 +133,14 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
 
     try {
       await addMealToDatabase(data);
-
+      addToUser && activeUser && await addMealToUserSchedule(activeUser, data, dispatch);
       setData({
         ...defaultData,
         id: getNextId(meals, data.type),
       });
       dispatch(setNewMealFormOpened({isOpened: false}));
-      dispatch(setStatusMessage({message: SuccessMessages.AddNewMeal}))
+      dispatch(setStatusMessage({message: SuccessMessages.AddNewMeal}));
+      addToUser && activeUser && dispatch(trackUserMeal({user: activeUser, meal: data}))
     } catch (error) {
       console.error("Error adding meal:", error);
     } finally {
@@ -262,6 +271,11 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
         </label>
         <label className="form__item form__item--wild-grid" htmlFor="meal-picture">
           <Upload onFileUpload={handleFileUpload} inputId="meal-picture" name="picture" />
+        </label>
+        <label className="form__item form__item--checkbox" htmlFor="add-to-user">
+          <input className="form__checkbox visually-hidden" type="checkbox" name="add-to-user" id="add-to-user" checked={addToUser} onChange={() => setAddToUser(!addToUser)}/>
+          <span className="form__custom-checkbox"></span>
+          <span>Кушац!</span>
         </label>
       </fieldset>
       <button className="button button--submit" type="submit">

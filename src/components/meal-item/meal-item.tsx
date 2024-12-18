@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AppRoute, MealTypeTranslations } from "../../const";
+import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
 import { formatRecipe } from "../../utils/formatRecipe";
 import { RootState } from "../../store/root-reducer";
@@ -7,6 +7,8 @@ import { redirectToRoute, setActiveMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 import { addMealToUserSchedule } from "../../store/api-actions";
 import { useState } from "react";
+import { ReactComponent as Refresh } from '../../img/icons/refresh-icon.svg'
+import { useParams } from "react-router-dom";
 
 type MealItemProps = {
   meal: Meal;
@@ -17,6 +19,12 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
   const formattedRecipe = meal.recipe ? formatRecipe(meal.recipe) : '';
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
   const activeUser = useSelector((state: RootState) => state.user);
+
+  const { id } = useParams<{ id: string }>();
+
+  const mealById = useSelector((state: RootState) =>
+    state.data.meals.find((meal) => meal.id === id)
+  );
 
   const [isAdded, setIsAdded] = useState(false);
 
@@ -36,7 +44,7 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
     <div className="meal">
       <div className="meal__item meal-item">
         <h2 className="title title--2 meal-item__title">
-          {meal.name} <span className="meal-item__type">(на {MealTypeTranslations[meal.type].toLowerCase()})</span>
+        {meal.name.charAt(0).toUpperCase() + meal.name.slice(1)} <span className="meal-item__type">(на {MealTypeTranslations[meal.type].toLowerCase()})</span>
         </h2>
         <div className="meal-item__image-wrapper">
           {meal.picture ? (
@@ -85,22 +93,23 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
           <div className="meal-item__recipe">
             <span className="title title--3">Рецепт:</span>
             <p>
-              {formattedRecipe.split("\n").map((line, index) => (
-                <span key={`${meal.name}-recipe-line-${index}`}>
-                  {line}
-                  <br />
-                </span>
-              ))}
+              {formattedRecipe
+                .split("\n")
+                .filter((line) => line.trim() !== "") // Убираем пустые строки
+                .map((line, index) => (
+                  <span key={`${meal.name}-recipe-line-${index}`}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
             </p>
           </div>
         }
-        {activeMeal && (
-          <div className="meal__buttons">
-            <button className="meal__button meal__button--accept" onClick={() => handleAddToSchedule()}>{isAdded ? 'Приятного аппетита!' : 'Это я ем!'}</button>
-            <button className="meal__button meal__button--update" onClick={() => handleSetActiveMeal(activeMeal.type)}>Хочу другое!</button>
-            <button className="meal__button meal__button--clear" onClick={() => handleResetMeal()}>Очистить</button>
-          </div>
-        )}
+        <div className="meal-item__buttons">
+          <button className="button button--submit meal-item__button" onClick={() => handleAddToSchedule()}>{isAdded ? 'Молодец!' : 'Кушац!'}</button>
+          <button className="button meal-item__button meal-item__button--refresh" onClick={() => handleSetActiveMeal(activeMeal ? activeMeal.type : mealById ? mealById.type : MealType.Breakfast)}><Refresh/></button>
+          <button className="button meal-item__button meal-item__button--back" onClick={() => handleResetMeal()}>Назад</button>
+        </div>
       </div>
     </div>
   );

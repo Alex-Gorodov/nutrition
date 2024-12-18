@@ -4,10 +4,10 @@
   gap: 40px
   @media (max-width: $tablet)
     grid-template-columns: 1fr
-    padding: 10px
   @media (min-width: $desktop)
     grid-template-columns: 400px auto 400px
   &__title
+    text-transform: capitalize
     grid-column: 1 / -1
   &__type
     font-size: 24px
@@ -20,9 +20,11 @@
       align-items: center
   &__picture
     border-radius: 24px
+    height: auto
+    width: 100%
     @media (max-width: $mobile)
-      max-width: 320px
-      height: auto
+      // max-width: 320px
+      // height: auto
   &__alt-picture
     display: flex
     justify-content: center
@@ -37,11 +39,38 @@
     text-align: center
     @media (max-width: $tablet)
       padding: 40px 10px
+  &__buttons
+    display: grid
+    max-height: 150px
+    grid-template-columns: 0.5fr 1.5fr
+    grid-column: 1 / -1
+    gap: 20px
+    @media (max-width: $tablet)
+      grid-row: 3
+    @media (min-width: $desktop)
+      grid-column: 3 / 4
+    @media (max-width: $mobile)
+      gap: 8px
   &__recipe
     display: flex
     max-width: 1020px
     flex-direction: column
     gap: 20px
     @media (min-width: $tablet)
-      grid-column: 1 / 3
-      grid-row: 3
+      grid-column: 1 / -1
+      grid-row: 4
+  &__button
+    max-height: 60px
+    text-transform: uppercase
+    font-size: 1rem
+    cursor: pointer
+    transition: $hover-transition
+    grid-column: 1 / 3
+    @media (max-width: $mobile)
+      font-size: 1rem
+    &--refresh
+      grid-column: 1
+    &--back
+      grid-column: 2
+    &--add-new-meal
+      grid-column: 1 / -1
