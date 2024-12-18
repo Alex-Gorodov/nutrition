@@ -1,9 +1,9 @@
 .form
   @include flex-column
   position: fixed
-  top: 20px
+  top: 80px
   left: 50%
-  max-height: 90vh
+  max-height: 80vh
   overflow: scroll
   transform: translateX(-50%)
   padding: 0
@@ -18,7 +18,7 @@
   @media (max-width: $tablet)
     max-width: 96vw
     min-width: 350px
-    max-height: 85vh
+    max-height: 75vh
   &__header
     position: sticky
     top: 0
@@ -56,6 +56,7 @@
     &--wild-grid
       grid-column: 1 / -1
     &--checkbox
+      grid-column: 1 / -1
       flex-direction: row
   &__input
     padding: 14px 12px

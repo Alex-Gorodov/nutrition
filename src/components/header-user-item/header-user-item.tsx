@@ -39,7 +39,7 @@ export function HeaderUserItem(): JSX.Element {
     selectedUser ?
     <div className="header-user">
       <Link className="header-user__link header-nav__item" to={link} onClick={() => handleClick()}>
-        {selectedUser.name}
+        {/* {selectedUser.name} */}
         <img className="header-user__image" src={selectedUser.avatar} width={40} height={40} alt={selectedUser.name} />
       </Link>
     </div> : <LoadingSpinner size={"20"}/>

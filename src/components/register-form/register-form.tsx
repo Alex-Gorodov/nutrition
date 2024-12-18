@@ -290,7 +290,7 @@ export function RegisterForm(): JSX.Element {
           :
             isAuthing
             ?
-            <LoadingSpinner size={"20"}/>
+            <LoadingSpinner color={registrationStep === RegistrationSteps.HealthGoals ? 'white' : 'black'} size={"20"}/>
               :
               'Регистрация!'}
       </button>

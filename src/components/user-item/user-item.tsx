@@ -151,6 +151,13 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           <p className="user__name">{setUserGreetings(user.name)}</p>
           <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
           <p>Учитывая ваш уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) и вашу цель (<i>{user.target.toLowerCase()}</i>), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
+          {
+            totalCalorieTarget - calories > 0
+            ?
+            <p>Сегодня ты в цефиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
+            :
+            <p>Сегодня ты в профиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
+          }
           <div className="user__targets">
             <p className="title title--3 user__title">За сегодня вы употребили: </p>
             <RadialProgressBar target={totalCalorieTarget} value={calories} field={ totalCalorieTarget - calories > 0 ? 'калорий' : 'калории'}/>

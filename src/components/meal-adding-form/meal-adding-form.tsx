@@ -277,11 +277,11 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
         <label className="form__item form__item--checkbox" htmlFor="add-to-user">
           <input className="form__checkbox visually-hidden" type="checkbox" name="add-to-user" id="add-to-user" checked={addToUser} onChange={() => setAddToUser(!addToUser)}/>
           <span className="form__custom-checkbox"></span>
-          <span>Кушац!</span>
+          <span>Ем сейчас.</span>
         </label>
       </fieldset>
       <button className="button button--submit form__submit" type="submit">
-        { isRecipeAdding ? <LoadingSpinner size="40"/> : "Добавить рецепт!"}
+        { isRecipeAdding ? <LoadingSpinner size="40" color="white"/> : "Добавить рецепт!"}
       </button>
     </form>
   );

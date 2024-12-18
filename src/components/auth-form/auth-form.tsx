@@ -267,7 +267,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
               type="submit"
               disabled={isAuthing}
             >
-              {isAuthing ? <LoadingSpinner size="16" /> : "Войти"}
+              {isAuthing ? <LoadingSpinner color="white" size="16" /> : "Войти"}
             </button>
             <button
               className="button button--google"

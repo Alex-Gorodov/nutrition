@@ -12,7 +12,7 @@ export function LoadingSpinner({size, color, wrapper}: SpinnerProps): JSX.Elemen
       visible={true}
       height={size}
       width={size}
-      color={color ? color : "#141416"}
+      color={color ? color : "black"}
       secondaryColor="rgba(45,52,64, 40%)"
       ariaLabel="oval-loading"
       wrapperStyle={{}}
