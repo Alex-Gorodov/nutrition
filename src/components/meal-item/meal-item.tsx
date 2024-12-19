@@ -3,12 +3,13 @@ import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
 import { formatRecipe } from "../../utils/formatRecipe";
 import { RootState } from "../../store/root-reducer";
-import { redirectToRoute, setActiveMeal, setActiveMealType, trackUserMeal } from "../../store/action";
+import { redirectToRoute, setActiveMealType, trackUserMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 import { addMealToUserSchedule } from "../../store/api-actions";
 import { useState } from "react";
 import { ReactComponent as Refresh } from '../../img/icons/refresh-icon.svg'
 import { generatePath, useParams } from "react-router-dom";
+import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
 type MealItemProps = {
   meal: Meal;
@@ -20,6 +21,8 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
   const activeUser = useSelector((state: RootState) => state.user);
 
+  const user = useSelector((state: RootState) => state.data.users.find((u) => u.id === activeUser.id));
+
   const { id } = useParams<{ id: string }>();
 
   const mealById = useSelector((state: RootState) =>
@@ -30,9 +33,25 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
 
   const handleSetActiveMeal = useSetActiveMeal();
 
-  const handleAddToSchedule = () => {
-    activeMeal && addMealToUserSchedule(activeUser, activeMeal);
-    activeMeal && dispatch(trackUserMeal({user: activeUser, meal: activeMeal}));
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAddToSchedule = async() => {if (activeMeal) {
+    setIsAdding(true);
+    const updatedMeal = {
+      ...activeMeal,
+      id: `${activeMeal.id}-${user?.mealSchedule?.length || '0'}`
+    };
+    dispatch(
+      trackUserMeal({
+        user: activeUser,
+        meal: updatedMeal,
+      })
+    );
+
+    await addMealToUserSchedule(activeUser, updatedMeal);
+    setIsAdding(false);
+
+  }
     activeMeal && setIsAdded(true);
   }
 
@@ -58,6 +77,7 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
               alt={meal.name}
               width={400}
               height={400}
+              loading="lazy"
             />
           ) : (
             <p className="meal-item__alt-picture">
@@ -110,7 +130,7 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
 </div>
         }
         <div className="meal-item__buttons">
-          <button className="button button--submit meal-item__button" onClick={() => handleAddToSchedule()}>{isAdded ? 'Молодец!' : 'Кушац!'}</button>
+          <button className="button button--submit meal-item__button" onClick={() => handleAddToSchedule()}>{isAdded ? 'Молодец!' : isAdding ? <LoadingSpinner color="#ffffff" size={"20"}/> : 'Кушац!'}</button>
           <button className="button meal-item__button meal-item__button--refresh" onClick={() => handleSetActiveMeal(activeMeal ? activeMeal.type : mealById ? mealById.type : MealType.Breakfast)}><Refresh/></button>
           <button className="button meal-item__button meal-item__button--back" onClick={() => handleResetMeal()}>Назад</button>
         </div>

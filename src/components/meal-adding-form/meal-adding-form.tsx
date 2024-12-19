@@ -131,9 +131,16 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
     dispatch(addNewMeal({ meal: data }));
     setIsRecipeAdding(true);
 
+    // const mealToAddToUser = ...data, [id]: data.
+
+    const mealToAddToUser = {
+      ...data,
+      id: `${data.id}-${activeUser?.mealSchedule?.length || '0'}`
+    };
+
     try {
       await addMealToDatabase(data);
-      addToUser && activeUser && await addMealToUserSchedule(activeUser, data);
+      addToUser && activeUser && await addMealToUserSchedule(activeUser, mealToAddToUser);
       setData({
         ...defaultData,
         id: getNextId(meals, data.type),

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { useState, useEffect } from "react";
 import { ErrorMessages, METActivity, METIntensity, MET_VALUES, SuccessMessages, TrainingType, TrainingTypeTranslations } from "../../const";
-import { setActiveTraining, setStatusMessage, setTrainingFormOpened } from "../../store/action";
+import { setActiveTraining, setStatusMessage, setTrainingFormOpened, trackUserTrainingSession } from "../../store/action";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { addTrainingSessionToUser } from "../../store/api-actions";
 import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
@@ -14,8 +14,11 @@ function calculateCalories(met: number, weight: number, time: number): number {
 export function AddTraining(): JSX.Element {
   const dispatch = useDispatch();
   const activeTraining = useSelector((state: RootState) => state.page.activeTraining);
-  const user = useSelector((state: RootState) => state.user);
-  const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === user.id))?.weight;
+  const activeUser = useSelector((state: RootState) => state.user);
+  const userWeight = useSelector((state: RootState) => state.data.users.find((u) => u.id === activeUser.id))?.weight;
+
+  const user = useSelector((state: RootState) => state.data.users.find((u) => u.id === activeUser.id));
+
 
   const [intensity, setIntensity] = useState("moderate");
   const [weight, setWeight] = useState(userWeight || 70);
@@ -78,17 +81,19 @@ export function AddTraining(): JSX.Element {
 
   const handleAddTraining = async (e: React.FormEvent) => {
     e.preventDefault();
+    const training = {
+      activity: activeTraining || TrainingType.Walking,
+      date: new Date(),
+      duration: time,
+      caloriesBurned: calories,
+      id: `${user?.name}-${activeTraining}-${user?.trainingSessions?.length ? user?.trainingSessions.length : '0'}`
+    };
     try {
       addTrainingSessionToUser(
-        user,
-        {
-          activity: activeTraining || TrainingType.Walking,
-          date: new Date(),
-          duration: time,
-          caloriesBurned: calories
-        },
-        dispatch
+        activeUser,
+        training
       );
+      dispatch(trackUserTrainingSession({user: activeUser, session: training}));
       user
         ?
         dispatch(setStatusMessage({message: SuccessMessages.TrainingAdded}))
@@ -184,7 +189,7 @@ export function AddTraining(): JSX.Element {
 
         {calories > 0 && (
           <p>
-            Вы затратили примерно <strong>{Math.floor(calories)}</strong>{" "}
+            Ты затратил примерно <strong>{Math.floor(calories)}</strong>{" "}
             калорий! Так держать!
           </p>
         )}

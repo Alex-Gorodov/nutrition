@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
-import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, Macronutrients, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
+import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, Macronutrients, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingType, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { setUserGreetings } from "../../utils/setUserGreetings";
 import { useDispatch } from "react-redux";
-import { updateUserActivity, updateUserTarget, updateUserWeight } from "../../store/api-actions";
+import { removeMealFromUserSchedule, removeTrainingFromUserSessions, updateUserActivity, updateUserTarget, updateUserWeight } from "../../store/api-actions";
 import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
 import { ReactComponent as AddIcon } from "../../img/icons/add-icon.svg";
 import { formatDate } from "../../utils/formatDate";
-import { setActiveMeal, setMealFormOpened, setTrainingFormOpened, setUserActivity, setUserTarget, setUserWeight } from "../../store/action";
+import { removeMeal, removeTrainingSession, setActiveMeal, setMealFormOpened, setTrainingFormOpened, setUserActivity, setUserTarget, setUserWeight } from "../../store/action";
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { groupByDate } from "../../utils/groupByDate";
 import { ReactComponent as CollapseIcon } from "../../img/icons/down-icon.svg"
+import { ReactComponent as Remove } from "../../img/icons/remove-icon.svg"
 import { generatePath, Link } from "react-router-dom";
 import { Ring } from "../ring/ring";
+import { Meal } from "../../types/meal";
+import { TrainingSession } from "../../types/trainingSession";
 
 type UserItemProps = {
   user: User;
@@ -74,7 +77,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     dispatch(setUserWeight({ user, newWeight: weight }));
     setWeightEditable(false);
     try {
-      await updateUserWeight(user, weight, dispatch);
+      await updateUserWeight(user, weight);
       console.log("Weight updated successfully");
     } catch (error) {
       console.error("Failed to update weight", error);
@@ -115,20 +118,27 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     setActivity(user.activityLevel);
   }, [user.activityLevel]);
 
+  const handleRemoveMeal = async (meal: Meal) => {
+    await removeMealFromUserSchedule(user, meal)
+    dispatch(removeMeal({user, meal}))
+  }
+
+  const handleRemoveTraining = async (training: TrainingSession) => {
+    await removeTrainingFromUserSessions(user, training)
+    dispatch(removeTrainingSession({user, training}))
+  }
+
   const todayMeals = user.mealSchedule && user.mealSchedule.filter((m) => new Date(m[1]).getDate() === today)
 
   const bmr = getBasalMetabolicRate(user).valueOf();
 
-  const caloriesTarget = calculateActiveBmr(bmr, user.activityLevel, user.target);
+  const totalCalorieTarget = calculateActiveBmr(bmr, user.activityLevel, user.target);
 
-  // Получаем соотношение БЖУ для выбранной цели
   const { proteins: proteinRatio, fats: fatRatio, carbs: carbRatio } = MacronutrientRatios[user.target];
 
-  // Общая цель по калориям
   const caloricGoal = CaloricGoals[NutritionTargetToCaloricGoals[user.target]];
-  const totalCalorieTarget = Math.round(caloriesTarget * caloricGoal);
+  const caloriesTarget = Math.round(totalCalorieTarget * caloricGoal);
 
-  // Рассчитываем цель по БЖУ
   const proteinsTarget = Math.round((totalCalorieTarget * proteinRatio) / CaloricValues.Proteins);
   const fatsTarget = Math.round((totalCalorieTarget * fatRatio) / CaloricValues.Fats);
   const carbsTarget = Math.round((totalCalorieTarget * carbRatio) / CaloricValues.Carbs);
@@ -145,20 +155,20 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   })
 
   const [data, setData] = useState([
-    { target: totalCalorieTarget, value: calories, field: 'calories', size: 317, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
-    { target: proteinsTarget, value: proteins, field: 'proteins', size: 248, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
+    { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
+    { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
     { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
     { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
   ]);
 
   useEffect(() => {
     setData([
-      { target: totalCalorieTarget, value: calories, field: 'calories', size: 317, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
-      { target: proteinsTarget, value: proteins, field: 'proteins', size: 248, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
+      { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
+      { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
       { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
       { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
     ]);
-  }, [totalCalorieTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats]);
+  }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats]);
 
 
   return (
@@ -182,8 +192,8 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
             </div>
           </div>
           <div className="user__today">
-            <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
-            <p>Учитывая ваш уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) и вашу цель (<i>{user.target.toLowerCase()}</i>), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
+            <p>Твой базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
+            <p>Учитывая твой уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) твоя суточная потребность калорий <b>{totalCalorieTarget}</b> ккал, но учитывая твою цель (<i>{user.target.toLowerCase()}</i>), тебе необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
             {
               totalCalorieTarget - calories > 0
               ?
@@ -194,7 +204,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           </div>
           <div className="user__settings">
             <p className="user__editable-wrapper">
-              <span className="user__editable-title">Ваш вес:</span>
+              <span className="user__editable-title">Твой вес:</span>
               {
                 isWeightEditable
                   ?
@@ -232,7 +242,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
               </button>
             </p>
             <p className="user__editable-wrapper">
-              <span className="user__editable-title">Ваша цель:</span>
+              <span className="user__editable-title">Твоя цель:</span>
               {
                 isTargetEditable
                   ?
@@ -279,7 +289,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
               </button>
             </p>
             <p className="user__editable-wrapper">
-              <span className="user__editable-title">Ваша активность:</span>
+              <span className="user__editable-title">Твоя активность:</span>
               {
                 isActivityEditable
                   ?
@@ -358,7 +368,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
             <div className="user-actions__head">
               <span>Активность</span>
               <span>Сожжено калорий</span>
-              <span>Дата</span>
+              <span></span>
             </div>
             <ul className="user-actions__list">
               {Object.entries(groupByDate(user.trainingSessions, (t) => formatDate(new Date(t.date)))).map(
@@ -370,7 +380,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                         <div
                           className="user-actions__group-header"
                         >
-                          <div onClick={() => toggleTrainingDate(date)}>
+                          <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
                             <p>{date}</p>
                             <CollapseIcon className="icon" />
                           </div>
@@ -379,7 +389,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                         <div
                           className="user-actions__group-header user-actions__group-header--opened"
                         >
-                          <div onClick={() => toggleTrainingDate(date)}>
+                          <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
                             <p>{date}</p>
                             <CollapseIcon className="icon icon--rotated" />
                           </div>
@@ -389,9 +399,11 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                                 className="user-actions__item user-actions__item--trainings"
                                 key={`${user.name}-training-${t.activity}-${t.duration}-${new Date(t.date).getDay()}`}
                               >
-                                <span>{TrainingTypeTranslations[t.activity]}</span>
-                                <span>{Math.floor(t.caloriesBurned)}</span>
-                                <span>{date}</span>
+                                <div className="user-actions__item-wrapper">
+                                  <span>{TrainingTypeTranslations[t.activity as TrainingType]}</span>
+                                  <span>{Math.floor(t.caloriesBurned)}</span>
+                                </div>
+                                <button className="button button--remove" onClick={() => handleRemoveTraining(t)}><Remove/></button>
                               </li>
                             ))}
                           </ul>
@@ -429,7 +441,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                           <div
                             className="user-actions__group-header"
                           >
-                            <div onClick={() => toggleMealsDate(date)}>
+                            <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
                               <p>{date}</p>
                               <CollapseIcon className="icon" />
                             </div>
@@ -438,7 +450,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                           <div
                             className="user-actions__group-header user-actions__group-header--opened"
                           >
-                            <div onClick={() => toggleMealsDate(date)}>
+                            <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
                               <p>{date}</p>
                               <CollapseIcon className="icon icon--rotated" />
                             </div>
@@ -453,14 +465,16 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                                     className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()}`}
                                     key={`${m[0].name}-${m[0]}-${date}-${i}`}
                                   >
-                                    <span>{MealTypeTranslations[m[0].type]}</span>
-                                    <span>
-                                      <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
-                                        {m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}
-                                      </Link>
-                                    </span>
-                                    <span>{Math.floor(m[0].calories)}</span>
-                                    <span>{date}</span>
+                                    <div className="user-actions__item-wrapper">
+                                      <span>{MealTypeTranslations[m[0].type]}</span>
+                                      <span>
+                                        <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
+                                          {m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}
+                                        </Link>
+                                      </span>
+                                      <span>{Math.floor(m[0].calories)}</span>
+                                    </div>
+                                    <button className="button button--remove" onClick={() => handleRemoveMeal(m[0])}><Remove/></button>
                                   </li>
                                 )})
                               }

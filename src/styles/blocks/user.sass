@@ -1,13 +1,10 @@
 .user
   display: grid
-  padding-top: 40px
   @media (max-width: $mobile)
-    padding-top: 20px
   &__wrapper
     display: grid
     max-width: $container-max-width
     margin: auto
-    // gap: 40px
     padding-inline: 40px
     @media (max-width: $tablet)
       padding-inline: 20px
@@ -44,10 +41,6 @@
     margin: 0
     grid-template-columns: minmax(0px, 200px) minmax(50px, 350px) 60px
     align-items: center
-    // @media (max-width: $desktop) and (min-width: $tablet)
-    //   display: flex
-    //   flex-direction: column
-    //   gap: 8px
     @media (max-width: $desktop) and (min-width: $tablet)
       grid-template-columns: auto 60px
     @media (max-width: $mobile)

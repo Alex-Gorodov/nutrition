@@ -42,13 +42,6 @@ export const TrainingTypeTranslations: Record<TrainingType, string> = {
   [TrainingType.Swimming]: "Плавание"
 }
 
-export type TrainingSession = {
-  activity: TrainingType;
-  date: Date;
-  duration: number;
-  caloriesBurned: number;
-};
-
 export enum BasicTrainingCaloriesPerHour {
   Walking = 250,
   Running = 600,
@@ -193,14 +186,14 @@ export enum ErrorMessages {
   RegisterEmptyFields = 'Пожалуйста, заполни обязательные поля.',
   RegisterPasswordNotMatch = 'Пароли не совпадают.',
   EmailError = 'Пожалуйста, введи корректный адрес электронной почты.',
-  HasAccountError = "Эта почта уже зарегистрирована. Пожалуйста, войди с вашей парой почта + пароль или проверь правильность почты.",
-  ConnectionError = "Ошибка соединения. Проверь ваше интернет-соединение и попробуй снова."
+  HasAccountError = "Эта почта уже зарегистрирована. Пожалуйста, войди с твойей парой почта + пароль или проверь правильность почты.",
+  ConnectionError = "Ошибка соединения. Проверь твойе интернет-соединение и попробуй снова."
 };
 
 export enum SuccessMessages {
-  AddNewMeal = "Ваш рецепт добавлен в базу.",
+  AddNewMeal = "Твой рецепт добавлен в базу.",
   AddMeal = "Блюдо успешно добавлено.",
-  TrainingAdded = "Тренировка успешно добавлена в ваш список.",
+  TrainingAdded = "Тренировка успешно добавлена в твой список.",
 
 };
 

@@ -1,8 +1,9 @@
 import { createAction } from "@reduxjs/toolkit";
 import { Meal } from "../types/meal";
 import { User } from "../types/user";
-import { ActivityLevel, AppRoute, AuthorizationStatus, ErrorMessages, MealType, NutritionTarget, RegistrationSteps, SuccessMessages, TrainingSession, TrainingType } from "../const";
+import { ActivityLevel, AppRoute, AuthorizationStatus, ErrorMessages, MealType, NutritionTarget, RegistrationSteps, SuccessMessages, TrainingType } from "../const";
 import { UserAuthData } from "../types/user-auth-data";
+import { TrainingSession } from "../types/trainingSession";
 
 // Data fetching
 export const loadMeals = createAction<{meals: Meal[]}>('data/loadMeals');
@@ -10,6 +11,8 @@ export const setMealsDataLoadingStatus = createAction<{isMealsDataLoading: boole
 export const loadUsers = createAction<{users: User[]}>('data/loadUsers');
 export const setUsersDataLoading = createAction<{isUsersDataLoading: boolean}>('data/setUsersDataLoadingStatus');
 export const setActiveUser = createAction<{activeUser: UserAuthData}>('data/setActiveUser');
+export const removeMeal = createAction<{user: User, meal: Meal}>('data/removeMeal');
+export const removeTrainingSession = createAction<{user: User, training: TrainingSession}>('data/removeTrainingSession');
 
 // User data updating
 export const setUserWeight = createAction<{user: User, newWeight: number}>('data/setUserWeight');

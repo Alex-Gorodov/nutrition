@@ -31,11 +31,7 @@ export function Ring({
   const radius = (size - 34) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = setStrokeOffset(value, target, circumference);
-  const { top, left, transform } = calculateDotPosition(value, target, radius); // Используем импортированную функцию
-
-  // Вычисляем процент для точки
-  const percentage = (value / target) * 100;
-  const rotateAngle = percentage <= 100 ? percentage * 3.6 : 360 + (percentage % 100) * 3.6; // Когда больше 100%, продолжаем вращение
+  const { top, left, transform } = calculateDotPosition(value, target, radius);
 
   return (
     <div className="ring-container">
@@ -45,7 +41,8 @@ export function Ring({
           style={{
             top: top,
             left: left,
-            transform: transform, // Используем вычисленный угол для точки
+            transform: transform,
+            backgroundColor: `${value === 0 ? strokeColorStart : 'transparent'}`
           }}
         ></div>
         <svg className="progress-ring" height={size} width={size}>
@@ -66,7 +63,7 @@ export function Ring({
             cy={size / 2}
             style={{
               strokeDasharray: `${circumference} ${circumference}`,
-              strokeDashoffset, // Обновляем offset кольца
+              strokeDashoffset,
             }}
           />
         </svg>

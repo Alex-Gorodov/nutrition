@@ -2,15 +2,16 @@ import { createAsyncThunk, ThunkDispatch } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
 import { RootState } from "./root-reducer";
 import { database } from "../services/database";
-import { ActivityLevel, APIRoute, AuthorizationStatus, NutritionTarget, TrainingSession } from "../const";
+import { ActivityLevel, APIRoute, AuthorizationStatus, NutritionTarget } from "../const";
 import { Meal } from "../types/meal";
-import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading, trackUserMeal, trackUserTrainingSession } from "./action";
+import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading } from "./action";
 import { User } from "../types/user";
 import { UserAuthData } from "../types/user-auth-data";
 import { AuthData } from "../types/authData";
 import { removeUserFromLocalStorage, saveToken } from "../services/token";
 import { AppDispatch } from "../types/state";
 import { removeUser, setUser } from "./slices/user-slice";
+import { TrainingSession } from "../types/trainingSession";
 
 export type ThunkOptions = {
   dispatch: ThunkDispatch<RootState, AxiosInstance, any>;
@@ -121,10 +122,36 @@ export const addMealToUserSchedule = async (
   }
 };
 
+export const removeMealFromUserSchedule = async (
+  user: User,
+  meal: Meal,
+): Promise<void> => {
+  try {
+    const userRef = database.ref(APIRoute.Users);
+    const snapshot = await userRef.orderByChild('id').equalTo(user.id).once('value');
+
+    if (snapshot.exists()) {
+      const key = Object.keys(snapshot.val())[0];
+      const existingUser = snapshot.val()[key];
+
+      const updatedScheduleItems: [Meal, Date][] = (existingUser.mealSchedule || [])
+        .map((item: any) => (Array.isArray(item) ? item : [item, new Date()]))
+        .filter(([scheduledMeal]: [Meal, Date]) => scheduledMeal.id !== meal.id);
+
+      await userRef.child(key).update({ mealSchedule: updatedScheduleItems });
+      console.log('Meal successfully removed from user schedule');
+    } else {
+      console.log('User not found in the database');
+    }
+  } catch (error) {
+    console.error('Error removing meal from schedule:', error);
+  }
+};
+
+
 export const addTrainingSessionToUser = async (
   user: User,
   training: TrainingSession,
-  dispatch: AppDispatch
 ): Promise<void> => {
   try {
     const userRef = database.ref(APIRoute.Users);
@@ -139,7 +166,6 @@ export const addTrainingSessionToUser = async (
       updatedTrainingSessions.push(training);
 
       await userRef.child(key).update({ trainingSessions: updatedTrainingSessions });
-      dispatch(trackUserTrainingSession({user: user, session: training}));
       console.log("Training session successfully added to user schedule.");
     } else {
       console.log("User not found in the database.");
@@ -149,10 +175,36 @@ export const addTrainingSessionToUser = async (
   }
 };
 
+export const removeTrainingFromUserSessions = async (
+  user: User,
+  training: TrainingSession,
+): Promise<void> => {
+  try {
+    const userRef = database.ref(APIRoute.Users);
+    const snapshot = await userRef.orderByChild('id').equalTo(user.id).once('value');
+
+    if (snapshot.exists()) {
+      const key = Object.keys(snapshot.val())[0];
+      const existingUser = snapshot.val()[key];
+
+      const updatedTrainingSessions: TrainingSession[] = (existingUser.trainingSessions || [])
+        .map((item: any) => (Array.isArray(item) ? item : [item, new Date()]))
+        .filter((trainingSession: TrainingSession) => trainingSession.id !== training.id);
+
+      await userRef.child(key).update({ trainingSessions: updatedTrainingSessions });
+      console.log('Meal successfully removed from user schedule');
+    } else {
+      console.log('User not found in the database');
+    }
+  } catch (error) {
+    console.error('Error removing meal from schedule:', error);
+  }
+};
+
+
 export const updateUserWeight = async (
   user: User,
   newWeight: number,
-  dispatch: AppDispatch
 ): Promise<void> => {
   try {
     const userRef = database.ref(APIRoute.Users);

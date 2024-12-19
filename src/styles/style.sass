@@ -4,6 +4,7 @@ $dark-green: #198754
 $green: #34C759
 $yellow: #f4d35e
 $light-red: #e27d60
+$remove-red: #ff2424
 $light-blue: #ffffff
 // $light-blue: #85c1e9
 $white: #ffffff
@@ -245,7 +246,17 @@ body
       color: $black
   &--reset
     @include button-reset
-
+  &--remove
+    border: none
+    border-radius: 0
+    color: white
+    background-color: $remove-red
+    padding: 0 10px
+    transition: $hover-transition
+    &:hover,
+    &:focus-visible
+      padding: 0 50px
+      background-color: lighten($remove-red, 20%)
 .main
   position: relative
   width: 100%

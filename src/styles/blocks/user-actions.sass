@@ -21,7 +21,7 @@
   &__head
     display: grid
     padding: 10px 40px
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))
     background-color: lighten($black, 25%)
     color: lighten($white, 20%)
     @media (max-width: $mobile)
@@ -33,11 +33,11 @@
     display: flex
     flex-direction: column
     &--opened
-      & div
+      & .user-actions__date-wrapper
         background-color: darken($white, 30%)
       & .user-actions__sublist
         background-color: darken($white, 15%)
-    & div
+    & .user-actions__date-wrapper
       display: flex
       max-height: 40px
       padding: 10px 40px
@@ -56,29 +56,37 @@
   &__sublist
     @include list-reset
   &__item
-    display: grid
-    padding: 10px 40px
+    display: flex
+    justify-content: space-between
     border-bottom: 2px solid black
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
+    overflow: hidden
+
+  &__item-wrapper
+    display: grid
+    width: 100%
+    padding: 10px 40px
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))
     align-items: center
+    z-index: 1
+    &:hover
+      box-shadow: 2px 0 8px 2px $black
+      // grid-template-columns: repeat(auto-fit, minmax(150px, 152px))
+      & + .button
+        padding: 0 50px
+    &:has( + .button:hover)
+      // grid-template-columns: repeat(auto-fit, minmax(150px, 152px))
+      box-shadow: 2px 0 8px 2px $black
     @media (max-width: $mobile)
       grid-template-columns: repeat(auto-fit, minmax(60px, 1fr))
       padding: 10px
       font-size: 12px
-    & span:last-child
+    & .user-actions__date-wrapper span:last-child
       margin-left: auto
-    // &--breakfast
-    //   background-color: $breakfast
-    // &--lunch
-    //   background-color: $lunch
-    // &--dinner
-    //   background-color: $dinner
-    // &--snack
-    //   background-color: $snack
-    &-link
-      @include link-reset
-      font-weight: 600
-      &:hover
-        opacity: 0.6
-      &:active
-        opacity: 0.3
+  &__item-link
+    @include link-reset
+    white-space: nowrap
+    font-weight: 600
+    &:hover
+      opacity: 0.6
+    &:active
+      opacity: 0.3

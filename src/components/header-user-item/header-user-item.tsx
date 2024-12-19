@@ -7,6 +7,7 @@ import { AppRoute, TrainingType } from "../../const";
 import { useGetUser } from "../../hooks/useGetUser";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { setActiveMeal, setActiveMealType, setActiveTraining, setMealFormOpened } from "../../store/action";
+import { ReactComponent as UserIcon } from "../../img/icons/user-icon.svg";
 
 export function HeaderUserItem(): JSX.Element {
   const dispatch = useDispatch();
@@ -39,8 +40,13 @@ export function HeaderUserItem(): JSX.Element {
     selectedUser ?
     <div className="header-user">
       <Link className="header-user__link header-nav__item" to={link} onClick={() => handleClick()}>
-        {/* {selectedUser.name} */}
-        <img className="header-user__image" src={selectedUser.avatar} width={40} height={40} alt={selectedUser.name} />
+        {
+          selectedUser.avatar.length > 0
+          ?
+          <img className="header-user__image" src={selectedUser.avatar} width={40} height={40} alt={selectedUser.name} />
+          :
+          <UserIcon/>
+        }
       </Link>
     </div> : <LoadingSpinner size={"20"}/>
   );

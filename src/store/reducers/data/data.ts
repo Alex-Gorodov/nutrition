@@ -1,8 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { DataState } from "../../../types/state";
-import { loadMeals, loadUsers, setMealsDataLoadingStatus, setUsersDataLoading, addNewMeal, trackUserMeal, trackUserTrainingSession, setUserWeight, setUserTarget, setUserActivity } from "../../action";
-import { getUserFromLocalStorage } from "../../../services/token";
-import { RegistrationSteps } from "../../../const";
+import { loadMeals, loadUsers, setMealsDataLoadingStatus, setUsersDataLoading, addNewMeal, trackUserMeal, trackUserTrainingSession, setUserWeight, setUserTarget, setUserActivity, removeMeal, removeTrainingSession } from "../../action";
 
 const initialState: DataState = {
   isMealsDataLoading: false,
@@ -86,4 +84,26 @@ export const DataReducer = createReducer(initialState, (builder) => {
         console.error('User not found in state');
       }
     })
+    .addCase(removeMeal, (state, action) => {
+      const { user, meal } = action.payload;
+
+      const userIndex = state.users.findIndex((u) => u.id === user.id);
+
+      if (userIndex !== -1) {
+        state.users[userIndex].mealSchedule = state.users[userIndex].mealSchedule.filter(
+          (existingMeal) => existingMeal[0].id !== meal.id
+        );
+      }
+    })
+    .addCase(removeTrainingSession, (state, action) => {
+      const { user, training } = action.payload;
+
+      const userIndex = state.users.findIndex((u) => u.id === user.id);
+
+      if (userIndex !== -1) {
+        state.users[userIndex].trainingSessions = state.users[userIndex].trainingSessions.filter(
+          (existingTraining) => existingTraining.id !== training.id
+        );
+      }
+    });
 })

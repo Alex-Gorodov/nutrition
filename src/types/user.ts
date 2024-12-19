@@ -1,5 +1,6 @@
-import { ActivityLevel, Genders, NutritionTarget, TrainingSession } from "../const";
+import { ActivityLevel, Genders, NutritionTarget } from "../const";
 import { Meal } from "./meal";
+import { TrainingSession } from "./trainingSession";
 
 export type User = {
   id: string;
