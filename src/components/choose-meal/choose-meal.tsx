@@ -5,6 +5,7 @@ import { MealItem } from "../meal-item/meal-item";
 import { redirectToRoute, setActiveMeal, setActiveMealType, setMealFormOpened, setNewMealFormOpened } from "../../store/action";
 import cn from 'classnames';
 import { generatePath } from "react-router-dom";
+import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
 import { useEffect } from "react";
 
 type ChooseMealProps = {
@@ -35,12 +36,12 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
     dispatch(setNewMealFormOpened({isOpened: true}));
   }
 
-  const className = cn('section meals', {
+  const className = cn('meals', {
     'meals--popup': isPopup,
   })
 
   return (
-    <section className={className}>
+    <div className={className}>
       {activeMeal ? (
         <MealItem meal={activeMeal}/>
       ) : (
@@ -48,23 +49,35 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
       )}
       {!activeMeal && (
       <>
-        <h1 className="title title--secondary meals__title">Выбери прием пищи</h1>
-        <div className="meals__buttons">
-          {Object.values(MealType).map((type) => (
-            <button
-              className={`button meal__button`}
-              type="button"
-              key={type}
-              onClick={() => handleSetActiveMealType(type)}
-            >
-              <span>{MealTypeTranslations[type]}</span>
-            </button>
-          ))}
+        {
+          isPopup
+          ?
+          <div className="form__header">
+            <h1 className="title title--secondary meals__title">Выбери прием пищи</h1>
+            <button className="button form__button--close" onClick={() => dispatch(setMealFormOpened({isOpened: false}))}><Close/></button>
+          </div>
+          :
+          <h1 className="title title--secondary meals__title">Выбери прием пищи</h1>
+
+        }
+        <div className="form__wrapper">
+          <div className="meals__buttons">
+            {Object.values(MealType).map((type) => (
+              <button
+                className={`button meal__button`}
+                type="button"
+                key={type}
+                onClick={() => handleSetActiveMealType(type)}
+              >
+                <span>{MealTypeTranslations[type]}</span>
+              </button>
+            ))}
+          </div>
+          <h2 className="title title--secondary meals__title">Или добавь новое блюдо</h2>
+          <button className="button meal__button meal__button--add-new-meal" onClick={() => handleOpenForm()}>+</button>
         </div>
-        <h2 className="title title--secondary meals__title">Или добавь новое блюдо</h2>
-        <button className="button meal__button meal__button--add-new-meal" onClick={() => handleOpenForm()}>+</button>
       </>
       )}
-    </section>
+    </div>
   );
 }

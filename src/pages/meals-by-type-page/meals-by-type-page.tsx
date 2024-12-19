@@ -15,7 +15,6 @@ export function MealsByTypePage(): JSX.Element {
 
   const { type } = useParams<{ type: string }>();
 
-  // Устанавливаем активный тип блюда на основе параметра маршрута
   useEffect(() => {
     if (type && activeMealType !== type) {
       dispatch(setActiveMealType({ type: type as MealType }));
@@ -55,7 +54,7 @@ export function MealsByTypePage(): JSX.Element {
           })()}
         </title>
       </Helmet>
-      <h2 className="title title--2">Выбери блюдо:</h2>
+      <h2 className="title title--2">Выбери {type && MealTypeTranslations[type as MealType].toLowerCase()}:</h2>
       {filteredMeals.map((meal) => (
         <Link
           className="meals-page__item"

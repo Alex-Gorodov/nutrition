@@ -7,7 +7,7 @@
     display: grid
     max-width: $container-max-width
     margin: auto
-    gap: 40px
+    // gap: 40px
     padding-inline: 40px
     @media (max-width: $tablet)
       padding-inline: 20px
@@ -20,26 +20,53 @@
     border-radius: 50%
   &__name
     font-size: 24px
+  &__info
+    display: grid
+    justify-items: center
+    gap: 24px
+    @media (min-width: $tablet)
+      gap: 16px
+      grid-template-columns: repeat(2, 1fr)
+  &__today
+    grid-row: 3
+    grid-column: 1 / -1
+    @media (min-width: $desktop)
+      grid-row: 2
+  &__settings
+    width: 100%
+    grid-row: 2
+    @media (min-width: $tablet)
+      grid-column: 2 / -1
+      grid-row: 1
+  &__settings
   &__editable-wrapper
     display: grid
-    // grid-template-columns: minmax(0px, 100px) minmax(50px, 250px) 60px
+    margin: 0
     grid-template-columns: minmax(0px, 200px) minmax(50px, 350px) 60px
     align-items: center
-    // gap: 20px
+    // @media (max-width: $desktop) and (min-width: $tablet)
+    //   display: flex
+    //   flex-direction: column
+    //   gap: 8px
+    @media (max-width: $desktop) and (min-width: $tablet)
+      grid-template-columns: auto 60px
     @media (max-width: $mobile)
       grid-template-columns: auto 60px
   &__editable-title
     font-size: 1rem
+    @media (max-width: $desktop) and (min-width: $tablet)
+      grid-column: 1 / -1
     @media (max-width: $mobile)
       grid-column: 1 / -1
   &__editable-info
-    // max-width: 220px
     padding: 10px
     margin: 0
     border: none
     background-color: transparent
     font-size: 1.2rem
     white-space: nowrap
+    @media (max-width: $desktop) and (min-width: $tablet)
+      padding: 0
     @media (max-width: $mobile)
       padding: 0
     &--on

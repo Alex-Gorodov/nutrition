@@ -4,13 +4,13 @@ import { useEffect } from "react";
 
 type MainLoaderProps = {
   isPageLoading: boolean;
-  onAnimationEnd: () => void; // Колбэк для завершения анимации
+  onAnimationEnd: () => void;
 };
 
 export function MainLoader({ isPageLoading, onAnimationEnd }: MainLoaderProps): JSX.Element {
   useEffect(() => {
     if (!isPageLoading) {
-      const timer = setTimeout(onAnimationEnd, 1000); // Время анимации исчезновения
+      const timer = setTimeout(onAnimationEnd, 1000);
       return () => clearTimeout(timer);
     }
   }, [isPageLoading, onAnimationEnd]);

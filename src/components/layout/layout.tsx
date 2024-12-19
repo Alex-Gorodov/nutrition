@@ -9,6 +9,7 @@ import { MealAddingForm } from "../meal-adding-form/meal-adding-form";
 import { RegisterForm } from "../register-form/register-form";
 import { AddMeal } from "../add-meal/add-meal";
 import { MainLoader } from "../main-loader/main-loader";
+import { AuthorizationStatus } from "../../const";
 
 type LayoutProps = {
   children: ReactNode;
@@ -18,23 +19,29 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const statusMessage = useSelector((state: RootState) => state.page.statusMessage);
   const isMealsLoading = useSelector((state: RootState) => state.data.isMealsDataLoading);
   const isUsersLoading = useSelector((state: RootState) => state.data.isUsersDataLoading);
+  const isUser = useSelector((state: RootState) => state.auth.authorizationStatus === AuthorizationStatus.Auth);
 
-  // Лоадер должен показываться только при первой загрузке
-  const hasLoadedOnce = useRef(false); // Храним состояние первичной загрузки
+  const hasLoadedOnce = useRef(false);
   const [showLoader, setShowLoader] = useState(true);
 
-  const isPageLoading = isMealsLoading || isUsersLoading;
+  const isPageLoading = (isMealsLoading || isUsersLoading) || isUser;
 
-  // Управление состоянием отображения лоадера
   useEffect(() => {
-    if (!isPageLoading && !hasLoadedOnce.current) {
-      const timer = setTimeout(() => {
-        setShowLoader(false); // Скрыть лоадер
-        hasLoadedOnce.current = true; // Отметить, что приложение было загружено
-      }, 1000); // Время анимации
-      return () => clearTimeout(timer);
+    if (isUser) {
+      const isPageLoading = isMealsLoading || isUsersLoading;
+
+      if (!isPageLoading && !hasLoadedOnce.current) {
+        const timer = setTimeout(() => {
+          setShowLoader(false);
+          hasLoadedOnce.current = true;
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    } else {
+      // Если пользователь не авторизован, сразу отключаем лоадер
+      setShowLoader(false);
     }
-  }, [isPageLoading]);
+  }, [isUser, isMealsLoading, isUsersLoading]);
 
   const isLoginFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened);
   const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
@@ -57,7 +64,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="page-container">
-      {showLoader && (
+      {isUser && showLoader && (
         <MainLoader
           isPageLoading={isPageLoading}
           onAnimationEnd={() => setShowLoader(false)}

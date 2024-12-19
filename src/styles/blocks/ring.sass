@@ -1,0 +1,137 @@
+.dashboard
+  display: flex
+  gap: 16px
+  transition: 0.3s
+  @media (max-width: $tablet)
+    flex-direction: column
+    align-items: center
+    gap: 8px
+
+.dot
+  z-index: 2
+  position: absolute
+  height: 32px
+  width: 32px
+  transition: transform 0.3s, all 0.3s
+
+.dot:after
+  content: ''
+  position: absolute
+  height: 32px
+  width: 32px
+  background: transparent
+  border-radius: 100%
+  box-shadow: 3px 0px 3px rgba(0, 0, 0, 0.24)
+  transition: transform 0.3s, all 0.3s
+
+
+.ring-wrapper
+  position: relative
+  width: 320px
+  height: 320px
+
+.ring
+  position: absolute
+  transform: translate(-50%, -50%)
+  top: 50%
+  left: 50%
+  border-radius: 100%
+
+.ring:before
+  content: ''
+  position: absolute
+  height: 100%
+  width: 100%
+  border-radius: 100%
+
+
+.ring:after
+  content: ''
+  position: absolute
+  transform: translate(-50%, -50%)
+  top: 50%
+  left: 50%
+  height: 42px
+  width: 42px
+  background: $white
+  border-radius: 100%
+
+
+.progress-ring
+  position: absolute
+  transform: translate(-50%, -50%)
+  top: 50%
+  left: 50%
+
+
+.progress-ring__circle
+  transform: rotate(270deg)
+  transform-origin: 50% 50%
+  transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease
+
+
+/* Themes */
+.calories.ring
+  height: 317px
+  width: 317px
+  background: rgba(255, 241, 47, 0.32)
+
+.calories.ring:before
+  box-shadow: 1px 0px 3px #fff12f7a
+
+.calories.ring:after
+  box-shadow: inset 1px 0px 3px rgba(255, 241, 47, 0.48)
+
+
+.proteins.ring
+  height: 248px
+  width: 248px
+  background: rgba(246, 51, 122, .32)
+
+.proteins.ring:before
+  box-shadow: 1px 0px 3px rgba(246, 51, 122, 0.48)
+
+.proteins.ring:after
+  box-shadow: inset 1px 0px 3px rgba(246, 51, 122, 0.48)
+
+.carbs.ring
+  height: 178px
+  width: 178px
+  background: rgba(21, 194, 224, .32)
+
+.carbs.ring:after
+  box-shadow: inset 1px 0px 3px rgba(21, 194, 224, 0.48)
+
+.fats.ring
+  height: 109px
+  width: 109px
+  background: rgba(111, 228, 48, .32)
+
+.fats.ring:after
+  box-shadow: inset 1px 0px 3px rgba(111, 228, 48, 0.48)
+
+.info-wrapper
+  display: grid
+  align-self: start
+  gap: 16px
+  @media (max-width: $tablet)
+    grid-template-columns: repeat(4, 1fr)
+    align-self: unset
+    gap: 8px
+  @media (max-width: $mobile)
+    grid-template-columns: repeat(2, 1fr)
+    align-self: unset
+    gap: 8px
+
+.info
+  display: flex
+  flex-direction: column
+  font-size: 24px
+  font-weight: 500
+  margin: 6px
+  &__name
+    font-size: 16px
+  &__accent
+    margin: 0
+    & span
+      font-size: 18px

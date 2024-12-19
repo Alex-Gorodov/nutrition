@@ -157,6 +157,12 @@ export const MacronutrientRatios = {
   [NutritionTarget.MuscleGain]: { proteins: 0.35, fats: 0.25, carbs: 0.4 },
 };
 
+export enum Macronutrients {
+  Calories = 'Калории',
+  Proteins = 'Белки',
+  Fats = 'Жиры',
+  Carbs = 'Углеводы',
+}
 
 export enum Genders {
   Male = 'мужской',

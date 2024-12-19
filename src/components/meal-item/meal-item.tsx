@@ -3,12 +3,12 @@ import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
 import { formatRecipe } from "../../utils/formatRecipe";
 import { RootState } from "../../store/root-reducer";
-import { redirectToRoute, setActiveMeal, trackUserMeal } from "../../store/action";
+import { redirectToRoute, setActiveMeal, setActiveMealType, trackUserMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 import { addMealToUserSchedule } from "../../store/api-actions";
 import { useState } from "react";
 import { ReactComponent as Refresh } from '../../img/icons/refresh-icon.svg'
-import { useParams } from "react-router-dom";
+import { generatePath, useParams } from "react-router-dom";
 
 type MealItemProps = {
   meal: Meal;
@@ -37,9 +37,12 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
   }
 
   const handleResetMeal = () => {
-    dispatch(setActiveMeal({ meal: null }))
-    dispatch(redirectToRoute(AppRoute.Root))
-  }
+    dispatch(setActiveMealType({type: mealById?.type || MealType.Breakfast}));
+
+    const targetRoute = generatePath(AppRoute.MealsByTypePage, { type: mealById?.type || MealType.Breakfast });
+    dispatch(redirectToRoute(targetRoute as AppRoute));
+  };
+
 
   return (
     <div className="meal">

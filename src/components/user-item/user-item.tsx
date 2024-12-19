@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
+import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, Macronutrients, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { setUserGreetings } from "../../utils/setUserGreetings";
 import { useDispatch } from "react-redux";
@@ -12,8 +12,8 @@ import { setActiveMeal, setMealFormOpened, setTrainingFormOpened, setUserActivit
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { groupByDate } from "../../utils/groupByDate";
 import { ReactComponent as CollapseIcon } from "../../img/icons/down-icon.svg"
-import { RadialProgressBar } from "../radial-progress-bar/radial-progress-bar";
 import { generatePath, Link } from "react-router-dom";
+import { Ring } from "../ring/ring";
 
 type UserItemProps = {
   user: User;
@@ -144,171 +144,200 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     carbs += m[0].carbs
   })
 
+  const [data, setData] = useState([
+    { target: totalCalorieTarget, value: calories, field: 'calories', size: 317, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
+    { target: proteinsTarget, value: proteins, field: 'proteins', size: 248, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
+    { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
+    { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
+  ]);
+
+  useEffect(() => {
+    setData([
+      { target: totalCalorieTarget, value: calories, field: 'calories', size: 317, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
+      { target: proteinsTarget, value: proteins, field: 'proteins', size: 248, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
+      { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
+      { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
+    ]);
+  }, [totalCalorieTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats]);
+
+
   return (
     <div className="user">
       <div className="user__wrapper">
+        <p className="user__name">{setUserGreetings(user.name)}</p>
         <div className="user__info">
-          <p className="user__name">{setUserGreetings(user.name)}</p>
-          <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
-          <p>Учитывая ваш уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) и вашу цель (<i>{user.target.toLowerCase()}</i>), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
-          {
-            totalCalorieTarget - calories > 0
-            ?
-            <p>Сегодня ты в дефиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
-            :
-            <p>Сегодня ты в профиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
-          }
-          <div className="user__targets">
-            <p className="title title--3 user__title">За сегодня вы употребили: </p>
-            <RadialProgressBar target={totalCalorieTarget} value={calories} field={ totalCalorieTarget - calories > 0 ? 'калорий' : 'калории'}/>
-            <RadialProgressBar target={proteinsTarget} value={proteins} field={ proteinsTarget - proteins > 0 ? 'белков' : 'белки'}/>
-            <RadialProgressBar target={fatsTarget} value={fats} field={ fatsTarget - fats > 0 ? 'жиров' : 'жиры'}/>
-            <RadialProgressBar target={carbsTarget} value={carbs} field={ carbsTarget - carbs > 0 ? 'углеводов' : 'углеводы'}/>
+          <div className="dashboard">
+            <div className="ring-wrapper">
+              {data.map((ring) => (
+                <Ring key={ring.field} {...ring} />
+              ))}
+            </div>
+            <div className="info-wrapper">
+              {data.map((ring) => (
+                <div className="info" key={`${ring.field}`} id={`${ring.field}Value`}>
+                  <span className="info__name">{Macronutrients[ring.field.charAt(0).toUpperCase() + ring.field.slice(1) as keyof typeof Macronutrients]}</span>
+                  <p className="info__accent" style={{ color: ring.strokeColorEnd }}>{ring.value}/<span>{ring.target}</span></p>
+                </div>
+              ))}
+            </div>
           </div>
-          <p className="user__editable-wrapper">
-            <span className="user__editable-title">Ваш вес:</span>
+          <div className="user__today">
+            <p>Ваш базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
+            <p>Учитывая ваш уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) и вашу цель (<i>{user.target.toLowerCase()}</i>), вам необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
             {
-              isWeightEditable
-                ?
-                <label className="user__editable-weight" htmlFor="user-edit-weight">
-                  <input className="form__input user__editable-info user__editable-info--on" autoFocus={isWeightEditable} type="number" id="user-edit-weight" value={weight} onChange={(e) => setWeight(Number(e.target.value))} />
-                </label>
-                :
-                <span className="user__editable-info">{user.weight}</span>
+              totalCalorieTarget - calories > 0
+              ?
+              <p>Сегодня ты в дефиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
+              :
+              <p>Сегодня ты в профиците на <b>{totalCalorieTarget - calories}</b> ккал.</p>
             }
-            <button
-              className="button button--icon"
-              type="button"
-              onClick={() => {
-                if (isWeightEditable) {
-                  handleEditWeight();
-                } else {
-                  setWeightEditable(true);
-                }
-              }}
-            >
+          </div>
+          <div className="user__settings">
+            <p className="user__editable-wrapper">
+              <span className="user__editable-title">Ваш вес:</span>
               {
                 isWeightEditable
                   ?
-                  <ApplyIcon />
+                  <label className="user__editable-weight" htmlFor="user-edit-weight">
+                    <input className="form__input user__editable-info user__editable-info--on" autoFocus={isWeightEditable} type="number" id="user-edit-weight" value={weight} onChange={(e) => setWeight(Number(e.target.value))} />
+                  </label>
                   :
-                  <EditIcon />
+                  <span className="user__editable-info">{user.weight}</span>
               }
-              <span className="visually-hidden">{
-                isWeightEditable
-                  ?
-                  'apply'
-                  :
-                  'edit'
-              }</span>
-            </button>
-          </p>
-          <p className="user__editable-wrapper">
-            <span className="user__editable-title">Ваша цель:</span>
-            {
-              isTargetEditable
-                ?
-                <select className="user__editable-info user__editable-info--select user__editable-info--on" name="user-change-target" id="user-change-target" value={target}
-                  onChange={(e) => {
-                    const newTarget = e.target.value as NutritionTarget;
-                    setTarget(newTarget);
-                  }}
-                >
-                  {
-                    Object.values(NutritionTarget).map((i) => (
-                      <option value={i} key={`${user.name}-target-${i}`}>{i}</option>
-                    ))
+              <button
+                className="button button--icon"
+                type="button"
+                onClick={() => {
+                  if (isWeightEditable) {
+                    handleEditWeight();
+                  } else {
+                    setWeightEditable(true);
                   }
-                </select>
-                :
-                <span className="user__editable-info">{user.target || NutritionTarget.WeightMaintenance}</span>
-            }
-            <button
-              className="button button--icon"
-              type="button"
-              onClick={() => {
-                if (isTargetEditable) {
-                  handleEditTarget();
-                } else {
-                  setTargetEditable(true);
+                }}
+              >
+                {
+                  isWeightEditable
+                    ?
+                    <ApplyIcon />
+                    :
+                    <EditIcon />
                 }
-              }}
-            >
+                <span className="visually-hidden">{
+                  isWeightEditable
+                    ?
+                    'apply'
+                    :
+                    'edit'
+                }</span>
+              </button>
+            </p>
+            <p className="user__editable-wrapper">
+              <span className="user__editable-title">Ваша цель:</span>
               {
                 isTargetEditable
                   ?
-                  <ApplyIcon />
-                  :
-                  <EditIcon />
-              }
-              <span className="visually-hidden">{
-                isTargetEditable
-                  ?
-                  'apply'
-                  :
-                  'edit'
-              }</span>
-            </button>
-          </p>
-          <p className="user__editable-wrapper">
-            <span className="user__editable-title">Ваша активность:</span>
-            {
-              isActivityEditable
-                ?
-                <select
-                  className="user__editable-info user__editable-info--select user__editable-info--on"
-                  name="user-change-activity"
-                  id="user-change-activity"
-                  value={activity}
-                  onChange={(e) => {
-                    const value = parseFloat(e.target.value);
-                    if (Object.values(ActivityLevel).includes(value)) {
-                      setActivity(value as ActivityLevel);
-                    } else {
-                      console.error(`Invalid activity level: ${value}`);
-                    }
-                  }}
-                >
-                  {
-                    Object.values(ActivityLevel)
-                      .filter((level) => typeof level === 'number') // Фильтруем только числовые значения
-                      .map((level) => (
-                        <option
-                          value={level}
-                          key={`${user.name}-activity-${level}`}
-                        >
-                          {ActivityLevelTranslations[level as ActivityLevel]}
-                        </option>
+                  <select className="user__editable-info user__editable-info--select user__editable-info--on" name="user-change-target" id="user-change-target" value={target}
+                    onChange={(e) => {
+                      const newTarget = e.target.value as NutritionTarget;
+                      setTarget(newTarget);
+                    }}
+                  >
+                    {
+                      Object.values(NutritionTarget).map((i) => (
+                        <option value={i} key={`${user.name}-target-${i}`}>{i}</option>
                       ))
+                    }
+                  </select>
+                  :
+                  <span className="user__editable-info">{user.target || NutritionTarget.WeightMaintenance}</span>
+              }
+              <button
+                className="button button--icon"
+                type="button"
+                onClick={() => {
+                  if (isTargetEditable) {
+                    handleEditTarget();
+                  } else {
+                    setTargetEditable(true);
                   }
-                </select>
-
-                :
-                <span className="user__editable-info">
-                  {ActivityLevelTranslations[user.activityLevel as ActivityLevel]}
-                </span>
-            }
-            <button
-              className="button button--icon"
-              type="button"
-              onClick={() => {
-                if (isActivityEditable) {
-                  handleEditActivity();
-                } else {
-                  setActivityEditable(true);
+                }}
+              >
+                {
+                  isTargetEditable
+                    ?
+                    <ApplyIcon />
+                    :
+                    <EditIcon />
                 }
-              }}
-            >
+                <span className="visually-hidden">{
+                  isTargetEditable
+                    ?
+                    'apply'
+                    :
+                    'edit'
+                }</span>
+              </button>
+            </p>
+            <p className="user__editable-wrapper">
+              <span className="user__editable-title">Ваша активность:</span>
               {
                 isActivityEditable
-                  ? <ApplyIcon />
-                  : <EditIcon />
+                  ?
+                  <select
+                    className="user__editable-info user__editable-info--select user__editable-info--on"
+                    name="user-change-activity"
+                    id="user-change-activity"
+                    value={activity}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      if (Object.values(ActivityLevel).includes(value)) {
+                        setActivity(value as ActivityLevel);
+                      } else {
+                        console.error(`Invalid activity level: ${value}`);
+                      }
+                    }}
+                  >
+                    {
+                      Object.values(ActivityLevel)
+                        .filter((level) => typeof level === 'number') // Фильтруем только числовые значения
+                        .map((level) => (
+                          <option
+                            value={level}
+                            key={`${user.name}-activity-${level}`}
+                          >
+                            {ActivityLevelTranslations[level as ActivityLevel]}
+                          </option>
+                        ))
+                    }
+                  </select>
+
+                  :
+                  <span className="user__editable-info">
+                    {ActivityLevelTranslations[user.activityLevel as ActivityLevel]}
+                  </span>
               }
-              <span className="visually-hidden">
-                {isActivityEditable ? 'apply' : 'edit'}
-              </span>
-            </button>
-          </p>
+              <button
+                className="button button--icon"
+                type="button"
+                onClick={() => {
+                  if (isActivityEditable) {
+                    handleEditActivity();
+                  } else {
+                    setActivityEditable(true);
+                  }
+                }}
+              >
+                {
+                  isActivityEditable
+                    ? <ApplyIcon />
+                    : <EditIcon />
+                }
+                <span className="visually-hidden">
+                  {isActivityEditable ? 'apply' : 'edit'}
+                </span>
+              </button>
+            </p>
+          </div>
         </div>
         <div className="user__incription">
           <i>*<br />Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
