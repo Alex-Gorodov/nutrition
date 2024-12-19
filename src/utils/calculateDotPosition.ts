@@ -10,7 +10,7 @@ export function calculateDotPosition(value: number, target: number, radius: numb
   // Убираем ограничение на угол и учитываем, что прогресс может выходить за пределы 100%
   return {
     top: `${y + 1}px`,
-    left: `${x + 1}px`,
+    left: `${x}px`,
     transform: `rotate(${angle}deg)` // Устанавливаем угол без ограничения
   };
 }
