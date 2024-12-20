@@ -59,19 +59,16 @@
   &__item-wrapper
     min-width: 100%
     width: 100%
-    padding: 10px 40px
     display: flex
     flex-direction: column
+    padding: 10px 40px
+    gap: 8px
     z-index: 1
     @media (max-width: $mobile)
-      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr))
       padding: 10px
       font-size: 12px
-  &__link-wrapper
-    margin-top: 8px
   &__item-link
     @include link-reset
-    margin-top: 8px
     white-space: nowrap
     font-weight: 600
     font-size: 1.2rem
@@ -81,6 +78,7 @@
       opacity: 0.3
   &__meal-maintenance
     display: flex
+    margin: 0
     gap: 8px
   &__remove-btn
     transform: translateX(100%)
