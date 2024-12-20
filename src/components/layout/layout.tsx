@@ -24,7 +24,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const hasLoadedOnce = useRef(false);
   const [showLoader, setShowLoader] = useState(true);
 
-  const isPageLoading = (isMealsLoading || isUsersLoading) || isUser;
+  const isPageLoading = (isMealsLoading || isUsersLoading) || !isUser;
 
   useEffect(() => {
     if (isUser) {

@@ -21,15 +21,13 @@ export type ThunkOptions = {
 
 export const fetchMealsAction = createAsyncThunk<void, undefined, ThunkOptions>(
   'data/fetchMeals', async (_arg, {dispatch}) => {
+    dispatch(setMealsDataLoadingStatus({isMealsDataLoading: true}));
     try {
-      dispatch(setMealsDataLoadingStatus({isMealsDataLoading: true}));
       const data = (await database.ref(APIRoute.Meals).once("value")).val();
       const meals: Meal[] = data ? Object.values(data) : [];
       dispatch(loadMeals({meals}));
-      dispatch(setMealsDataLoadingStatus({isMealsDataLoading: false}));
     } catch(e) {
       console.error('Error fetching meals from database', e);
-      dispatch(setMealsDataLoadingStatus({isMealsDataLoading: false}));
     } finally {
       dispatch(setMealsDataLoadingStatus({isMealsDataLoading: false}))
     }
@@ -38,15 +36,13 @@ export const fetchMealsAction = createAsyncThunk<void, undefined, ThunkOptions>(
 
 export const fetchUsersAction = createAsyncThunk<void, undefined, ThunkOptions>(
   'data/fetchUsers', async (_arg, {dispatch}) => {
+    dispatch(setUsersDataLoading({isUsersDataLoading: true}));
     try {
-      dispatch(setUsersDataLoading({isUsersDataLoading: true}));
       const data = (await database.ref(APIRoute.Users).once("value")).val();
       const users: User[] = data ? Object.values(data) : [];
       dispatch(loadUsers({users}));
-      dispatch(setUsersDataLoading({isUsersDataLoading: false}));
     } catch(e) {
       console.error('Error fetching user from database', e);
-      dispatch(setUsersDataLoading({isUsersDataLoading: false}));
     } finally {
       dispatch(setUsersDataLoading({isUsersDataLoading: false}));
     }
@@ -55,19 +51,16 @@ export const fetchUsersAction = createAsyncThunk<void, undefined, ThunkOptions>(
 
 export const addMealToDatabase = async (meal: Meal) => {
   try {
-    const mealRef = database.ref(APIRoute.Meals); // Указываем путь к массиву meals напрямую
+    const mealRef = database.ref(APIRoute.Meals);
     const snapshot = await mealRef.once('value');
     let meals = snapshot.val();
 
-    // Если данных нет, инициализируем пустой массив
     if (!meals) {
       meals = [];
     }
 
-    // Добавляем новое блюдо
     meals.push(meal);
 
-    // Сохраняем только массив в meals
     await mealRef.set(meals);
     console.log("Meal successfully added!");
   } catch (error) {

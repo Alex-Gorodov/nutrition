@@ -364,12 +364,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
               <AddIcon />
             </button>
           </div>
-          <div className="user-actions__table">
-            <div className="user-actions__head">
-              <span>Активность</span>
-              <span>Сожжено калорий</span>
-              <span></span>
-            </div>
+          <div className="user-actions__container">
             <ul className="user-actions__list">
               {Object.entries(groupByDate(user.trainingSessions, (t) => formatDate(new Date(t.date)))).map(
                 ([date, sessions]) =>
@@ -381,7 +376,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                           className="user-actions__group-header"
                         >
                           <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
-                            <p>{date}</p>
+                            <p className="user-actions__date">{date}</p>
                             <CollapseIcon className="icon" />
                           </div>
                         </div>
@@ -390,7 +385,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                           className="user-actions__group-header user-actions__group-header--opened"
                         >
                           <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
-                            <p>{date}</p>
+                            <p className="user-actions__date">{date}</p>
                             <CollapseIcon className="icon icon--rotated" />
                           </div>
                           <ul className="user-actions__sublist">
@@ -400,10 +395,13 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                                 key={`${user.name}-training-${t.activity}-${t.duration}-${new Date(t.date).getDay()}`}
                               >
                                 <div className="user-actions__item-wrapper">
-                                  <span>{TrainingTypeTranslations[t.activity as TrainingType]}</span>
-                                  <span>{Math.floor(t.caloriesBurned)}</span>
+                                  <b>{TrainingTypeTranslations[t.activity as TrainingType]}</b>
+                                  <span>Сожжено калорий: <b>{Math.floor(t.caloriesBurned)}</b></span>
                                 </div>
-                                <button className="button button--remove" onClick={() => handleRemoveTraining(t)}><Remove/></button>
+                                <button className="button button--remove user-actions__remove-btn" onClick={() => handleRemoveTraining(t)}>
+                                  <span className="visually-hidden">Удалить тренировку</span>
+                                  <Remove/>
+                                </button>
                               </li>
                             ))}
                           </ul>
@@ -423,13 +421,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
             <h3 className="user-actions__title title title--3">Приемы пищи</h3>
             <button className="button button--reset user-actions__add-btn" onClick={() => dispatch(setMealFormOpened({ isOpened: true }))}><AddIcon /></button>
           </div>
-          <div className="user-actions__table">
-            <div className="user-actions__head">
-              <span>Прием пищи</span>
-              <span>Название блюда</span>
-              <span>Получено калорий</span>
-              <span>Дата</span>
-            </div>
+          <div className="user-actions__container">
             <ul className="user-actions__list">
               {
                 Object.entries(groupByDate(user.mealSchedule, (m) => formatDate(m[1]))).map(
@@ -442,7 +434,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                             className="user-actions__group-header"
                           >
                             <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
-                              <p>{date}</p>
+                              <p className="user-actions__date">{date}</p>
                               <CollapseIcon className="icon" />
                             </div>
                           </div>
@@ -451,7 +443,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                             className="user-actions__group-header user-actions__group-header--opened"
                           >
                             <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
-                              <p>{date}</p>
+                              <p className="user-actions__date">{date}</p>
                               <CollapseIcon className="icon icon--rotated" />
                             </div>
                             <ul className="user-actions__sublist">
@@ -467,14 +459,22 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                                   >
                                     <div className="user-actions__item-wrapper">
                                       <span>{MealTypeTranslations[m[0].type]}</span>
-                                      <span>
+                                      <span className="user-actions__link-wrapper">
                                         <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
                                           {m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}
                                         </Link>
                                       </span>
-                                      <span>{Math.floor(m[0].calories)}</span>
+                                      <p className="user-actions__meal-maintenance">
+                                        <span>Ккал: {Math.floor(m[0].calories)}</span>
+                                        <span>Б: {Math.floor(m[0].proteins)}г</span>
+                                        <span>Ж: {Math.floor(m[0].fats)}г</span>
+                                        <span>У: {Math.floor(m[0].carbs)}г</span>
+                                      </p>
                                     </div>
-                                    <button className="button button--remove" onClick={() => handleRemoveMeal(m[0])}><Remove/></button>
+                                    <button className="button button--remove user-actions__remove-btn" onClick={() => handleRemoveMeal(m[0])}>
+                                      <span className="visually-hidden">Удалить прием пищи</span>
+                                      <Remove/>
+                                    </button>
                                   </li>
                                 )})
                               }
