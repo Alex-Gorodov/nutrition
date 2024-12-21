@@ -169,8 +169,6 @@ $popup-transition: 0.6s
 
 html
   overflow-x: hidden
-  &:has(.form__wrapper)
-    overflow: hidden
 
 body
   margin: 0
@@ -260,6 +258,19 @@ body
     &:hover,
     &:focus-visible
       background-color: lighten($remove-red, 20%)
+  &--tooltip
+    display: inline-block
+    width: 20px
+    height: 20px
+    border-radius: 50%
+    vertical-align: text-bottom
+    &:hover
+      opacity: 0.6
+      background-color: initial
+      color: initial
+    &:active,
+    &:focus-visible
+      opacity: 0.3
 .main
   position: relative
   width: 100%

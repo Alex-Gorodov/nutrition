@@ -12,12 +12,14 @@ import { removeMeal, removeTrainingSession, setActiveMeal, setMealFormOpened, se
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { groupByDate } from "../../utils/groupByDate";
 import { ReactComponent as CollapseIcon } from "../../img/icons/down-icon.svg"
+import { ReactComponent as Info } from "../../img/icons/info-icon.svg"
 import { ReactComponent as Remove } from "../../img/icons/remove-icon.svg"
 import { generatePath, Link } from "react-router-dom";
 import { Ring } from "../ring/ring";
 import { Meal } from "../../types/meal";
 import { TrainingSession } from "../../types/trainingSession";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 type UserItemProps = {
   user: User;
@@ -32,6 +34,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   const [weight, setWeight] = useState(user.weight);
   const [target, setTarget] = useState(user.target);
   const [activity, setActivity] = useState(user.activityLevel);
+  const [isShowTooltip, setShowTooltip] = useState(false);
 
   const [trainingExpandedDates, setTrainingExpandedDates] = useState<Record<string, boolean>>({});
   const [mealsExpandedDates, setMealsExpandedDates] = useState<Record<string, boolean>>({});
@@ -49,6 +52,10 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
       [date]: !prev[date],
     }));
   };
+
+  const tooltipRef = useOutsideClick(() => {
+    setShowTooltip(false);
+  }) as React.RefObject<HTMLDivElement>;
 
   useEffect(() => {
     const todayFormatted = formatDate(new Date());
@@ -97,10 +104,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     }
   };
 
-  // useEffect(() => {
-  //   setTarget(user.target);
-  // }, [user.target]);
-
   const handleEditActivity = async () => {
     dispatch(setUserActivity({ user, newActivity: activity }));
     setActivityEditable(false);
@@ -139,9 +142,9 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   const caloricGoal = CaloricGoals[NutritionTargetToCaloricGoals[user.target]];
   const caloriesTarget = Math.round(totalCalorieTarget * caloricGoal);
 
-  const proteinsTarget = Math.round((totalCalorieTarget * proteinRatio) / CaloricValues.Proteins);
-  const fatsTarget = Math.round((totalCalorieTarget * fatRatio) / CaloricValues.Fats);
-  const carbsTarget = Math.round((totalCalorieTarget * carbRatio) / CaloricValues.Carbs);
+  const proteinsTarget = Math.round((caloriesTarget * proteinRatio) / CaloricValues.Proteins);
+  const fatsTarget = Math.round((caloriesTarget * fatRatio) / CaloricValues.Fats);
+  const carbsTarget = Math.round((caloriesTarget * carbRatio) / CaloricValues.Carbs);
 
   let calories = 0;
   let proteins = 0;
@@ -153,44 +156,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     fats += m[0].fats
     carbs += m[0].carbs
   })
-
-  // const [data, setData] = useState([
-  //   { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
-  //   { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
-  //   { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
-  //   { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
-  // ]);
-
-  // useEffect(() => {
-  //   setData([
-  //     { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
-  //     { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
-  //     { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
-  //     { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
-  //   ]);
-  // }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats]);
-
-  //   const [data, setData] = useState(initialData.map((item) => ({
-  //     ...item,
-  //     target: eval(`${item.field}Target`), // Используем динамическое получение данных
-  //     value: eval(item.field),
-  //   })));
-
-  //   useEffect(() => {
-  //     setData(initialData.map((item) => ({
-  //       ...item,
-  //       target: eval(`${item.field}Target`), // Используем динамическое получение данных
-  //       value: eval(item.field),
-  //     })));
-  //   }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats, initialData]);
-
-
-
-
-
-
-
-
 
   type FieldType = 'calories' | 'proteins' | 'carbs' | 'fats';
 
@@ -226,7 +191,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
 
   const [data, setData] = useState(initialData.map((item) => ({
     ...item,
-    // size:
     target: targetMap[item.field],
     value: valueMap[item.field],
   })));
@@ -234,59 +198,10 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   useEffect(() => {
     setData(initialData.map((item) => ({
       ...item,
-      // size:
       target: targetMap[item.field],
       value: valueMap[item.field],
     })));
   }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats, initialData, targetMap, valueMap]);
-
-
-
-
-
-
-
-
-// type FieldType = 'calories' | 'proteins' | 'carbs' | 'fats';
-
-// const initialData = useMemo(() => [
-//   { field: 'calories', size: isMobile ? 197.5 : 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
-//   { field: 'proteins', size: isMobile ? 154.375 : 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
-//   { field: 'carbs', size: isMobile ? 111.25 : 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
-//   { field: 'fats', size: isMobile ? 68.125 : 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
-//   ] as { field: FieldType; size: number; gradientId: string; strokeColorStart: string; strokeColorEnd: string }[], [isMobile]);
-
-// console.log(isMobile);
-
-// const targetMap = useMemo(() => ({
-//   calories: caloriesTarget,
-//   proteins: proteinsTarget,
-//   carbs: carbsTarget,
-//   fats: fatsTarget,
-// }), [caloriesTarget, proteinsTarget, carbsTarget, fatsTarget]); // Мемоизация targetMap
-
-// const valueMap = useMemo(() => ({
-//   calories,
-//   proteins,
-//   carbs,
-//   fats,
-// }), [calories, proteins, carbs, fats]); // Мемоизация valueMap
-
-// const [data, setData] = useState(() => initialData.map((item) => ({
-//   ...item,
-//   target: targetMap[item.field],
-//   value: valueMap[item.field],
-// })));
-
-// useEffect(() => {
-//   // Обновляем данные при изменении targetMap, valueMap или initialData
-//   setData(initialData.map((item) => ({
-//     ...item,
-//     target: targetMap[item.field],
-//     value: valueMap[item.field],
-//   })));
-// }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats, initialData, targetMap, valueMap]); // Зависимости для useEffect
-
 
   return (
     <div className="user">
@@ -309,7 +224,21 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
             </div>
           </div>
           <div className="user__today">
-            <p>Твой базовый обмен веществ: <b>{bmr}</b> ккал в день.*</p>
+            <p className="user__today-base">Твой базовый обмен веществ: {isMobile && <br/>} <b>{bmr}</b> ккал в день.
+              <button
+                className="button button--reset button--tooltip user__today-tooltip-btn"
+                onClick={() => setShowTooltip(!isShowTooltip)}
+              >
+                <Info/>
+              </button>
+              {
+                isShowTooltip
+                &&
+                <div className="user__today-tooltip" ref={tooltipRef}>
+                  <i>Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
+                </div>
+              }
+            </p>
             <p>Учитывая твой уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) твоя суточная потребность калорий <b>{totalCalorieTarget}</b> ккал, но учитывая твою цель (<i>{user.target.toLowerCase()}</i>), тебе необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
             {
               totalCalorieTarget - calories > 0
@@ -465,9 +394,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
               </button>
             </p>
           </div>
-        </div>
-        <div className="user__incription">
-          <i>*<br />Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
         </div>
       </div>
       {user.trainingSessions && user.trainingSessions.length > 0 && (

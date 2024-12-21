@@ -1,15 +1,12 @@
 .form
   @include flex-column
-  // position: relative
-  // top: 50%
-  // left: 50%
   max-height: 80vh
   overflow: scroll
-  // transform: translate(-50%, -50%)
   padding: 0
   background-color: $light-blue
   box-shadow: $shadow-middle
   border-radius: 16px
+  overscroll-behavior: contain
   z-index: 10
   &--add-meal
     & .form__header

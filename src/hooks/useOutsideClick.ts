@@ -6,7 +6,10 @@ export const useOutsideClick = (callback: () => void) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (ref.current && !ref.current.contains(target)) {
+      const isFalseTrigger =
+      target.closest('button')?.classList.contains('user__today-tooltip-btn')
+
+    if (!isFalseTrigger && ref.current && !ref.current.contains(target)) {
         callback();
       }
     };

@@ -262,6 +262,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
               value={data.proteins}
               onChange={handleFieldChange}
               min={0}
+              step={0.1}
             />
           </label>
           <label className="form__item" htmlFor="meal-fats">
@@ -274,6 +275,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
               value={data.fats}
               onChange={handleFieldChange}
               min={0}
+              step={0.1}
             />
           </label>
           <label className="form__item" htmlFor="meal-carbs">
@@ -286,6 +288,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
               value={data.carbs}
               onChange={handleFieldChange}
               min={0}
+              step={0.1}
             />
           </label>
           <label className="form__item form__item--wild-grid" htmlFor="meal-picture">
@@ -298,7 +301,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
           </label>
         </fieldset>
         <button className="button button--submit form__submit" type="submit">
-          { isRecipeAdding ? <LoadingSpinner size="40" color="white"/> : "Добавить рецепт!"}
+          { isRecipeAdding ? <LoadingSpinner size="40" color="white"/> : "Добавить блюдо!"}
         </button>
       </form>
     </div>
