@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/nutrition/static/css/main.45d4e2e6.css",
-    "main.js": "/nutrition/static/js/main.076f3cd9.js",
+    "main.css": "/nutrition/static/css/main.71bc7089.css",
+    "main.js": "/nutrition/static/js/main.b4daabe9.js",
     "static/media/meal-icon.svg": "/nutrition/static/media/meal-icon.7ba9d6180045eeb1fb29502f763917bd.svg",
     "static/media/walking-icon.svg": "/nutrition/static/media/walking-icon.09037ba9abdec250ff38ca82fde90a42.svg",
     "static/media/running-icon.svg": "/nutrition/static/media/running-icon.ee43ce864bd69f6eb091abdfb6d7d72b.svg",
@@ -19,15 +19,16 @@
     "static/media/cross-icon.svg": "/nutrition/static/media/cross-icon.34807849d41de05c00d3db56be9685ae.svg",
     "static/media/cardio-icon.svg": "/nutrition/static/media/cardio-icon.211e44a8d07d5d3edfb98937f22eaf0c.svg",
     "static/media/add-icon.svg": "/nutrition/static/media/add-icon.ef8c93182b0a00b8551e680e0b823c1f.svg",
+    "static/media/info-icon.svg": "/nutrition/static/media/info-icon.7f3901586b3f3e93502d893d9e044779.svg",
     "static/media/refresh-icon.svg": "/nutrition/static/media/refresh-icon.c03e186b69f5f642f963cc063488d578.svg",
     "static/media/edit-icon.svg": "/nutrition/static/media/edit-icon.5a8887859ef64349e6f63fe9ed4da67d.svg",
     "static/media/user-icon.svg": "/nutrition/static/media/user-icon.f958c994facd606950b19c7644f7c47e.svg",
     "static/media/down-icon.svg": "/nutrition/static/media/down-icon.fb1880fe77be07d0f18a34a4fe5cad20.svg",
-    "main.45d4e2e6.css.map": "/nutrition/static/css/main.45d4e2e6.css.map",
-    "main.076f3cd9.js.map": "/nutrition/static/js/main.076f3cd9.js.map"
+    "main.71bc7089.css.map": "/nutrition/static/css/main.71bc7089.css.map",
+    "main.b4daabe9.js.map": "/nutrition/static/js/main.b4daabe9.js.map"
   },
   "entrypoints": [
-    "static/css/main.45d4e2e6.css",
-    "static/js/main.076f3cd9.js"
+    "static/css/main.71bc7089.css",
+    "static/js/main.b4daabe9.js"
   ]
 }
