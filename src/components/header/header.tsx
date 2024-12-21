@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useIsMobileOnly } from "../../hooks/useIsMobile";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { RootState } from "../../store/root-reducer";
-import { AppRoute, AuthorizationStatus } from "../../const";
+import { AppRoute, AuthorizationStatus, ScreenSizes } from "../../const";
 import { logoutAction } from "../../store/api-actions";
 import { AppDispatch } from "../../types/state";
-import { redirectToRoute, setActiveMeal, setActiveMealType, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
+import { redirectToRoute, setActiveMeal, setLoginFormOpened, setRegisterFormOpened } from "../../store/action";
 import { useState } from "react"
 import cn from 'classnames';
 import { Link } from "react-router-dom";
@@ -16,13 +16,13 @@ import { ReactComponent as Logo } from '../../img/icons/logo-icon-small.svg';
 export function Header(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
 
-  const isMobile = useIsMobileOnly();
+  const isMobile = useMediaQuery(ScreenSizes.MobileOnly);
   const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
   const isLoginFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened)
   const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
 
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
-  const activeMealType = useSelector((state: RootState) => state.page.activeMealType);
+  // const activeMealType = useSelector((state: RootState) => state.page.activeMealType);
 
   const handleLogout = () => {
     dispatch(logoutAction());
@@ -47,7 +47,7 @@ export function Header(): JSX.Element {
 
   const clearScreen = () => {
     activeMeal && dispatch(setActiveMeal({meal: null}));
-    activeMealType && dispatch(setActiveMealType({type: null}))
+    // activeMealType && dispatch(setActiveMealType({type: null}))
     setMenuOpened(false);
   }
 

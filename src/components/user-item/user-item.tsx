@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, Macronutrients, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, TrainingType, TrainingTypeTranslations } from "../../const";
+import { useEffect, useMemo, useState } from "react";
+import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, Macronutrients, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, ScreenSizes, TrainingType, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { setUserGreetings } from "../../utils/setUserGreetings";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,7 @@ import { generatePath, Link } from "react-router-dom";
 import { Ring } from "../ring/ring";
 import { Meal } from "../../types/meal";
 import { TrainingSession } from "../../types/trainingSession";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 type UserItemProps = {
   user: User;
@@ -24,6 +25,7 @@ type UserItemProps = {
 
 export function UserItem({ user }: UserItemProps): JSX.Element {
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery(ScreenSizes.MobileOnly);
   const [isWeightEditable, setWeightEditable] = useState(false);
   const [isTargetEditable, setTargetEditable] = useState(false);
   const [isActivityEditable, setActivityEditable] = useState(false);
@@ -84,10 +86,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     }
   };
 
-  useEffect(() => {
-    setWeight(user.weight);
-  }, [user.weight]);
-
   const handleEditTarget = async () => {
     dispatch(setUserTarget({ user, newTarget: target }));
     setTargetEditable(false);
@@ -99,9 +97,9 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     }
   };
 
-  useEffect(() => {
-    setTarget(user.target);
-  }, [user.target]);
+  // useEffect(() => {
+  //   setTarget(user.target);
+  // }, [user.target]);
 
   const handleEditActivity = async () => {
     dispatch(setUserActivity({ user, newActivity: activity }));
@@ -115,8 +113,10 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   };
 
   useEffect(() => {
+    setWeight(user.weight);
+    setTarget(user.target);
     setActivity(user.activityLevel);
-  }, [user.activityLevel]);
+  }, [user.target, user.weight, user.activityLevel]);
 
   const handleRemoveMeal = async (meal: Meal) => {
     await removeMealFromUserSchedule(user, meal)
@@ -154,21 +154,138 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     carbs += m[0].carbs
   })
 
-  const [data, setData] = useState([
-    { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
-    { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
-    { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
-    { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
-  ]);
+  // const [data, setData] = useState([
+  //   { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
+  //   { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
+  //   { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
+  //   { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
+  // ]);
+
+  // useEffect(() => {
+  //   setData([
+  //     { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
+  //     { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
+  //     { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
+  //     { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
+  //   ]);
+  // }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats]);
+
+  //   const [data, setData] = useState(initialData.map((item) => ({
+  //     ...item,
+  //     target: eval(`${item.field}Target`), // Используем динамическое получение данных
+  //     value: eval(item.field),
+  //   })));
+
+  //   useEffect(() => {
+  //     setData(initialData.map((item) => ({
+  //       ...item,
+  //       target: eval(`${item.field}Target`), // Используем динамическое получение данных
+  //       value: eval(item.field),
+  //     })));
+  //   }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats, initialData]);
+
+
+
+
+
+
+
+
+
+  type FieldType = 'calories' | 'proteins' | 'carbs' | 'fats';
+
+  const initialData = useMemo(() => [
+    { field: 'calories', size: isMobile ? 197.5 : 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700', isMobile: isMobile },
+    { field: 'proteins', size: isMobile ? 154.375 : 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046', isMobile: isMobile },
+    { field: 'carbs', size: isMobile ? 111.25 : 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5', isMobile: isMobile },
+    { field: 'fats', size: isMobile ? 68.125 : 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430', isMobile: isMobile },
+  ] as { field: FieldType; size: number; gradientId: string; strokeColorStart: string; strokeColorEnd: string, isMobile: boolean }[], [isMobile]);
+
+  console.log(isMobile);
+
+
+  const targetMap = useMemo(
+    () => ({
+      calories: caloriesTarget,
+      proteins: proteinsTarget,
+      carbs: carbsTarget,
+      fats: fatsTarget,
+    }),
+    [caloriesTarget, proteinsTarget, carbsTarget, fatsTarget]
+  );
+
+  const valueMap = useMemo(
+    () => ({
+      calories,
+      proteins,
+      carbs,
+      fats,
+    }),
+    [calories, proteins, carbs, fats]
+  );
+
+  const [data, setData] = useState(initialData.map((item) => ({
+    ...item,
+    // size:
+    target: targetMap[item.field],
+    value: valueMap[item.field],
+  })));
 
   useEffect(() => {
-    setData([
-      { target: caloriesTarget, value: calories, field: 'calories', size: 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
-      { target: proteinsTarget, value: proteins, field: 'proteins', size: 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
-      { target: carbsTarget, value: carbs, field: 'carbs', size: 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
-      { target: fatsTarget, value: fats, field: 'fats', size: 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
-    ]);
-  }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats]);
+    setData(initialData.map((item) => ({
+      ...item,
+      // size:
+      target: targetMap[item.field],
+      value: valueMap[item.field],
+    })));
+  }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats, initialData, targetMap, valueMap]);
+
+
+
+
+
+
+
+
+// type FieldType = 'calories' | 'proteins' | 'carbs' | 'fats';
+
+// const initialData = useMemo(() => [
+//   { field: 'calories', size: isMobile ? 197.5 : 316, gradientId: 'caloriesGradient', strokeColorStart: '#FFF12F', strokeColorEnd: '#FFD700' },
+//   { field: 'proteins', size: isMobile ? 154.375 : 247, gradientId: 'proteinsGradient', strokeColorStart: '#F6337A', strokeColorEnd: '#F71046' },
+//   { field: 'carbs', size: isMobile ? 111.25 : 178, gradientId: 'carbsGradient', strokeColorStart: '#15C2E0', strokeColorEnd: '#1EF8D5' },
+//   { field: 'fats', size: isMobile ? 68.125 : 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430' },
+//   ] as { field: FieldType; size: number; gradientId: string; strokeColorStart: string; strokeColorEnd: string }[], [isMobile]);
+
+// console.log(isMobile);
+
+// const targetMap = useMemo(() => ({
+//   calories: caloriesTarget,
+//   proteins: proteinsTarget,
+//   carbs: carbsTarget,
+//   fats: fatsTarget,
+// }), [caloriesTarget, proteinsTarget, carbsTarget, fatsTarget]); // Мемоизация targetMap
+
+// const valueMap = useMemo(() => ({
+//   calories,
+//   proteins,
+//   carbs,
+//   fats,
+// }), [calories, proteins, carbs, fats]); // Мемоизация valueMap
+
+// const [data, setData] = useState(() => initialData.map((item) => ({
+//   ...item,
+//   target: targetMap[item.field],
+//   value: valueMap[item.field],
+// })));
+
+// useEffect(() => {
+//   // Обновляем данные при изменении targetMap, valueMap или initialData
+//   setData(initialData.map((item) => ({
+//     ...item,
+//     target: targetMap[item.field],
+//     value: valueMap[item.field],
+//   })));
+// }, [caloriesTarget, calories, proteinsTarget, proteins, carbsTarget, carbs, fatsTarget, fats, initialData, targetMap, valueMap]); // Зависимости для useEffect
 
 
   return (

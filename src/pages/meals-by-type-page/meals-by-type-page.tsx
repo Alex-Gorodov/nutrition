@@ -1,42 +1,44 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
-import { redirectToRoute, setActiveMeal, setActiveMealType, setNewMealFormOpened } from "../../store/action";
-import { generatePath, Link, useParams } from "react-router-dom";
+import { setActiveMeal, setActiveMealType, setNewMealFormOpened } from "../../store/action";
+import { generatePath, Link, useNavigate, useParams } from "react-router-dom";
 import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { ReactComponent as MealIcon } from "../../img/icons/meal-icon.svg";
 import { Helmet } from "react-helmet-async";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 export function MealsByTypePage(): JSX.Element {
   const dispatch = useDispatch();
-  const activeMealType = useSelector((state: RootState) => state.page.activeMealType);
+  const navigate = useNavigate();
+
+  const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
 
   const meals = useSelector((state: RootState) => state.data.meals);
 
-  const { type } = useParams<{ type: string }>();
+  const { type } = useParams<{ type: MealType }>();
 
-  useEffect(() => {
-    if (type && activeMealType !== type) {
-      dispatch(setActiveMealType({ type: type as MealType }));
-    }
-  }, [type, activeMealType, dispatch]);
-
-  const filteredMeals = meals.filter((meal) => meal.type === activeMealType);
+  const filteredMeals = meals.filter((meal) => meal.type === type);
 
   const handleSetActiveMeal = (meal: typeof meals[0]) => {
     dispatch(setActiveMeal({ meal }));
     const link = generatePath(AppRoute.MealPage, { id: meal.id });
-    dispatch(redirectToRoute(link as AppRoute));
-  };
-
-  const handleGoToMain = () => {
-    dispatch(setActiveMeal({ meal: null }));
-    dispatch(setActiveMealType({ type: null }));
+    navigate(link as AppRoute);
   };
 
   const handleOpenForm = () => {
     dispatch(setNewMealFormOpened({ isOpened: true }));
+    type && dispatch(setActiveMealType({ type }))
   };
+
+  const handleGoHome = () => {
+    activeMeal && dispatch(setActiveMeal({ meal: null }))
+  }
+
+  // useEffect(() => {
+  //   return () => {
+  //     activeMeal && dispatch(setActiveMeal({ meal: null }));
+  //   };
+  // }, [activeMeal, dispatch]);
 
   return (
     <div className="meals-page">
@@ -50,7 +52,7 @@ export function MealsByTypePage(): JSX.Element {
               [MealType.Snack]: MealTypeTranslations.Snack,
             };
 
-            return activeMealType ? mealTypeTitles[activeMealType] : '';
+            return type ? mealTypeTitles[type as MealType] : '';
           })()}
         </title>
       </Helmet>
@@ -89,7 +91,7 @@ export function MealsByTypePage(): JSX.Element {
       >
         +
       </button>
-      <Link className="button button--submit" to={AppRoute.Root} onClick={() => handleGoToMain()}>
+      <Link className="button button--submit" to={AppRoute.Root} onClick={() => handleGoHome()}>
         Домой
       </Link>
     </div>

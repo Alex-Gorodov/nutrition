@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppRoute, MealType } from "../const";
-import { redirectToRoute, setActiveMeal } from "../store/action";
-import { generatePath, useParams } from "react-router-dom";
+import { setActiveMeal } from "../store/action";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../store/root-reducer";
 
 export function useSetActiveMeal() {
   const dispatch = useDispatch();
   const meals = useSelector((state: RootState) => state.data.meals);
+  const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
 
@@ -27,7 +28,7 @@ export function useSetActiveMeal() {
         id: `${randomMeal.id}`,
       });
       dispatch(setActiveMeal({ meal: randomMeal }));
-      dispatch(redirectToRoute(link as AppRoute));
+      navigate(link as AppRoute);
     } else {
       // Если других блюд нет, сбрасываем активное блюдо
       dispatch(setActiveMeal({ meal: null }));

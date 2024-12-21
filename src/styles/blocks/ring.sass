@@ -6,6 +6,8 @@
     flex-direction: column
     align-items: center
     gap: 8px
+  @media (max-width: $mobile)
+    flex-direction: row
 
 .dot
   z-index: 2
@@ -14,6 +16,9 @@
   width: 34px
   border-radius: 100%
   transition: transform 0.3s, all 0.3s
+  @media (max-width: $mobile)
+    width: 21.25px
+    height: 21.25px
 
 .dot:after
   content: ''
@@ -24,12 +29,18 @@
   border-radius: 100%
   box-shadow: 3px 0px 3px rgba(0, 0, 0, 0.24)
   transition: transform 0.3s, all 0.3s
+  @media (max-width: $mobile)
+    width: 21.25px
+    height: 21.25px
 
 
 .ring-wrapper
   position: relative
   width: 320px
   height: 320px
+  @media (max-width: $mobile)
+    width: 200px
+    height: 200px
 
 .ring
   position: absolute
@@ -56,6 +67,9 @@
   width: 40px
   background: $white
   border-radius: 100%
+  @media (max-width: $mobile)
+    width: 25px
+    height: 25px
 
 
 .progress-ring
@@ -75,7 +89,10 @@
 .calories.ring
   height: 316px
   width: 316px
-  background: rgba(255, 241, 47, 0.32)
+  background: rgba(255, 241, 47, 0.2)
+  @media (max-width: $mobile)
+    width: 197.5px
+    height: 197.5px
 
 .calories.ring:before
   box-shadow: 1px 0px 3px #fff12f7a
@@ -87,7 +104,10 @@
 .proteins.ring
   height: 247px
   width: 247px
-  background: rgba(246, 51, 122, .32)
+  background: rgba(246, 51, 122, 0.2)
+  @media (max-width: $mobile)
+    width: 154.375px
+    height: 154.375px
 
 .proteins.ring:before
   box-shadow: 1px 0px 3px rgba(246, 51, 122, 0.48)
@@ -98,7 +118,10 @@
 .carbs.ring
   height: 178px
   width: 178px
-  background: rgba(21, 194, 224, .32)
+  background: rgba(21, 194, 224, 0.2)
+  @media (max-width: $mobile)
+    width: 111.25px
+    height: 111.25px
 
 .carbs.ring:after
   box-shadow: inset 1px 0px 3px rgba(21, 194, 224, 0.48)
@@ -106,7 +129,10 @@
 .fats.ring
   height: 109px
   width: 109px
-  background: rgba(111, 228, 48, .32)
+  background: rgba(111, 228, 48, 0.2)
+  @media (max-width: $mobile)
+    width: 68.125px
+    height: 68.125px
 
 .fats.ring:after
   box-shadow: inset 1px 0px 3px rgba(111, 228, 48, 0.48)
@@ -120,9 +146,9 @@
     align-self: unset
     gap: 8px
   @media (max-width: $mobile)
-    grid-template-columns: repeat(2, 1fr)
+    grid-template-columns: 1fr
     align-self: unset
-    gap: 8px
+    gap: 0
 
 .info
   display: flex
@@ -136,3 +162,10 @@
     margin: 0
     & span
       font-size: 18px
+  @media (max-width: $mobile)
+    font-size: 20px
+    &__name
+      font-size: 12px
+    &__accent
+      & span
+        font-size: 16px

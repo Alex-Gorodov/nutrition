@@ -1,9 +1,10 @@
 import { ReactComponent as UploadIcon } from "../../img/icons/upload-icon.svg";
-import { useIsMobileOnly } from "../../hooks/useIsMobile";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { setUploadedPath } from "../../store/action";
 import { useDropzone } from "react-dropzone";
 import { useDispatch } from "react-redux";
 import { useRef, useState } from "react";
+import { ScreenSizes } from "../../const";
 
 interface UploadProps {
   onFileUpload: (fileUrl: string) => void;
@@ -15,7 +16,7 @@ export function Upload({ onFileUpload, inputId, name }: UploadProps): JSX.Elemen
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const dispatch = useDispatch();
-  const isMobile = useIsMobileOnly();
+  const isMobile = useMediaQuery(ScreenSizes.MobileOnly);
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const { getRootProps, getInputProps } = useDropzone({

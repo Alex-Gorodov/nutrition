@@ -2,11 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { MealItem } from "../meal-item/meal-item";
-import { redirectToRoute, setActiveMeal, setActiveMealType, setMealFormOpened, setNewMealFormOpened } from "../../store/action";
+import { setMealFormOpened, setNewMealFormOpened } from "../../store/action";
 import cn from 'classnames';
-import { generatePath } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type ChooseMealProps = {
   isPopup?: boolean;
@@ -15,24 +15,28 @@ type ChooseMealProps = {
 export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
   const dispatch = useDispatch();
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
-  const activeMealType = useSelector((state: RootState) => state.page.activeMealType);
 
-  const handleSetActiveMealType = (type: MealType) => {
-    dispatch(setActiveMealType({type}))
-  }
+  const isMealFormOpened = useSelector((state: RootState) => state.page.isMealFormOpened);
+
+  const navigate = useNavigate();
+
+  const [localActiveMealType, setLocalActiveMealType] = useState<MealType | null>(null);
 
   useEffect(() => {
-    if (activeMealType) {
-      const link = generatePath(AppRoute.MealsByTypePage, { type: `${activeMealType}` });
-      dispatch(redirectToRoute(link as AppRoute));
-      dispatch(setMealFormOpened({isOpened: false}));
+    if (localActiveMealType) {
+      const link = generatePath(AppRoute.MealsByTypePage, { type: `${localActiveMealType}` });
+      navigate(link as AppRoute);
+      isMealFormOpened && dispatch(setMealFormOpened({ isOpened: false }));
     }
-  }, [activeMealType, dispatch]);
+  }, [localActiveMealType, navigate, isMealFormOpened, dispatch]);
+
+  const handleSetActiveMealType = (type: MealType) => {
+    setLocalActiveMealType(type);
+  };
+
 
   const handleOpenForm = () => {
-    dispatch(setMealFormOpened({isOpened: false}));
-    dispatch(setActiveMeal({meal: null}));
-    dispatch(setActiveMealType({type: null}));
+    isMealFormOpened && dispatch(setMealFormOpened({isOpened: false}));
     dispatch(setNewMealFormOpened({isOpened: true}));
   }
 
@@ -60,7 +64,7 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
           <h1 className="title title--secondary meals__title">Выбери прием пищи</h1>
 
         }
-        <div className="form__wrapper">
+        <div className="meals__wrapper">
           <div className="meals__buttons">
             {Object.values(MealType).map((type) => (
               <button

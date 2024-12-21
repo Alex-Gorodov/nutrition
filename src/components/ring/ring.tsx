@@ -8,6 +8,7 @@ type RadialProgressBarProps = {
   gradientId: string; // ID для градиента
   strokeColorStart: string; // Начальный цвет градиента
   strokeColorEnd: string; // Конечный цвет градиента
+  isMobile: boolean;
 };
 
 function setStrokeOffset(value: number, target: number, circumference: number): number {
@@ -27,8 +28,9 @@ export function Ring({
   gradientId,
   strokeColorStart,
   strokeColorEnd,
+  isMobile,
 }: RadialProgressBarProps): JSX.Element {
-  const radius = (size - 34) / 2;
+  const radius = (size - (!isMobile ? 34 : 21.25)) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = setStrokeOffset(value, target, circumference);
   const { top, left, transform } = calculateDotPosition(value, target, radius);
@@ -54,7 +56,7 @@ export function Ring({
           </defs>
           <circle
             className="progress-ring__circle"
-            strokeWidth={34}
+            strokeWidth={!isMobile ? 34 : 21.25}
             strokeLinecap="round"
             stroke={`url(#${gradientId})`}
             fill="transparent"

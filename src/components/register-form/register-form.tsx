@@ -186,116 +186,118 @@ export function RegisterForm(): JSX.Element {
   };
 
   return (
-    <form className="form" action="" method="post" onSubmit={handleRegister} ref={formRef}>
-      <p className="form__easter-egg">Привет =) <br/><br/> Отпусти!)) <br/><br/> Хватит =(</p>
-      <div className="form__header">
-        <div>
-          <h1 className="title title--2">Регистрация</h1>
-          <p className="form__register-step-title">{registrationStep}</p>
+    <div className="form__wrapper">
+      <form className="form" action="" method="post" onSubmit={handleRegister} ref={formRef}>
+        <p className="form__easter-egg">Привет =) <br/><br/> Отпусти!)) <br/><br/> Хватит =(</p>
+        <div className="form__header">
+          <div>
+            <h1 className="title title--2">Регистрация</h1>
+            <p className="form__register-step-title">{registrationStep}</p>
+          </div>
+          <button className="button form__button--close" onClick={() => dispatch(setRegisterFormOpened({isOpened: !isFormOpened}))}><Close/></button>
         </div>
-        <button className="button form__button--close" onClick={() => dispatch(setRegisterFormOpened({isOpened: !isFormOpened}))}><Close/></button>
-      </div>
-      {
-        registrationStep === RegistrationSteps.AccountSetup &&
-        <fieldset className="form__fieldset">
-          <label className="form__item" htmlFor="register-name">
-            <span>Имя или ник*: </span>
-            <input className="form__input" type="text" name="name" id="register-name" value={data.name} onChange={handleFieldChange} placeholder="Peter" required/>
-          </label>
-          <label className="form__item" htmlFor="register-email">
-            <span>Твой e-mail*: </span>
-            <input className="form__input" type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" required/>
-          </label>
-          <label className="form__item form__item--wild-grid" htmlFor="register-avatar">
-            <span>Загрузи аватар: </span>
-            <Upload onFileUpload={handleFileUpload} inputId="register-avatar" name="avatar"/>
-          </label>
-          <label className="form__item form__item--wild-grid" htmlFor="register-password">
-            <span>Выбери пароль*: </span>
-            <input className="form__input" type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} autoComplete="off" placeholder="Password" required/>
-          </label>
-          <label className="form__item form__item--wild-grid" htmlFor="register-confirm-password">
-            <span>Подтверди пароль*: </span>
-            <input className="form__input" type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} autoComplete="off" placeholder="Confirm password" required/>
-          </label>
-        </fieldset>
-      }
-      {
-        registrationStep === RegistrationSteps.HealthGoals &&
-        <fieldset className="form__fieldset">
-          <label className="form__item" htmlFor="register-gender">
-            <span>Пол*: </span>
-            <select className="form__input form__input--select" value={data.gender} name="gender" aria-label="choose registration gender:" onChange={handleSelectChange} required>
-              {
-                Object.values(Genders).map((g) => (
-                  <option key={`gender-${g}`} value={g}>{g}</option>
-                ))
-              }
-            </select>
-          </label>
-          <label className="form__item" htmlFor="register-age">
-            <span>Возраст*: </span>
-            <input className="form__input" type="number" min="0" max="120" name="age" id="register-age" value={data.age} onChange={handleFieldChange} placeholder="23" required/>
-          </label>
-          <label className="form__item" htmlFor="register-weight">
-            <span>Твой вес*: </span>
-            <input className="form__input" type="number" min="0" name="weight" id="register-weight" value={data.weight} onChange={handleFieldChange} required/>
-          </label>
-          <label className="form__item" htmlFor="register-height">
-            <span>Твой рост*: </span>
-            <input className="form__input" type="number" min="0" name="height" id="register-height" value={data.height} onChange={handleFieldChange} required/>
-          </label>
-          <label className="form__item" htmlFor="register-activity">
-            <span>Уровень активности*: </span>
-            <select className="form__input form__input--select" value={data.activityLevel} name="activityLevel" aria-label="choose activity level:" onChange={handleSelectChange} required>
-            {Object.values(ActivityLevel).map((level) => {
-              const label = ActivityLevelTranslations[level as keyof typeof ActivityLevelTranslations];
-              // Проверяем, если label существует
-              if (label) {
-                return (
-                  <option key={`activity-${level}`} value={level}>
-                    {label}
-                  </option>
-                );
-              }
-              return null; // Если нет значения, не рендерим <option>
-            })}
-            </select>
-          </label>
-          <label className="form__item" htmlFor="register-target">
-            <span>Цель программы*: </span>
-            <select className="form__input form__input--select" value={data.target} name="target" aria-label="choose nutrition target:" onChange={handleSelectChange} required>
-              {
-                Object.values(NutritionTarget).map((t) => (
-                  <option key={`target-${t}`} value={t}>{t}</option>
-                ))
-              }
-            </select>
-          </label>
-        </fieldset>
-      }
-      {
-        registrationStep === RegistrationSteps.HealthGoals
-        &&
-        <button className="button form__submit form__submit--navigation" type="button" onClick={() => dispatch(setRegistrationStep({ step: RegistrationSteps.AccountSetup }))}>Назад</button>
-      }
-      <button
-        className={`button form__submit ${registrationStep === RegistrationSteps.HealthGoals ? 'button--submit' : 'form__submit--navigation'}`}
-        type={registrationStep === RegistrationSteps.HealthGoals ? 'submit' : 'button'}
-        onClick={handleRegister}
-      >
         {
-          registrationStep === RegistrationSteps.AccountSetup
-          ?
-          'Вперед'
-          :
-            isAuthing
+          registrationStep === RegistrationSteps.AccountSetup &&
+          <fieldset className="form__fieldset">
+            <label className="form__item" htmlFor="register-name">
+              <span>Имя или ник*: </span>
+              <input className="form__input" type="text" name="name" id="register-name" value={data.name} onChange={handleFieldChange} placeholder="Peter" required/>
+            </label>
+            <label className="form__item" htmlFor="register-email">
+              <span>Твой e-mail*: </span>
+              <input className="form__input" type="email" name="email" id="register-email" value={data.email} onChange={handleFieldChange} placeholder="peter@yahoo.com" required/>
+            </label>
+            <label className="form__item form__item--wild-grid" htmlFor="register-avatar">
+              <span>Загрузи аватар: </span>
+              <Upload onFileUpload={handleFileUpload} inputId="register-avatar" name="avatar"/>
+            </label>
+            <label className="form__item form__item--wild-grid" htmlFor="register-password">
+              <span>Выбери пароль*: </span>
+              <input className="form__input" type="password" name="password" id="register-password" value={data.password} onChange={handleFieldChange} autoComplete="off" placeholder="Password" required/>
+            </label>
+            <label className="form__item form__item--wild-grid" htmlFor="register-confirm-password">
+              <span>Подтверди пароль*: </span>
+              <input className="form__input" type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} autoComplete="off" placeholder="Confirm password" required/>
+            </label>
+          </fieldset>
+        }
+        {
+          registrationStep === RegistrationSteps.HealthGoals &&
+          <fieldset className="form__fieldset">
+            <label className="form__item" htmlFor="register-gender">
+              <span>Пол*: </span>
+              <select className="form__input form__input--select" value={data.gender} name="gender" aria-label="choose registration gender:" onChange={handleSelectChange} required>
+                {
+                  Object.values(Genders).map((g) => (
+                    <option key={`gender-${g}`} value={g}>{g}</option>
+                  ))
+                }
+              </select>
+            </label>
+            <label className="form__item" htmlFor="register-age">
+              <span>Возраст*: </span>
+              <input className="form__input" type="number" min="0" max="120" name="age" id="register-age" value={data.age} onChange={handleFieldChange} placeholder="23" required/>
+            </label>
+            <label className="form__item" htmlFor="register-weight">
+              <span>Твой вес*: </span>
+              <input className="form__input" type="number" min="0" name="weight" id="register-weight" value={data.weight} onChange={handleFieldChange} required/>
+            </label>
+            <label className="form__item" htmlFor="register-height">
+              <span>Твой рост*: </span>
+              <input className="form__input" type="number" min="0" name="height" id="register-height" value={data.height} onChange={handleFieldChange} required/>
+            </label>
+            <label className="form__item" htmlFor="register-activity">
+              <span>Уровень активности*: </span>
+              <select className="form__input form__input--select" value={data.activityLevel} name="activityLevel" aria-label="choose activity level:" onChange={handleSelectChange} required>
+              {Object.values(ActivityLevel).map((level) => {
+                const label = ActivityLevelTranslations[level as keyof typeof ActivityLevelTranslations];
+                // Проверяем, если label существует
+                if (label) {
+                  return (
+                    <option key={`activity-${level}`} value={level}>
+                      {label}
+                    </option>
+                  );
+                }
+                return null; // Если нет значения, не рендерим <option>
+              })}
+              </select>
+            </label>
+            <label className="form__item" htmlFor="register-target">
+              <span>Цель программы*: </span>
+              <select className="form__input form__input--select" value={data.target} name="target" aria-label="choose nutrition target:" onChange={handleSelectChange} required>
+                {
+                  Object.values(NutritionTarget).map((t) => (
+                    <option key={`target-${t}`} value={t}>{t}</option>
+                  ))
+                }
+              </select>
+            </label>
+          </fieldset>
+        }
+        {
+          registrationStep === RegistrationSteps.HealthGoals
+          &&
+          <button className="button form__submit form__submit--navigation" type="button" onClick={() => dispatch(setRegistrationStep({ step: RegistrationSteps.AccountSetup }))}>Назад</button>
+        }
+        <button
+          className={`button form__submit ${registrationStep === RegistrationSteps.HealthGoals ? 'button--submit' : 'form__submit--navigation'}`}
+          type={registrationStep === RegistrationSteps.HealthGoals ? 'submit' : 'button'}
+          onClick={handleRegister}
+        >
+          {
+            registrationStep === RegistrationSteps.AccountSetup
             ?
-            <LoadingSpinner color={registrationStep === RegistrationSteps.HealthGoals ? 'white' : 'black'} size={"20"}/>
-              :
-              'Регистрация!'}
-      </button>
-      <p className="form__require-description">* - обязательные поля</p>
-    </form>
+            'Вперед'
+            :
+              isAuthing
+              ?
+              <LoadingSpinner color={registrationStep === RegistrationSteps.HealthGoals ? 'white' : 'black'} size={"20"}/>
+                :
+                'Регистрация!'}
+        </button>
+        <p className="form__require-description">* - обязательные поля</p>
+      </form>
+    </div>
   )
 }

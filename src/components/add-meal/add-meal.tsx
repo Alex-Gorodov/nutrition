@@ -11,8 +11,10 @@ export function AddMeal(): JSX.Element {
   }) as React.RefObject<HTMLDivElement>;
 
   return (
-    <div className="form form--add-meal" ref={formRef}>
-      <ChooseMeal isPopup/>
+    <div className="form__wrapper">
+      <div className="form form--add-meal" ref={formRef}>
+        <ChooseMeal isPopup/>
+      </div>
     </div>
   )
 }

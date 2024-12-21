@@ -108,94 +108,96 @@ export function AddTraining(): JSX.Element {
   }
 
   return (
-    <form className="form" method="post" ref={formRef}>
-      <div className="form__header">
-        <h1 className="title title--2 form__title">Добавить тренировку</h1>
-        <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}><Close/></button>
-      </div>
-      <fieldset className="form__fieldset">
-      <label className="form__item form__item--row" htmlFor="training-type">
-        Активность:
-          <select
-            className="form__input form__input--select"
-            value={activeTraining || ''}
-            id="training-type"
-            onChange={(e) => handleChangeTrainingType(e.target.value)}
-          >
-            {Object.keys(MET_VALUES).map((key) => (
-              <option key={key} value={key}>
-                {TrainingTypeTranslations[key as keyof typeof TrainingType]}
-              </option>
-            ))}
-          </select>
-        </label>
-
-
-        <label className="form__item" htmlFor="training-intensity">
-          Интенсивность:
-          <select
-            className="form__input form__input--select"
-            value={intensity}
-            id="training-intensity"
-            onChange={(e) => setIntensity(e.target.value as METIntensity)}
-          >
-            {Object.keys(MET_VALUES[activeTraining as METActivity] || {}).map((key) => {
-              const intensityValue = MET_VALUES[activeTraining as METActivity][key as keyof typeof MET_VALUES[METActivity]];
-              return (
+    <div className="form__wrapper">
+      <form className="form" method="post" ref={formRef}>
+        <div className="form__header">
+          <h1 className="title title--2 form__title">Добавить тренировку</h1>
+          <button className="button form__button--close" onClick={() => dispatch(setTrainingFormOpened({isOpened: false}))}><Close/></button>
+        </div>
+        <fieldset className="form__fieldset">
+        <label className="form__item form__item--row" htmlFor="training-type">
+          Активность:
+            <select
+              className="form__input form__input--select"
+              value={activeTraining || ''}
+              id="training-type"
+              onChange={(e) => handleChangeTrainingType(e.target.value)}
+            >
+              {Object.keys(MET_VALUES).map((key) => (
                 <option key={key} value={key}>
-                  {intensityValue.intensity}
+                  {TrainingTypeTranslations[key as keyof typeof TrainingType]}
                 </option>
-              );
-            })}
-          </select>
-        </label>
+              ))}
+            </select>
+          </label>
 
 
-        <label className="form__item" htmlFor="training-weight">
-          Вес (кг):
-          <input
-            className="form__input"
-            type="number"
-            id="training-weight"
-            value={weight || ''}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (value === '') {
-                setWeight(Number(null));
-              } else {
-                setWeight(Number(value));
-              }
-            }}
-          />
-        </label>
+          <label className="form__item" htmlFor="training-intensity">
+            Интенсивность:
+            <select
+              className="form__input form__input--select"
+              value={intensity}
+              id="training-intensity"
+              onChange={(e) => setIntensity(e.target.value as METIntensity)}
+            >
+              {Object.keys(MET_VALUES[activeTraining as METActivity] || {}).map((key) => {
+                const intensityValue = MET_VALUES[activeTraining as METActivity][key as keyof typeof MET_VALUES[METActivity]];
+                return (
+                  <option key={key} value={key}>
+                    {intensityValue.intensity}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
 
-        <label className="form__item" htmlFor="training-time">
-          Время (в минутах):
-          <input
-            className="form__input"
-            type="number"
-            id="training-time"
-            value={time || ''}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (value === '') {
-                setTime(Number(null));
-              } else {
-                setTime(Number(value));
-              }
-            }}
-          />
-        </label>
 
-        {calories > 0 && (
-          <p>
-            Ты затратил примерно <strong>{Math.floor(calories)}</strong>{" "}
-            калорий! Так держать!
-          </p>
-        )}
-      </fieldset>
+          <label className="form__item" htmlFor="training-weight">
+            Вес (кг):
+            <input
+              className="form__input"
+              type="number"
+              id="training-weight"
+              value={weight || ''}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === '') {
+                  setWeight(Number(null));
+                } else {
+                  setWeight(Number(value));
+                }
+              }}
+            />
+          </label>
 
-      <button className="button button--submit form__submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
-    </form>
+          <label className="form__item" htmlFor="training-time">
+            Время (в минутах):
+            <input
+              className="form__input"
+              type="number"
+              id="training-time"
+              value={time || ''}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === '') {
+                  setTime(Number(null));
+                } else {
+                  setTime(Number(value));
+                }
+              }}
+            />
+          </label>
+
+          {calories > 0 && (
+            <p>
+              Ты затратил примерно <strong>{Math.floor(calories)}</strong>{" "}
+              калорий! Так держать!
+            </p>
+          )}
+        </fieldset>
+
+        <button className="button button--submit form__submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
+      </form>
+    </div>
   );
 }

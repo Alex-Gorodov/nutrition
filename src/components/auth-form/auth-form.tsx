@@ -142,9 +142,6 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
         dispatch(setStatusMessage({ message: ErrorMessages.HasAccountError }));
       }
     } catch (error: any) {
-      console.log('====================================');
-      console.log(error);
-      console.log('====================================');
       if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found" || error.code === "auth/invalid-credential") {
         dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
       } else {

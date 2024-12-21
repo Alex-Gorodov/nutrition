@@ -1,16 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { useEffect, useState } from "react";
 import { User } from "../../types/user";
 import { generatePath, Link } from "react-router-dom";
-import { AppRoute, TrainingType } from "../../const";
+import { AppRoute } from "../../const";
 import { useGetUser } from "../../hooks/useGetUser";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
-import { setActiveMeal, setActiveMealType, setActiveTraining, setMealFormOpened } from "../../store/action";
 import { ReactComponent as UserIcon } from "../../img/icons/user-icon.svg";
 
 export function HeaderUserItem(): JSX.Element {
-  const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const authUser = useSelector((state: RootState) => state.auth.userInfo);
@@ -18,13 +16,6 @@ export function HeaderUserItem(): JSX.Element {
   const activeUser = useSelector((state: RootState) =>
     state.data.users.find((user) => user.id === authUser?.id)
   );
-
-  const handleClick = () => {
-    dispatch(setMealFormOpened({isOpened: false}));
-    dispatch(setActiveMeal({meal: null}));
-    dispatch(setActiveMealType({type: null}));
-    dispatch(setActiveTraining({training: TrainingType.Walking}))
-  }
 
   useEffect(() => {
     activeUser && setSelectedUser(activeUser);
@@ -39,7 +30,7 @@ export function HeaderUserItem(): JSX.Element {
   return (
     selectedUser ?
     <div className="header-user">
-      <Link className="header-user__link header-nav__item" to={link} onClick={() => handleClick()}>
+      <Link className="header-user__link header-nav__item" to={link}>
         {
           selectedUser.avatar.length > 0
           ?

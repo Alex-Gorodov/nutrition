@@ -3,12 +3,12 @@ import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
 import { formatRecipe } from "../../utils/formatRecipe";
 import { RootState } from "../../store/root-reducer";
-import { redirectToRoute, setActiveMealType, trackUserMeal } from "../../store/action";
+import { trackUserMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 import { addMealToUserSchedule } from "../../store/api-actions";
 import { useState } from "react";
 import { ReactComponent as Refresh } from '../../img/icons/refresh-icon.svg'
-import { generatePath, useParams } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
 type MealItemProps = {
@@ -17,6 +17,7 @@ type MealItemProps = {
 
 export function MealItem({ meal }: MealItemProps): JSX.Element {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const formattedRecipe = meal.recipe ? formatRecipe(meal.recipe) : '';
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
   const activeUser = useSelector((state: RootState) => state.user);
@@ -56,12 +57,9 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
   }
 
   const handleResetMeal = () => {
-    dispatch(setActiveMealType({type: mealById?.type || MealType.Breakfast}));
-
-    const targetRoute = generatePath(AppRoute.MealsByTypePage, { type: mealById?.type || MealType.Breakfast });
-    dispatch(redirectToRoute(targetRoute as AppRoute));
+    const link = generatePath(AppRoute.MealsByTypePage, { type: mealById?.type || MealType.Breakfast });
+    navigate(link as AppRoute);
   };
-
 
   return (
     <div className="meal">

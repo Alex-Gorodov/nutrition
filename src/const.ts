@@ -169,8 +169,8 @@ export enum RegistrationSteps {
 }
 
 export enum ScreenSizes {
-  Mobile = 490,
-  MobileOnly = 768,
+  MobileOnly = 490,
+  Mobile = 768,
   Tablet = 1024,
   Desktop = 1440,
   ContainerMaxWidth = 1250

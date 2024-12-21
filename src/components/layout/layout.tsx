@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect, useState, useRef } from "react";
 import { Header } from "../header/header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/root-reducer";
 import { MessagePopup } from "../message-popup/message-popup";
 import { AddTraining } from "../add-training/add-training";
@@ -9,13 +9,17 @@ import { MealAddingForm } from "../meal-adding-form/meal-adding-form";
 import { RegisterForm } from "../register-form/register-form";
 import { AddMeal } from "../add-meal/add-meal";
 import { MainLoader } from "../main-loader/main-loader";
-import { AuthorizationStatus } from "../../const";
+import { AuthorizationStatus, MealType } from "../../const";
+import { useParams } from "react-router-dom";
+// import { setActiveMealType } from "../../store/action";
 
 type LayoutProps = {
   children: ReactNode;
 };
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
+  const dispatch = useDispatch();
+  const { type } = useParams<{ type: MealType }>();
   const statusMessage = useSelector((state: RootState) => state.page.statusMessage);
   const isMealsLoading = useSelector((state: RootState) => state.data.isMealsDataLoading);
   const isUsersLoading = useSelector((state: RootState) => state.data.isUsersDataLoading);
@@ -24,9 +28,10 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const hasLoadedOnce = useRef(false);
   const [showLoader, setShowLoader] = useState(true);
 
-  const isPageLoading = (isMealsLoading || isUsersLoading) || !isUser;
+  const isPageLoading = (isMealsLoading || isUsersLoading);
 
   useEffect(() => {
+    // type && dispatch(setActiveMealType({type}))
     if (isUser) {
       const isPageLoading = isMealsLoading || isUsersLoading;
 
@@ -38,10 +43,9 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
         return () => clearTimeout(timer);
       }
     } else {
-      // Если пользователь не авторизован, сразу отключаем лоадер
       setShowLoader(false);
     }
-  }, [isUser, isMealsLoading, isUsersLoading]);
+  }, [isUser, isMealsLoading, isUsersLoading, type, dispatch]);
 
   const isLoginFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened);
   const isRegistrationFormOpened = useSelector((state: RootState) => state.page.isRegisterFormOpened);
@@ -55,7 +59,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
     <>
       {statusMessage && <MessagePopup message={ statusMessage } />}
       {isTrainingFormOpened && <AddTraining/>}
-      {isAddMealFormOpened && <MealAddingForm type={ activeMealType ? activeMealType : undefined }/>}
+      {isAddMealFormOpened && <MealAddingForm type={type || activeMealType || undefined}/>}
       {isMealFormOpened && <AddMeal />}
       {isLoginFormOpened && <AuthForm />}
       {isRegistrationFormOpened && <RegisterForm />}
