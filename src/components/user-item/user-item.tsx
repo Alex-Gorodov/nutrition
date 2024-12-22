@@ -171,9 +171,6 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     { field: 'fats', size: isMobile ? 68.125 : 109, gradientId: 'fatsGradient', strokeColorStart: '#B1FD36', strokeColorEnd: '#6FE430', isMobile: isMobile },
   ] as { field: FieldType; size: number; gradientId: string; strokeColorStart: string; strokeColorEnd: string, isMobile: boolean }[], [isMobile]);
 
-  console.log(isMobile);
-
-
   const targetMap = useMemo(
     () => ({
       calories: caloriesTarget,
