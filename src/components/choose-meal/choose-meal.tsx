@@ -7,6 +7,7 @@ import cn from 'classnames';
 import { generatePath, useNavigate } from "react-router-dom";
 import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
 import { useEffect, useState } from "react";
+import { Meal } from "../../types/meal";
 
 type ChooseMealProps = {
   isPopup?: boolean;
@@ -47,7 +48,7 @@ export function ChooseMeal({isPopup}: ChooseMealProps): JSX.Element {
   return (
     <div className={className}>
       {activeMeal ? (
-        <MealItem meal={activeMeal}/>
+        <MealItem meal={activeMeal as Meal}/>
       ) : (
         ''
       )}

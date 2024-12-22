@@ -3,6 +3,7 @@ import { RootState } from "../../store/root-reducer";
 import { MealItem } from "../../components/meal-item/meal-item";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
+import { Meal } from "../../types/meal";
 
 export function MealPage(): JSX.Element {
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
@@ -19,7 +20,7 @@ export function MealPage(): JSX.Element {
         <title>Nutrition | {activeMeal ? activeMeal.name : mealById ? mealById.name : ''}</title>
       </Helmet>
       {
-        activeMeal ? <MealItem meal={activeMeal}/> :
+        activeMeal ? <MealItem meal={activeMeal as Meal}/> :
           mealById ? <MealItem meal={mealById}/> :
           <></>
       }

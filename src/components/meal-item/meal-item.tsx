@@ -10,6 +10,7 @@ import { useState } from "react";
 import { ReactComponent as Refresh } from '../../img/icons/refresh-icon.svg'
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
+import { getCapitalizeString } from "../../utils/getCapitalizeString";
 
 type MealItemProps = {
   meal: Meal;
@@ -45,11 +46,11 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
     dispatch(
       trackUserMeal({
         user: activeUser,
-        meal: updatedMeal,
+        meal: updatedMeal as Meal,
       })
     );
 
-    await addMealToUserSchedule(activeUser, updatedMeal);
+    await addMealToUserSchedule(activeUser, updatedMeal as Meal);
     setIsAdding(false);
 
   }
@@ -65,7 +66,7 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
     <div className="meal">
       <div className="meal__item meal-item">
         <h2 className="title title--2 meal-item__title">
-        {meal.name.charAt(0).toUpperCase() + meal.name.slice(1)} <span className="meal-item__type">(на {MealTypeTranslations[meal.type].toLowerCase()})</span>
+        {getCapitalizeString(meal.name)} <span className="meal-item__type">(на {MealTypeTranslations[meal.type].toLowerCase()})</span>
         </h2>
         <div className="meal-item__image-wrapper">
           {meal.picture ? (
@@ -128,7 +129,7 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
 </div>
         }
         <div className="meal-item__buttons">
-          <button className="button button--submit meal-item__button" onClick={() => handleAddToSchedule()}>{isAdded ? 'Молодец!' : isAdding ? <LoadingSpinner color="#ffffff" size={"20"}/> : 'Кушац!'}</button>
+          <button className="button button--submit meal-item__button" disabled={isAdding} onClick={() => handleAddToSchedule()}>{isAdded ? 'Молодец!' : isAdding ? <LoadingSpinner color="#ffffff" size={"20"}/> : 'Кушац!'}</button>
           <button className="button meal-item__button meal-item__button--refresh" onClick={() => handleSetActiveMeal(activeMeal ? activeMeal.type : mealById ? mealById.type : MealType.Breakfast)}><Refresh/></button>
           <button className="button meal-item__button meal-item__button--back" onClick={() => handleResetMeal()}>Назад</button>
         </div>

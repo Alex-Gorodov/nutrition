@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, Macronutrients, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, ScreenSizes, TrainingType, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { setUserGreetings } from "../../utils/setUserGreetings";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeMealFromUserSchedule, removeTrainingFromUserSessions, updateUserActivity, updateUserTarget, updateUserWeight } from "../../store/api-actions";
 import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
@@ -16,10 +16,12 @@ import { ReactComponent as Info } from "../../img/icons/info-icon.svg"
 import { ReactComponent as Remove } from "../../img/icons/remove-icon.svg"
 import { generatePath, Link } from "react-router-dom";
 import { Ring } from "../ring/ring";
-import { Meal } from "../../types/meal";
+import { UserMealData } from "../../types/meal";
 import { TrainingSession } from "../../types/trainingSession";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { RootState } from "../../store/root-reducer";
+import { getCapitalizeString } from "../../utils/getCapitalizeString";
 
 type UserItemProps = {
   user: User;
@@ -35,6 +37,8 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   const [target, setTarget] = useState(user.target);
   const [activity, setActivity] = useState(user.activityLevel);
   const [isShowTooltip, setShowTooltip] = useState(false);
+
+  const meals = useSelector((state: RootState) => state.data.meals);
 
   const [trainingExpandedDates, setTrainingExpandedDates] = useState<Record<string, boolean>>({});
   const [mealsExpandedDates, setMealsExpandedDates] = useState<Record<string, boolean>>({});
@@ -121,9 +125,10 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
     setActivity(user.activityLevel);
   }, [user.target, user.weight, user.activityLevel]);
 
-  const handleRemoveMeal = async (meal: Meal) => {
-    await removeMealFromUserSchedule(user, meal)
-    dispatch(removeMeal({user, meal}))
+  const handleRemoveMeal = async (meal: UserMealData) => {
+    const mealToRemove = meals.find((m) => m.name === meal.name && m.type === meal.type)
+    mealToRemove && await removeMealFromUserSchedule(user, mealToRemove)
+    mealToRemove && dispatch(removeMeal({user, meal: mealToRemove}))
   }
 
   const handleRemoveTraining = async (training: TrainingSession) => {
@@ -504,7 +509,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                                       <span>{MealTypeTranslations[m[0].type]}</span>
                                       <span className="user-actions__link-wrapper">
                                         <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
-                                          {m[0].name.charAt(0).toUpperCase() + m[0].name.slice(1)}
+                                          {getCapitalizeString(m[0].name)}
                                         </Link>
                                       </span>
                                       <p className="user-actions__meal-maintenance">

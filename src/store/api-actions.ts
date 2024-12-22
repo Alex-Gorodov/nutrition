@@ -129,7 +129,7 @@ export const removeMealFromUserSchedule = async (
 
       const updatedScheduleItems: [Meal, Date][] = (existingUser.mealSchedule || [])
         .map((item: any) => (Array.isArray(item) ? item : [item, new Date()]))
-        .filter(([scheduledMeal]: [Meal, Date]) => scheduledMeal.id !== meal.id);
+        .filter(([scheduledMeal]: [Meal, Date]) => scheduledMeal.name !== meal.name && scheduledMeal.type !== meal.type);
 
       await userRef.child(key).update({ mealSchedule: updatedScheduleItems });
       console.log('Meal successfully removed from user schedule');

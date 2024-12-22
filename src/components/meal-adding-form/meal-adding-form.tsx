@@ -30,6 +30,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
   const activeMealType = useSelector((state: RootState) => state.page.activeMealType);
 
   const [addToUser, setAddToUser] = useState(true);
+  const [oneTimeMeal, setOneTimeMeal] = useState(false);
 
   const formRef = useOutsideClick(() => {
     dispatch(setNewMealFormOpened({ isOpened: false }));
@@ -140,7 +141,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsRecipeAdding(true);
-    dispatch(addNewMeal({ meal: data }));
+    !oneTimeMeal && dispatch(addNewMeal({ meal: data }));
 
     const mealToAddToUser = {
       ...data,
@@ -148,7 +149,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
     };
 
     try {
-      await addMealToDatabase(data);
+      !oneTimeMeal && await addMealToDatabase(data);
       addToUser && activeUser && await addMealToUserSchedule(activeUser, mealToAddToUser);
       setData({
         ...defaultData,
@@ -156,7 +157,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
       });
       addToUser && activeUser && dispatch(trackUserMeal({user: activeUser, meal: data}))
       dispatch(setNewMealFormOpened({isOpened: false}));
-      dispatch(setStatusMessage({message: SuccessMessages.AddNewMeal}));
+      oneTimeMeal ? dispatch(setStatusMessage({message: SuccessMessages.AddMeal})) : dispatch(setStatusMessage({message: SuccessMessages.AddNewMeal}));
     } catch (error) {
       console.error("Error adding meal:", error);
     } finally {
@@ -294,13 +295,20 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
           <label className="form__item form__item--wild-grid" htmlFor="meal-picture">
             <Upload onFileUpload={handleFileUpload} inputId="meal-picture" name="picture" />
           </label>
-          <label className="form__item form__item--checkbox" htmlFor="add-to-user">
-            <input className="form__checkbox visually-hidden" type="checkbox" name="add-to-user" id="add-to-user" checked={addToUser} onChange={() => setAddToUser(!addToUser)}/>
-            <span className="form__custom-checkbox"></span>
-            <span>Ем сейчас.</span>
-          </label>
+          <div className="form__checkboxes">
+            <label className="form__item form__item--checkbox" htmlFor="add-to-user">
+              <input className="form__checkbox visually-hidden" type="checkbox" name="add-to-user" id="add-to-user" checked={addToUser} onChange={() => setAddToUser(!addToUser)}/>
+              <span className="form__custom-checkbox"></span>
+              <span>Ем сейчас.</span>
+            </label>
+            <label className="form__item form__item--checkbox" htmlFor="one-time-meal">
+              <input className="form__checkbox visually-hidden" type="checkbox" name="one-time-meal" id="one-time-meal" checked={oneTimeMeal} onChange={() => setOneTimeMeal(!oneTimeMeal)}/>
+              <span className="form__custom-checkbox"></span>
+              <span>Разовая слабость.</span>
+            </label>
+          </div>
         </fieldset>
-        <button className="button button--submit form__submit" type="submit">
+        <button className="button button--submit form__submit" type="submit" disabled={isRecipeAdding}>
           { isRecipeAdding ? <LoadingSpinner size="40" color="white"/> : "Добавить блюдо!"}
         </button>
       </form>

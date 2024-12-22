@@ -49,7 +49,8 @@ type AuthFormProps = {
 
 export function AuthForm({ className }: AuthFormProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const [isAuthing, setIsAuthing] = useState(false);
+  const [isEmailAuthing, setIsEmailAuthing] = useState(false);
+  const [isGoogleAuthing, setIsGoogleAuthing] = useState(false);
 
   const isFormOpened = useSelector((state: RootState) => state.page.isLoginFormOpened);
 
@@ -103,7 +104,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsAuthing(true);
+    setIsEmailAuthing(true);
 
     const auth = getAuth();
     const { email, password } = data;
@@ -112,7 +113,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
 
     if (email.error || password.error) {
       dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
-      setIsAuthing(false);
+      setIsEmailAuthing(false);
       return;
     }
 
@@ -150,13 +151,13 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
       console.error("Login error:", error);
     } finally {
       isAuth && dispatch(redirectToRoute(AppRoute.Root))
-      setIsAuthing(false);
+      setIsEmailAuthing(false);
     }
   };
 
 
   const handleGoogleSignIn = async () => {
-    setIsAuthing(true);
+    setIsGoogleAuthing(true);
 
     try {
       const auth = getAuth();
@@ -212,7 +213,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
       dispatch(setStatusMessage({ message: ErrorMessages.AuthError }));
     } finally {
       isAuth && dispatch(redirectToRoute(AppRoute.Root))
-      setIsAuthing(false);
+      setIsGoogleAuthing(false);
     }
   };
 
@@ -262,17 +263,17 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
             <button
               className="button button--submit"
               type="submit"
-              disabled={isAuthing}
+              disabled={isGoogleAuthing}
             >
-              {isAuthing ? <LoadingSpinner color="white" size="16" /> : "Войти"}
+              {isEmailAuthing ? <LoadingSpinner color="white" size="16" /> : "Войти"}
             </button>
             <button
               className="button button--google"
               type="button"
               onClick={handleGoogleSignIn}
-              disabled={isAuthing}
+              disabled={isEmailAuthing}
             >
-              <span>Войти с</span> <Google />
+              {isGoogleAuthing ? <LoadingSpinner color="white" size="16" /> :  <>Войти с <Google/></>}
             </button>
           </div>
           <div className="form__buttons form__buttons--column">
@@ -281,6 +282,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
               className="button"
               type="button"
               onClick={handleOpenRegister}
+              disabled={isEmailAuthing || isGoogleAuthing}
             >
               Регистрация
             </button>

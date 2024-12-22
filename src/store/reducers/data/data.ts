@@ -91,7 +91,7 @@ export const DataReducer = createReducer(initialState, (builder) => {
 
       if (userIndex !== -1) {
         state.users[userIndex].mealSchedule = state.users[userIndex].mealSchedule.filter(
-          (existingMeal) => existingMeal[0].id !== meal.id
+          (existingMeal) => existingMeal[0].name !== meal.name && existingMeal[0].type !== meal.type
         );
       }
     })

@@ -5,6 +5,7 @@ import { generatePath, Link, useNavigate, useParams } from "react-router-dom";
 import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { ReactComponent as MealIcon } from "../../img/icons/meal-icon.svg";
 import { Helmet } from "react-helmet-async";
+import { getCapitalizeString } from "../../utils/getCapitalizeString";
 // import { useEffect } from "react";
 
 export function MealsByTypePage(): JSX.Element {
@@ -33,12 +34,6 @@ export function MealsByTypePage(): JSX.Element {
   const handleGoHome = () => {
     activeMeal && dispatch(setActiveMeal({ meal: null }))
   }
-
-  // useEffect(() => {
-  //   return () => {
-  //     activeMeal && dispatch(setActiveMeal({ meal: null }));
-  //   };
-  // }, [activeMeal, dispatch]);
 
   return (
     <div className="meals-page">
@@ -69,13 +64,13 @@ export function MealsByTypePage(): JSX.Element {
         >
           <div className="meals-page__image-wrapper">
             {meal.picture ? (
-              <img src={meal.picture} alt={meal.name} width={80} height={80} />
+              <img src={meal.picture} alt={getCapitalizeString(meal.name)} width={80} height={80} />
             ) : (
               <MealIcon />
             )}
           </div>
           <div className="meals-page__wrapper">
-            <p className="title title--3">{meal.name}</p>
+            <p className="title title--3">{getCapitalizeString(meal.name)}</p>
             <div>
               <span>Ккал: {meal.calories} </span>
               <span>Б: {meal.proteins}г </span>

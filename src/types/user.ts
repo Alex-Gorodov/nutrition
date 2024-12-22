@@ -1,5 +1,5 @@
 import { ActivityLevel, Genders, NutritionTarget } from "../const";
-import { Meal } from "./meal";
+import { UserMealData } from "./meal";
 import { TrainingSession } from "./trainingSession";
 
 export type User = {
@@ -8,7 +8,7 @@ export type User = {
   email: string,
   token: string,
   isAdmin: boolean,
-  mealSchedule: [Meal, Date][],
+  mealSchedule: [UserMealData, Date][],
   trainingSessions: TrainingSession[],
   activityLevel: ActivityLevel,
   avatar: string,

@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { Meal } from "../types/meal";
+import { Meal, UserMealData } from "../types/meal";
 import { User } from "../types/user";
 import { ActivityLevel, AppRoute, AuthorizationStatus, ErrorMessages, MealType, NutritionTarget, RegistrationSteps, SuccessMessages, TrainingType } from "../const";
 import { UserAuthData } from "../types/user-auth-data";
@@ -11,7 +11,7 @@ export const setMealsDataLoadingStatus = createAction<{isMealsDataLoading: boole
 export const loadUsers = createAction<{users: User[]}>('data/loadUsers');
 export const setUsersDataLoading = createAction<{isUsersDataLoading: boolean}>('data/setUsersDataLoadingStatus');
 export const setActiveUser = createAction<{activeUser: UserAuthData}>('data/setActiveUser');
-export const removeMeal = createAction<{user: User, meal: Meal}>('data/removeMeal');
+export const removeMeal = createAction<{user: User, meal: Meal | UserMealData}>('data/removeMeal');
 export const removeTrainingSession = createAction<{user: User, training: TrainingSession}>('data/removeTrainingSession');
 
 // User data updating
@@ -31,7 +31,7 @@ export const trackUserTrainingSession = createAction<{user: User, session: Train
 
 // Page
 export const setActiveMealType = createAction<{type: MealType | null}>('page/setActiveMealType')
-export const setActiveMeal = createAction<{meal: Meal | null}>('page/setActiveMeal')
+export const setActiveMeal = createAction<{meal: UserMealData | null}>('page/setActiveMeal')
 export const setStatusMessage = createAction<{message: ErrorMessages | SuccessMessages | null}>('page/setStatusMessage');
 export const redirectToRoute = createAction<AppRoute>('page/redirectToRoute');
 export const setLoginFormOpened = createAction<{isOpened: boolean}>('page/setLoginFormOpened');

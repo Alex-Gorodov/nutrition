@@ -12,3 +12,5 @@ export type Meal = {
   fats: number;
   carbs: number;
 }
+
+export type UserMealData = Omit<Meal, 'picture' | 'recipe' | 'ingredients'>;
