@@ -508,7 +508,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
                                       <span>{MealTypeTranslations[m[0].type]}</span>
                                       <span className="user-actions__link-wrapper">
                                         <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
-                                          { m[0].name.length > 20 ? `${getCapitalizeString(m[0].name).slice(0, 20)}...` : getCapitalizeString(m[0].name)}
+                                          {getCapitalizeString(m[0].name)}
                                         </Link>
                                       </span>
                                       <p className="user-actions__meal-maintenance">

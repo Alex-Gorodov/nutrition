@@ -67,11 +67,18 @@
     @media (max-width: $mobile)
       padding: 10px
       font-size: 12px
+  &__link-wrapper
+    max-width: 200px
+    overflow: hidden
   &__item-link
     @include link-reset
+    display: block
     white-space: nowrap
     font-weight: 600
     font-size: 1.2rem
+    max-width: 200px
+    overflow: hidden
+    text-overflow: ellipsis
     &:hover
       opacity: 0.6
     &:active
