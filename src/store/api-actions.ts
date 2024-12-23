@@ -3,7 +3,7 @@ import { AxiosInstance } from "axios";
 import { RootState } from "./root-reducer";
 import { database } from "../services/database";
 import { ActivityLevel, APIRoute, AuthorizationStatus, NutritionTarget } from "../const";
-import { Meal } from "../types/meal";
+import { Meal, UserMealData } from "../types/meal";
 import { loadMeals, loadUsers, requireAuthorization, setMealsDataLoadingStatus, setUserInformation, setUsersDataLoading } from "./action";
 import { User } from "../types/user";
 import { UserAuthData } from "../types/user-auth-data";
@@ -117,7 +117,7 @@ export const addMealToUserSchedule = async (
 
 export const removeMealFromUserSchedule = async (
   user: User,
-  meal: Meal,
+  meal: UserMealData,
 ): Promise<void> => {
   try {
     const userRef = database.ref(APIRoute.Users);
@@ -129,7 +129,7 @@ export const removeMealFromUserSchedule = async (
 
       const updatedScheduleItems: [Meal, Date][] = (existingUser.mealSchedule || [])
         .map((item: any) => (Array.isArray(item) ? item : [item, new Date()]))
-        .filter(([scheduledMeal]: [Meal, Date]) => scheduledMeal.name !== meal.name && scheduledMeal.type !== meal.type);
+        .filter(([scheduledMeal]: [UserMealData, Date]) => scheduledMeal.id !== meal.id);
 
       await userRef.child(key).update({ mealSchedule: updatedScheduleItems });
       console.log('Meal successfully removed from user schedule');

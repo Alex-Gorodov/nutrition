@@ -126,9 +126,11 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   }, [user.target, user.weight, user.activityLevel]);
 
   const handleRemoveMeal = async (meal: UserMealData) => {
-    const mealToRemove = meals.find((m) => m.name === meal.name && m.type === meal.type)
-    mealToRemove && await removeMealFromUserSchedule(user, mealToRemove)
-    mealToRemove && dispatch(removeMeal({user, meal: mealToRemove}))
+    const mealToRemove = user.mealSchedule.find((m) => m[0].id === meal.id);
+    console.log('this id: ', mealToRemove?.[0].id);
+
+    mealToRemove && await removeMealFromUserSchedule(user, mealToRemove[0])
+    mealToRemove && dispatch(removeMeal({user, meal: mealToRemove[0]}))
   }
 
   const handleRemoveTraining = async (training: TrainingSession) => {

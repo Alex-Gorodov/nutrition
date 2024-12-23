@@ -11,7 +11,7 @@ export const setMealsDataLoadingStatus = createAction<{isMealsDataLoading: boole
 export const loadUsers = createAction<{users: User[]}>('data/loadUsers');
 export const setUsersDataLoading = createAction<{isUsersDataLoading: boolean}>('data/setUsersDataLoadingStatus');
 export const setActiveUser = createAction<{activeUser: UserAuthData}>('data/setActiveUser');
-export const removeMeal = createAction<{user: User, meal: Meal | UserMealData}>('data/removeMeal');
+export const removeMeal = createAction<{user: User, meal: UserMealData}>('data/removeMeal');
 export const removeTrainingSession = createAction<{user: User, training: TrainingSession}>('data/removeTrainingSession');
 
 // User data updating
