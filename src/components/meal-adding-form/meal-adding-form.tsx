@@ -300,11 +300,13 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
               <input className="form__checkbox visually-hidden" type="checkbox" name="add-to-user" id="add-to-user" checked={addToUser} onChange={() => setAddToUser(!addToUser)}/>
               <span className="form__custom-checkbox"></span>
               <span>Ем сейчас.</span>
+              <p className="form__checkbox-description">Добавит блюдо в базу рецептов и в твой сегодняшний рацион.</p>
             </label>
             <label className="form__item form__item--checkbox" htmlFor="one-time-meal">
               <input className="form__checkbox visually-hidden" type="checkbox" name="one-time-meal" id="one-time-meal" checked={oneTimeMeal} onChange={() => setOneTimeMeal(!oneTimeMeal)}/>
               <span className="form__custom-checkbox"></span>
               <span>Разовая слабость.</span>
+              <p className="form__checkbox-description">Добавит блюдо в твой сегодняшний рацион, не сохраняя его в базу.</p>
             </label>
           </div>
         </fieldset>
