@@ -55,6 +55,10 @@
       & > .user-actions__remove-btn
         transform: translateX(0)
         padding: 0 50px
+      & .user-actions__item-link
+        max-width: 210px
+        overflow: hidden
+        text-overflow: ellipsis
 
   &__item-wrapper
     min-width: 100%
@@ -67,18 +71,14 @@
     @media (max-width: $mobile)
       padding: 10px
       font-size: 12px
-  &__link-wrapper
-    max-width: 200px
-    overflow: hidden
   &__item-link
     @include link-reset
     display: block
     white-space: nowrap
+    max-width: 400px
+    transition: $hover-transition
     font-weight: 600
-    font-size: 1.2rem
-    max-width: 200px
-    overflow: hidden
-    text-overflow: ellipsis
+    font-size: 1rem
     &:hover
       opacity: 0.6
     &:active
