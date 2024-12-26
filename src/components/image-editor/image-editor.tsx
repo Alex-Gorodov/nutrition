@@ -19,7 +19,7 @@ export function ImageEditor(): JSX.Element {
       <PinturaEditor
         {...getEditorDefaults()}
         src={path}
-
+        imageCropAspectRatio={1}
         onProcess={(res) => {
           const resultUrl = URL.createObjectURL(res.dest);
           dispatch(setUploadedPath({ path: resultUrl }));
