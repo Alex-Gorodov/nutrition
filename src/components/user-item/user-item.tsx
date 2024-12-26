@@ -425,7 +425,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
             userTrainings && userTrainings.length > 0 && (
               <div className="user-actions__container">
                 <ul className="user-actions__list">
-                  {userTrainings && Object.entries(groupByDate(userTrainings, (t) => formatDate(new Date(t.date)))).map(
+                  {Object.entries(groupByDate(userTrainings, (t) => formatDate(new Date(t.date)))).map(
                     ([date, sessions]) =>
                       <li key={`training-group-${date}`}>
                         {

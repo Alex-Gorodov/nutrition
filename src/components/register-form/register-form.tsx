@@ -157,8 +157,6 @@ export function RegisterForm(): JSX.Element {
           password: data.password
         });
         dispatch(setUserInformation({ userInformation: userInfo }));
-        dispatch(setUploadedPath({ path: null }));
-        localStorage.setItem('nutrition-user', JSON.stringify(userInfo));
 
         if (userPageLink) {
           dispatch(redirectToRoute(userPageLink as AppRoute));
@@ -167,6 +165,8 @@ export function RegisterForm(): JSX.Element {
         dispatch(setRegistrationStep({ step: RegistrationSteps.None }));
         setData(defaultData);
         closeForms();
+        dispatch(setUploadedPath({ path: null }));
+        localStorage.setItem('nutrition-user', JSON.stringify(userInfo));
       }
     } catch (error) {
       console.error('Error registering user:', error);
@@ -218,6 +218,7 @@ export function RegisterForm(): JSX.Element {
               <span>Подтверди пароль*: </span>
               <input className="form__input" type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} autoComplete="off" placeholder="Confirm password" required/>
             </label>
+            <p className="form__error">{ErrorMessages.PasswordError}</p>
           </fieldset>
         }
         {
@@ -250,7 +251,6 @@ export function RegisterForm(): JSX.Element {
               <select className="form__input form__input--select" value={data.activityLevel} name="activityLevel" aria-label="choose activity level:" onChange={handleSelectChange} required>
               {Object.values(ActivityLevel).map((level) => {
                 const label = ActivityLevelTranslations[level as keyof typeof ActivityLevelTranslations];
-                // Проверяем, если label существует
                 if (label) {
                   return (
                     <option key={`activity-${level}`} value={level}>
@@ -258,7 +258,7 @@ export function RegisterForm(): JSX.Element {
                     </option>
                   );
                 }
-                return null; // Если нет значения, не рендерим <option>
+                return null;
               })}
               </select>
             </label>

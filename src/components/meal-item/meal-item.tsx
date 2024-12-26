@@ -3,7 +3,7 @@ import { AppRoute, MealType, MealTypeTranslations } from "../../const";
 import { Meal } from "../../types/meal";
 import { formatRecipe } from "../../utils/formatRecipe";
 import { RootState } from "../../store/root-reducer";
-import { trackUserMeal } from "../../store/action";
+import { setActiveMeal, setMealFormOpened, trackUserMeal } from "../../store/action";
 import { useSetActiveMeal } from "../../hooks/useSetActiveMeal";
 import { addMealToUserSchedule } from "../../store/api-actions";
 import { useState } from "react";
@@ -19,6 +19,7 @@ type MealItemProps = {
 export function MealItem({ meal }: MealItemProps): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAddingFormOpened = useSelector((state: RootState) => state.page.isMealFormOpened);
   const formattedRecipe = meal.recipe ? formatRecipe(meal.recipe) : '';
   const activeMeal = useSelector((state: RootState) => state.page.activeMeal);
   const activeUser = useSelector((state: RootState) => state.user);
@@ -52,9 +53,10 @@ export function MealItem({ meal }: MealItemProps): JSX.Element {
 
     await addMealToUserSchedule(activeUser, updatedMeal as Meal);
     setIsAdding(false);
-
   }
     activeMeal && setIsAdded(true);
+    activeMeal && dispatch(setActiveMeal({meal: null}));
+    isAddingFormOpened && dispatch(setMealFormOpened({isOpened: false}));
   }
 
   const handleResetMeal = () => {
