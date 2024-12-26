@@ -1,8 +1,3 @@
-type GroupByDateItem<T> = {
-  date: string;
-  item: T;
-};
-
 export function groupByDate<T>(
   items: T[],
   getDate: (item: T) => string

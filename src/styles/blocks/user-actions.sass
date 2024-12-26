@@ -4,8 +4,8 @@
   grid-column: 1 / -1
   width: 100vw
   &__title-wrapper
-    display: flex
-    justify-content: center
+    display: grid
+    grid-template-columns: 1fr 1fr
     align-items: center
     padding: 20px
     gap: 40px
@@ -13,8 +13,10 @@
   &__title
     text-align: center
     color: $white
+    width: 100%
   &__add-btn
     color: $white
+    margin-left: auto
     &:hover,
     &:focus-visible
       scale: 1.1
@@ -44,39 +46,41 @@
     flex-direction: column
   &__sublist
     @include list-reset
-  &__item
-    display: flex
-    justify-content: space-between
-    border-bottom: 2px solid black
-    overflow: hidden
-    &:hover
-      & > .user-actions__item-wrapper
-        min-width: unset
-      & > .user-actions__remove-btn
-        transform: translateX(0)
-        padding: 0 50px
-      & .user-actions__item-link
-        max-width: 210px
-        overflow: hidden
-        text-overflow: ellipsis
-
+    transition: $removing-transition
   &__item-wrapper
-    min-width: 100%
     width: 100%
     display: flex
+    justify-content: center
     flex-direction: column
     padding: 10px 40px
     gap: 8px
     z-index: 1
+    transition: $removing-transition
     @media (max-width: $mobile)
       padding: 10px
       font-size: 12px
+  &__item
+    display: flex
+    height: 84px
+    justify-content: space-between
+    border-bottom: 2px solid black
+    overflow: hidden
+    transition: $removing-transition
+    &:hover
+      & > .user-actions__remove-btn
+        transform: translateX(0)
+        padding: 0 50px
+      & .user-actions__item-link
+        @media (max-width: $mobile)
+          max-width: 210px
+          overflow: hidden
+          text-overflow: ellipsis
   &__item-link
     @include link-reset
     display: block
     white-space: nowrap
     max-width: 400px
-    transition: $hover-transition
+    transition: $removing-transition
     font-weight: 600
     font-size: 1rem
     &:hover
@@ -88,5 +92,18 @@
     margin: 0
     gap: 8px
   &__remove-btn
+    transition: $removing-transition
     transform: translateX(100%)
     box-shadow: inset 8px 0 8px -4px $black
+
+  &__removing,
+  &__removing:hover
+    & > .user-actions__item-wrapper
+      position: relative
+      left: -100%
+      width: 0
+      padding: 0
+      transform: translateX(-100%)
+    & > .user-actions__remove-btn
+      transform: translateX(0)
+      padding: 0 calc(50% - 10px)

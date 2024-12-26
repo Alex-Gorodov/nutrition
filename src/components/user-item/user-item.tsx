@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityLevel, ActivityLevelTranslations, AppRoute, CaloricGoals, CaloricValues, MacronutrientRatios, Macronutrients, MealTypeTranslations, NutritionTarget, NutritionTargetToCaloricGoals, ScreenSizes, TrainingType, TrainingTypeTranslations } from "../../const";
 import { User } from "../../types/user";
 import { setUserGreetings } from "../../utils/setUserGreetings";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeMealFromUserSchedule, removeTrainingFromUserSessions, updateUserActivity, updateUserTarget, updateUserWeight } from "../../store/api-actions";
 import { ReactComponent as EditIcon } from "../../img/icons/edit-icon.svg";
 import { ReactComponent as ApplyIcon } from "../../img/icons/apply-icon.svg";
@@ -20,7 +20,6 @@ import { UserMealData } from "../../types/meal";
 import { TrainingSession } from "../../types/trainingSession";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { RootState } from "../../store/root-reducer";
 import { getCapitalizeString } from "../../utils/getCapitalizeString";
 
 type UserItemProps = {
@@ -38,10 +37,14 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   const [activity, setActivity] = useState(user.activityLevel);
   const [isShowTooltip, setShowTooltip] = useState(false);
 
-  const meals = useSelector((state: RootState) => state.data.meals);
-
   const [trainingExpandedDates, setTrainingExpandedDates] = useState<Record<string, boolean>>({});
   const [mealsExpandedDates, setMealsExpandedDates] = useState<Record<string, boolean>>({});
+
+  const [removingMealId, setRemovingMealId] = useState<string | null>(null);
+  const [removingTrainingId, setRemovingTrainingId] = useState<string | null>(null);
+
+  const userMeals = user.mealSchedule;
+  const userTrainings = user.trainingSessions;
 
   const toggleTrainingDate = (date: string) => {
     setTrainingExpandedDates((prev) => ({
@@ -126,19 +129,27 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
   }, [user.target, user.weight, user.activityLevel]);
 
   const handleRemoveMeal = async (meal: UserMealData) => {
-    const mealToRemove = user.mealSchedule.find((m) => m[0].id === meal.id);
+    const mealToRemove = userMeals.find((m) => m[0].id === meal.id);
     console.log('this id: ', mealToRemove?.[0].id);
+    mealToRemove && setRemovingMealId(mealToRemove[0].id);
 
-    mealToRemove && await removeMealFromUserSchedule(user, mealToRemove[0])
-    mealToRemove && dispatch(removeMeal({user, meal: mealToRemove[0]}))
+    setTimeout(async () => {
+      mealToRemove && await removeMealFromUserSchedule(user, mealToRemove[0])
+      mealToRemove && dispatch(removeMeal({user, meal: mealToRemove[0]}))
+      setRemovingMealId(null);
+    }, 500)
   }
 
   const handleRemoveTraining = async (training: TrainingSession) => {
-    await removeTrainingFromUserSessions(user, training)
-    dispatch(removeTrainingSession({user, training}))
+    setRemovingTrainingId(training.id)
+    setTimeout(async () => {
+      await removeTrainingFromUserSessions(user, training)
+      dispatch(removeTrainingSession({user, training}))
+      setRemovingTrainingId(null);
+    }, 500)
   }
 
-  const todayMeals = user.mealSchedule && user.mealSchedule.filter((m) => new Date(m[1]).getDate() === today)
+  const todayMeals = userMeals && userMeals.filter((m) => new Date(m[1]).getDate() === today)
 
   const bmr = getBasalMetabolicRate(user).valueOf();
 
@@ -400,141 +411,147 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
           </div>
         </div>
       </div>
-      {user.trainingSessions && user.trainingSessions.length > 0 && (
-        <div className="user__trainings user-actions">
-          <div className="user-actions__title-wrapper">
-            <h3 className="user-actions__title title title--3">Тренировки</h3>
-            <button
-              className="button button--reset user-actions__add-btn"
-              onClick={() => dispatch(setTrainingFormOpened({ isOpened: true }))}
-            >
-              <AddIcon />
-            </button>
-          </div>
-          <div className="user-actions__container">
-            <ul className="user-actions__list">
-              {Object.entries(groupByDate(user.trainingSessions, (t) => formatDate(new Date(t.date)))).map(
-                ([date, sessions]) =>
-                  <li key={`training-group-${date}`}>
-                    {
-                      !trainingExpandedDates[date]
-                        ?
-                        <div
-                          className="user-actions__group-header"
-                        >
-                          <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
-                            <p className="user-actions__date">{date}</p>
-                            <CollapseIcon className="icon" />
-                          </div>
-                        </div>
-                        :
-                        <div
-                          className="user-actions__group-header user-actions__group-header--opened"
-                        >
-                          <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
-                            <p className="user-actions__date">{date}</p>
-                            <CollapseIcon className="icon icon--rotated" />
-                          </div>
-                          <ul className="user-actions__sublist">
-                            {sessions.map((t) => (
-                              <li
-                                className="user-actions__item user-actions__item--trainings"
-                                key={`${user.name}-training-${t.activity}-${t.duration}-${new Date(t.date).getDay()}`}
+      <div className="user__trainings user-actions">
+        <div className="user-actions__title-wrapper">
+          <h3 className="user-actions__title title title--3">Тренировки</h3>
+          <button
+            className="button button--reset user-actions__add-btn"
+            onClick={() => dispatch(setTrainingFormOpened({ isOpened: true }))}
+          >
+            <AddIcon />
+          </button>
+        </div>
+          {
+            userTrainings && userTrainings.length > 0 && (
+              <div className="user-actions__container">
+                <ul className="user-actions__list">
+                  {userTrainings && Object.entries(groupByDate(userTrainings, (t) => formatDate(new Date(t.date)))).map(
+                    ([date, sessions]) =>
+                      <li key={`training-group-${date}`}>
+                        {
+                          !trainingExpandedDates[date]
+                            ?
+                            <div
+                              className="user-actions__group-header"
+                            >
+                              <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
+                                <p className="user-actions__date">{date}</p>
+                                <CollapseIcon className="icon" />
+                              </div>
+                            </div>
+                            :
+                            <div
+                              className="user-actions__group-header user-actions__group-header--opened"
+                            >
+                              <div className="user-actions__date-wrapper" onClick={() => toggleTrainingDate(date)}>
+                                <p className="user-actions__date">{date}</p>
+                                <CollapseIcon className="icon icon--rotated" />
+                              </div>
+                              <ul className="user-actions__sublist">
+                                {
+                                  sessions.map((t) => {
+                                    const isRemoving = removingTrainingId === t.id;
+                                    return (
+                                      <li
+                                        className={`user-actions__item user-actions__item--trainings ${isRemoving && 'user-actions__removing'}`}
+                                        key={`${user.name}-training-${t.activity}-${t.duration}-${new Date(t.date).getDay()}`}
+                                      >
+                                        <div className="user-actions__item-wrapper">
+                                          <b>{TrainingTypeTranslations[t.activity as TrainingType]}</b>
+                                          <span>Сожжено калорий: <b>{Math.floor(t.caloriesBurned)}</b></span>
+                                        </div>
+                                        <button className="button button--remove user-actions__remove-btn" onClick={() => handleRemoveTraining(t)}>
+                                          <span className="visually-hidden">Удалить тренировку</span>
+                                          <Remove/>
+                                        </button>
+                                      </li>
+                                    )})}
+                              </ul>
+                            </div>
+                        }
+                      </li>
+                  )
+                  }
+                </ul>
+              </div>
+            )
+          }
+      </div>
+      <div className="user__meals user-actions">
+        <div className="user-actions__title-wrapper">
+          <h3 className="user-actions__title title title--3">Приемы пищи</h3>
+          <button className="button button--reset user-actions__add-btn" onClick={() => dispatch(setMealFormOpened({ isOpened: true }))}><AddIcon /></button>
+        </div>
+          {
+            userMeals && userMeals.length > 0 &&
+              <div className="user-actions__container">
+                <ul className="user-actions__list">
+                  {
+                    Object.entries(groupByDate(userMeals, (m) => formatDate(m[1]))).map(
+                      ([date, schedule]) =>
+                        <li key={`${schedule[0][0].name}-${schedule[0]}-${date}`}>
+                          {
+                            !mealsExpandedDates[date]
+                              ?
+                              <div
+                                className="user-actions__group-header"
                               >
-                                <div className="user-actions__item-wrapper">
-                                  <b>{TrainingTypeTranslations[t.activity as TrainingType]}</b>
-                                  <span>Сожжено калорий: <b>{Math.floor(t.caloriesBurned)}</b></span>
+                                <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
+                                  <p className="user-actions__date">{date}</p>
+                                  <CollapseIcon className="icon" />
                                 </div>
-                                <button className="button button--remove user-actions__remove-btn" onClick={() => handleRemoveTraining(t)}>
-                                  <span className="visually-hidden">Удалить тренировку</span>
-                                  <Remove/>
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                    }
-                  </li>
-              )
-              }
-            </ul>
-          </div>
-        </div>
-      )}
-      {
-        user.mealSchedule && user.mealSchedule.length > 0 &&
-        <div className="user__meals user-actions">
-          <div className="user-actions__title-wrapper">
-            <h3 className="user-actions__title title title--3">Приемы пищи</h3>
-            <button className="button button--reset user-actions__add-btn" onClick={() => dispatch(setMealFormOpened({ isOpened: true }))}><AddIcon /></button>
-          </div>
-          <div className="user-actions__container">
-            <ul className="user-actions__list">
-              {
-                Object.entries(groupByDate(user.mealSchedule, (m) => formatDate(m[1]))).map(
-                  ([date, schedule]) =>
-                    <li key={`${schedule[0][0].name}-${schedule[0]}-${date}`}>
-                      {
-                        !mealsExpandedDates[date]
-                          ?
-                          <div
-                            className="user-actions__group-header"
-                          >
-                            <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
-                              <p className="user-actions__date">{date}</p>
-                              <CollapseIcon className="icon" />
-                            </div>
-                          </div>
-                          :
-                          <div
-                            className="user-actions__group-header user-actions__group-header--opened"
-                          >
-                            <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
-                              <p className="user-actions__date">{date}</p>
-                              <CollapseIcon className="icon icon--rotated" />
-                            </div>
-                            <ul className="user-actions__sublist">
-                              {
+                              </div>
+                              :
+                              <div
+                                className="user-actions__group-header user-actions__group-header--opened"
+                              >
+                                <div className="user-actions__date-wrapper" onClick={() => toggleMealsDate(date)}>
+                                  <p className="user-actions__date">{date}</p>
+                                  <CollapseIcon className="icon icon--rotated" />
+                                </div>
+                                <ul className="user-actions__sublist">
+                                  {
 
-                                schedule.map((m, i) => {
-                                  const link = generatePath(AppRoute.MealPage, { id: m[0].id });
+                                    schedule.map((m, i) => {
+                                      const link = generatePath(AppRoute.MealPage, { id: m[0].id });
+                                      const isRemoving = removingMealId === m[0].id;
 
-                                  return (
-                                  <li
-                                    className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()}`}
-                                    key={`${m[0].name}-${m[0]}-${date}-${i}`}
-                                  >
-                                    <div className="user-actions__item-wrapper">
-                                      <span>{MealTypeTranslations[m[0].type]}</span>
-                                      <span className="user-actions__link-wrapper">
-                                        <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
-                                          {getCapitalizeString(m[0].name)}
-                                        </Link>
-                                      </span>
-                                      <p className="user-actions__meal-maintenance">
-                                        <span>Ккал: {Math.floor(m[0].calories)}</span>
-                                        <span>Б: {Math.floor(m[0].proteins)}г</span>
-                                        <span>Ж: {Math.floor(m[0].fats)}г</span>
-                                        <span>У: {Math.floor(m[0].carbs)}г</span>
-                                      </p>
-                                    </div>
-                                    <button className="button button--remove user-actions__remove-btn" onClick={() => handleRemoveMeal(m[0])}>
-                                      <span className="visually-hidden">Удалить прием пищи</span>
-                                      <Remove/>
-                                    </button>
-                                  </li>
-                                )})
-                              }
-                            </ul>
-                          </div>
-                      }
-                    </li>
-                )
-              }
-            </ul>
-          </div>
+                                      return (
+                                      <li
+                                        className={`user-actions__item user-actions__item--meal user-actions__item--${m[0].type.toLowerCase()} ${isRemoving && 'user-actions__removing'}`}
+                                        key={`${m[0].name}-${m[0]}-${date}-${i}`}
+                                      >
+                                        <div className="user-actions__item-wrapper">
+                                          <span>{MealTypeTranslations[m[0].type]}</span>
+                                          <span className="user-actions__link-wrapper">
+                                            <Link className="user-actions__item-link" to={link} onClick={() => dispatch(setActiveMeal({meal: m[0]}))}>
+                                              {getCapitalizeString(m[0].name)}
+                                            </Link>
+                                          </span>
+                                          <p className="user-actions__meal-maintenance">
+                                            <span>Ккал: {Math.floor(m[0].calories)}</span>
+                                            <span>Б: {Math.floor(m[0].proteins)}г</span>
+                                            <span>Ж: {Math.floor(m[0].fats)}г</span>
+                                            <span>У: {Math.floor(m[0].carbs)}г</span>
+                                          </p>
+                                        </div>
+                                        <button className="button button--remove user-actions__remove-btn" onClick={() => handleRemoveMeal(m[0])}>
+                                          <span className="visually-hidden">Удалить прием пищи</span>
+                                          <Remove/>
+                                        </button>
+                                      </li>
+                                    )})
+                                  }
+                                </ul>
+                              </div>
+                          }
+                        </li>
+                    )
+                  }
+                </ul>
+              </div>
+          }
         </div>
-      }
     </div>
   )
 }
