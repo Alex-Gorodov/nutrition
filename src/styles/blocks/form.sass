@@ -2,6 +2,7 @@
   @include flex-column
   position: relative
   max-height: 80vh
+  max-width: 96vw
   overflow: scroll
   padding: 0
   background-color: $light-blue
@@ -15,7 +16,6 @@
   @media (min-width: $tablet)
     min-width: 640px
   @media (max-width: $tablet)
-    max-width: 96vw
     min-width: 350px
   &__wrapper
     position: fixed
@@ -37,6 +37,7 @@
     align-items: center
     box-shadow: $shadow-middle
     background-color: $white
+    z-index: 1
     & div
       display: flex
       flex-direction: column
@@ -68,7 +69,6 @@
       display: grid
       grid-template-columns: 50px auto
       grid-column: 1 / -1
-      // flex-direction: row
       width: 100%
   &__input
     padding: 14px 12px
@@ -94,6 +94,7 @@
   &__checkboxes
     display: flex
     flex-wrap: wrap
+    padding-top: 8px
     gap: 20px
     align-items: center
   &__custom-checkbox

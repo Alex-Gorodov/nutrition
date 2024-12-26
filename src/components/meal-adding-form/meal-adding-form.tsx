@@ -5,7 +5,7 @@ import { addMealToDatabase, addMealToUserSchedule } from "../../store/api-action
 import { MealType, MealTypeTranslations, SuccessMessages } from "../../const";
 import { addNewMeal, setNewMealFormOpened, setStatusMessage, trackUserMeal } from "../../store/action";
 import { Meal } from "../../types/meal";
-import { Upload } from "../upload-picture/upload-picture";
+import { UploadPicture } from "../upload-picture/upload-picture";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
@@ -172,6 +172,11 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
     }));
   };
 
+  const toggleOneTimeMeal = () => {
+    setOneTimeMeal(!oneTimeMeal);
+    setAddToUser(false);
+  }
+
   return (
     <div className="form__wrapper">
       <form className="form" method="post" action="#" onSubmit={handleFormSubmit} ref={formRef}>
@@ -293,7 +298,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
             />
           </label>
           <label className="form__item form__item--wild-grid" htmlFor="meal-picture">
-            <Upload onFileUpload={handleFileUpload} inputId="meal-picture" name="picture" />
+            <UploadPicture onFileUpload={handleFileUpload} inputId="meal-picture" name="picture" />
           </label>
           <div className="form__checkboxes">
             <label className="form__item form__item--checkbox" htmlFor="add-to-user">
@@ -303,7 +308,7 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
               <p className="form__checkbox-description">Добавит блюдо в базу рецептов и в твой сегодняшний рацион.</p>
             </label>
             <label className="form__item form__item--checkbox" htmlFor="one-time-meal">
-              <input className="form__checkbox visually-hidden" type="checkbox" name="one-time-meal" id="one-time-meal" checked={oneTimeMeal} onChange={() => setOneTimeMeal(!oneTimeMeal)}/>
+              <input className="form__checkbox visually-hidden" type="checkbox" name="one-time-meal" id="one-time-meal" checked={oneTimeMeal} onChange={() => toggleOneTimeMeal()}/>
               <span className="form__custom-checkbox"></span>
               <span>Разовая слабость.</span>
               <p className="form__checkbox-description">Добавит блюдо в твой сегодняшний рацион, не сохраняя его в базу.</p>

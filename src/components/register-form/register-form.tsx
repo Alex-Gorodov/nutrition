@@ -6,7 +6,7 @@ import { ActivityLevel, ActivityLevelTranslations, AppRoute, ErrorMessages, Gend
 import { setStatusMessage, setUserInformation, setUploadedPath, setActiveUser, redirectToRoute, setLoginFormOpened, setRegisterFormOpened, setRegistrationStep } from "../../store/action";
 import { addNewUserToDatabase, loginAction } from "../../store/api-actions";
 import { setUser } from "../../store/slices/user-slice";
-import { Upload } from "../upload-picture/upload-picture";
+import { UploadPicture } from "../upload-picture/upload-picture";
 import { generatePath } from "react-router-dom";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import { ReactComponent as Close } from '../../img/icons/cross-icon.svg';
@@ -208,7 +208,7 @@ export function RegisterForm(): JSX.Element {
             </label>
             <label className="form__item form__item--wild-grid" htmlFor="register-avatar">
               <span>Загрузи аватар: </span>
-              <Upload onFileUpload={handleFileUpload} inputId="register-avatar" name="avatar"/>
+              <UploadPicture onFileUpload={handleFileUpload} inputId="register-avatar" name="avatar"/>
             </label>
             <label className="form__item form__item--wild-grid" htmlFor="register-password">
               <span>Выбери пароль*: </span>
