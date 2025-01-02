@@ -189,7 +189,7 @@ export function AddTraining(): JSX.Element {
           </label>
 
           {calories > 0 ? (
-            <p>
+            <p className="form__message">
               Ты затратил примерно <strong>{Math.floor(calories)}</strong>{" "}
               калорий! Так держать!
             </p>

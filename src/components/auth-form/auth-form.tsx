@@ -254,7 +254,7 @@ export function AuthForm({ className }: AuthFormProps): JSX.Element {
                   autoComplete={fieldName === "password" ? "off" : "on"}
                 />
                 {field.error && (
-                  <span className="form__error">{field.errorValue}</span>
+                  <p className="form__message">{field.errorValue}</p>
                 )}
               </label>
             );

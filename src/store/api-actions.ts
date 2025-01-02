@@ -181,7 +181,7 @@ export const removeTrainingFromUserSessions = async (
       const existingUser = snapshot.val()[key];
 
       const updatedTrainingSessions: TrainingSession[] = (existingUser.trainingSessions || [])
-        .map((item: any) => (Array.isArray(item) ? item : [item, new Date()]))
+        .map((item: any) => (Array.isArray(item) ? item : item))
         .filter((trainingSession: TrainingSession) => trainingSession.id !== training.id);
 
       await userRef.child(key).update({ trainingSessions: updatedTrainingSessions });

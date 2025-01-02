@@ -44,17 +44,19 @@ export function RegisterForm(): JSX.Element {
     confirmPassword: "",
   }
 
+  const avatarPath = useSelector((state: RootState) => state.page.uploadedPath);
+
   const [data, setData] = useState(defaultData)
 
   const [userPageLink, setUserPageLink] = useState("");
 
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = event.target;
+    const { name, value } = event.target;
 
-    if (name === 'avatar' && files) {
+    if (name === 'avatar' && avatarPath) {
       setData((prevdata) => ({
         ...prevdata,
-        avatar: URL.createObjectURL(files[0]),
+        avatar: avatarPath,
       }));
     } else {
       setData((prevdata) => ({
@@ -88,9 +90,17 @@ export function RegisterForm(): JSX.Element {
 
     try {
       if (registrationStep === RegistrationSteps.AccountSetup) {
-        dispatch(setRegistrationStep({ step: RegistrationSteps.HealthGoals }));
-        setIsAuthing(false);
-        return;
+        if (data.email.length < 7) {
+          dispatch(setStatusMessage({ message: ErrorMessages.EmailError }))
+          return;
+        } else if (!PasswordValidationRegex.test(data.password)) {
+          dispatch(setStatusMessage({ message: ErrorMessages.PasswordError }));
+          return;
+        } else {
+          dispatch(setRegistrationStep({ step: RegistrationSteps.HealthGoals }));
+          setIsAuthing(false);
+          return;
+        }
       }
 
       if (registrationStep === RegistrationSteps.HealthGoals) {
@@ -162,9 +172,9 @@ export function RegisterForm(): JSX.Element {
           dispatch(redirectToRoute(userPageLink as AppRoute));
         }
 
+        closeForms();
         dispatch(setRegistrationStep({ step: RegistrationSteps.None }));
         setData(defaultData);
-        closeForms();
         dispatch(setUploadedPath({ path: null }));
         localStorage.setItem('nutrition-user', JSON.stringify(userInfo));
       }
@@ -218,7 +228,7 @@ export function RegisterForm(): JSX.Element {
               <span>Подтверди пароль*: </span>
               <input className="form__input" type="password" name="confirmPassword" id="register-confirm-password" value={data.confirmPassword} onChange={handleFieldChange} autoComplete="off" placeholder="Confirm password" required/>
             </label>
-            <p className="form__error">{ErrorMessages.PasswordError}</p>
+            <p className="form__message">{ErrorMessages.PasswordError}</p>
           </fieldset>
         }
         {
@@ -238,13 +248,13 @@ export function RegisterForm(): JSX.Element {
               <span>Возраст*: </span>
               <input className="form__input" type="number" min="0" max="120" name="age" id="register-age" value={data.age} onChange={handleFieldChange} placeholder="23" required/>
             </label>
-            <label className="form__item" htmlFor="register-weight">
-              <span>Твой вес*: </span>
-              <input className="form__input" type="number" min="0" name="weight" id="register-weight" value={data.weight} onChange={handleFieldChange} required/>
-            </label>
             <label className="form__item" htmlFor="register-height">
               <span>Твой рост*: </span>
               <input className="form__input" type="number" min="0" name="height" id="register-height" value={data.height} onChange={handleFieldChange} required/>
+            </label>
+            <label className="form__item" htmlFor="register-weight">
+              <span>Твой вес*: </span>
+              <input className="form__input" type="number" min="0" name="weight" id="register-weight" value={data.weight} onChange={handleFieldChange} required/>
             </label>
             <label className="form__item" htmlFor="register-activity">
               <span>Уровень активности*: </span>

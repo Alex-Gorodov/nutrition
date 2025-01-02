@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRef, useCallback } from "react";
 import { ScreenSizes } from "../../const";
 import { RootState } from "../../store/root-reducer";
-import { ImageEditor } from "../image-editor/image-editor";
 
 interface UploadProps {
   onFileUpload: (fileUrl: string) => void;
@@ -49,7 +48,7 @@ export function UploadPicture({ onFileUpload, inputId, name }: UploadProps): JSX
   };
 
   const handleClearPath = (e: React.MouseEvent) => {
-    e.preventDefault(); // Предотвращаем дефолтное действие
+    e.preventDefault();
     dispatch(setUploadedPath({ path: null }));
   };
 
@@ -64,7 +63,6 @@ export function UploadPicture({ onFileUpload, inputId, name }: UploadProps): JSX
             src={path}
             alt="Processed"
           />
-          {/* Кнопка удаления вынесена вне зоны действия useDropzone */}
           <button
             className="upload__preview-remove-btn"
             onClick={handleClearPath}
@@ -103,7 +101,6 @@ export function UploadPicture({ onFileUpload, inputId, name }: UploadProps): JSX
           </p>
         </div>
       )}
-      {path && <ImageEditor />}
     </div>
   );
 }

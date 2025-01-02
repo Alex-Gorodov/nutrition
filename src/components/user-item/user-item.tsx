@@ -239,7 +239,7 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
             </div>
           </div>
           <div className="user__today">
-            <p className="user__today-base">Твой базовый обмен веществ: {isMobile && <br/>} <b>{bmr}</b> ккал в день.
+            <div className="user__today-base">Твой базовый обмен веществ: {isMobile && <br/>} <b>{bmr}</b> ккал в день.
               <button
                 className="button button--reset button--tooltip user__today-tooltip-btn"
                 onClick={() => setShowTooltip(!isShowTooltip)}
@@ -249,11 +249,11 @@ export function UserItem({ user }: UserItemProps): JSX.Element {
               {
                 isShowTooltip
                 &&
-                <div className="user__today-tooltip" ref={tooltipRef}>
+                <p className="user__today-tooltip" ref={tooltipRef}>
                   <i>Базовый обмен веществ (уровень метаболизма) – это количество калорий, которое человеческий организм сжигает в состоянии покоя, то есть энергия затрачиваемая для обеспечения всех жизненных процессов (дыхания, кровообращения и т.д.). </i>
-                </div>
+                </p>
               }
-            </p>
+            </div>
             <p>Учитывая твой уровень физической нагрузки (<i>{ActivityLevelTranslations[user.activityLevel].toLowerCase()}</i>) твоя суточная потребность калорий <b>{totalCalorieTarget}</b> ккал, но учитывая твою цель (<i>{user.target.toLowerCase()}</i>), тебе необходимо получать из пищи <b>{caloriesTarget}</b> ккал.</p>
             {
               totalCalorieTarget - calories > 0
