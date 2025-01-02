@@ -32,8 +32,13 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
   const [addToUser, setAddToUser] = useState(true);
   const [oneTimeMeal, setOneTimeMeal] = useState(false);
 
-  const formRef = useOutsideClick(() => {
+  const handleCloseForm = () => {
     dispatch(setNewMealFormOpened({ isOpened: false }));
+  }
+
+  const formRef = useOutsideClick(() => {
+    // dispatch(setNewMealFormOpened({ isOpened: false }));
+    handleCloseForm();
   }) as React.RefObject<HTMLFormElement>;
 
   const defaultData: Meal = {
@@ -182,10 +187,9 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
       <form className="form" method="post" action="#" onSubmit={handleFormSubmit} ref={formRef}>
         <div className="form__header">
           <h1 className="title title--2 form__title">Добавление нового блюда</h1>
-          <button className="button form__button--close" onClick={() => dispatch(setNewMealFormOpened({isOpened: !isFormOpened}))}><Close/></button>
+          <button className="button form__button--close" type="button" onClick={handleCloseForm}><Close/></button>
         </div>
         <fieldset className="form__fieldset">
-
           <label className="form__item" htmlFor="meal-type">
             <span>Выбери прием пищи: </span>
             <select
