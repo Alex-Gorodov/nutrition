@@ -5,7 +5,6 @@ import { Ring } from "../ring/ring";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { getBasalMetabolicRate } from "../../utils/getBasalMetabolicRate";
 import { calculateActiveBmr } from "../../utils/calculateActiveBmr";
-import { setUserGreetings } from "../../utils/setUserGreetings";
 
 type UserItemProps = {
   user: User;

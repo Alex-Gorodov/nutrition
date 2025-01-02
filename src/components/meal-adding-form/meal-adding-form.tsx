@@ -17,7 +17,6 @@ type MealAddingFormProps = {
 export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
   const dispatch = useDispatch();
   const meals = useSelector((state: RootState) => state.data.meals);
-  const isFormOpened = useSelector((state: RootState) => state.page.isNewMealFormOpened);
   const mealsAmount = meals.length.toString();
   const [isRecipeAdding, setIsRecipeAdding] = useState(false);
 
@@ -37,7 +36,6 @@ export function MealAddingForm({type}: MealAddingFormProps): JSX.Element {
   }
 
   const formRef = useOutsideClick(() => {
-    // dispatch(setNewMealFormOpened({ isOpened: false }));
     handleCloseForm();
   }) as React.RefObject<HTMLFormElement>;
 
