@@ -187,13 +187,16 @@ export function AddTraining(): JSX.Element {
               }}
             />
           </label>
+          <p className="form__message">
+            {calories > 0 ? (
+              <>
+                Ты затратил примерно <strong>{Math.floor(calories)}</strong> калорий! Так держать!
+              </>
+            ) : (
+              'Введи время тренировки для расчета калорий'
+            )}
+          </p>
 
-          {calories > 0 ? (
-            <p className="form__message">
-              Ты затратил примерно <strong>{Math.floor(calories)}</strong>{" "}
-              калорий! Так держать!
-            </p>
-          ) : <p>Введи время тренирови для расчета калорий</p>}
         </fieldset>
 
         <button className="button button--submit form__submit" type="submit" onClick={handleAddTraining}>Записать тренировку!</button>
